@@ -1,0 +1,263 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="il.co.togetthere.AddSPActivity" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addNewSP_lower_bar" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/title_activity_add_sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#70AD47"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/title_activity_add_sp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/white" />
+
+            <EditText
+                android:id="@+id/addNewSPName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/addNewSPName" >
+
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/addNewSPSPAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/addNewSPAddress"
+                android:inputType="textPostalAddress" />
+
+            <EditText
+                android:id="@+id/addNewSPSPPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/addNewSPPhone"
+                android:inputType="phone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/addNewSPType"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <Spinner
+                    android:id="@+id/addNewSPSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:prompt="@string/addNewSPSpinnerPrompt" >
+                </Spinner>
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/addNewSPDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/addNewSPDescription"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/addNewSPDiscount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/addNewSPDiscount"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:id="@+id/addNewSPRankText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="5dp"
+                android:text="@string/addNewSPRankText" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageButton
+                        android:id="@+id/NewRankImageParking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="0.25"
+                        android:onClick="rankClicked"
+                        android:src="@drawable/ic_parking"
+                        android:tag="parking" />
+
+                    <TextView
+                        android:id="@+id/textViewRank1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Does this place have accecible parking?"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <ImageButton
+                        android:id="@+id/NewRankImageEntrance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="0.25"
+                        android:onClick="rankClicked"
+                        android:src="@drawable/ic_entrance"
+                        android:tag="entrance" />
+
+                    <TextView
+                        android:id="@+id/textViewRank2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Does this place have accecible entrance?"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageButton
+                        android:id="@+id/NewRankImageFurniture"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="0.25"
+                        android:onClick="rankClicked"
+                        android:src="@drawable/ic_furniture"
+                        android:tag="furniture" />
+
+                    <TextView
+                        android:id="@+id/textViewRank3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Does this place have accecible furniture?"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageButton
+                        android:id="@+id/NewRankImageToilets"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="0.25"
+                        android:onClick="rankClicked"
+                        android:src="@drawable/ic_toilets"
+                        android:tag="toilets" />
+
+                    <TextView
+                        android:id="@+id/textViewRank4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Does this place have accecible tolilets?"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageButton
+                        android:id="@+id/NewRankImageElevator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="0.25"
+                        android:onClick="rankClicked"
+                        android:src="@drawable/ic_elevator"
+                        android:tag="elevator" />
+
+                    <TextView
+                        android:id="@+id/textViewRank5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Does this place have an elevator?"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/addNewSPSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFC000"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@android:color/white"
+                android:text="@string/addNewSPSubmitButton" 
+                android:layout_marginBottom="10dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@id/addNewSP_lower_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#70AD47"
+        android:fitsSystemWindows="true" >
+
+        <com.facebook.widget.ProfilePictureView
+            android:id="@+id/button_show_user_details_addNewSP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            facebook:preset_size="small" />
+
+        <ImageView
+            android:id="@+id/addNewSP_button_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_info" >
+        </ImageView>
+    </RelativeLayout>
+
+</RelativeLayout>

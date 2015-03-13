@@ -1,0 +1,530 @@
+/*
+ * Copyright 2012 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package il.co.togetthere;
+
+import il.co.togetthere.db.ReviewObj;
+import il.co.togetthere.db.ServiceProvider;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import android.annotation.SuppressLint;
+import android.app.Fragment;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.widget.ProfilePictureView;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+/**
+ * A fragment representing a single page.
+ */
+public class ScreenSlidePageFragment extends Fragment implements
+		OnMarkerClickListener {
+	/* The argument key for the page number this fragment represents. */
+	public static final String ARG_PAGE = "page";
+	public static final String ARG_TYPE = "Type";
+
+	/*
+	 * The fragment's page number, which is set to the argument value for {@link
+	 * #ARG_PAGE}.
+	 */
+	public ViewGroup rootView;
+	public String mServiceProviderType = null;
+	private int mPageNumber;
+	private ServiceProvider mSP;
+	private Task mTask;
+	private ArrayList<ReviewObj> mReviewsList;
+
+	MapView mMapView;
+	private GoogleMap googleMap;
+
+	/*
+	 * Factory method for this fragment class. Constructs a new fragment for the
+	 * given SP.
+	 */
+	public static ScreenSlidePageFragment create(int pageNumber, String Type) {
+		ScreenSlidePageFragment fragment = new ScreenSlidePageFragment();
+		Bundle args = new Bundle();
+		args.putInt(ARG_PAGE, pageNumber);
+		args.putString(ARG_TYPE, Type);
+		fragment.setArguments(args);
+		return fragment;
+	}
+
+	public ScreenSlidePageFragment() {
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mPageNumber = getArguments().getInt(ARG_PAGE);
+		mServiceProviderType = getArguments().getString(ARG_TYPE);
+
+		/**
+		 * Get information from DB
+		 **/
+		if (mServiceProviderType.equals("help")) {
+			mTask = getCurrTask(mPageNumber);
+		} else {
+			mSP = getCurrSP(mPageNumber);
+		}
+	}
+
+	private ServiceProvider getCurrSP(int PageNumber) {
+		return ScreenSlideActivity.getCurrSP(PageNumber);
+	}
+
+	private Task getCurrTask(int PageNumber) {
+		return ScreenSlideActivity.getCurrTask(PageNumber);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		// Inflate the layout containing a title and body text.
+		if (mServiceProviderType.equals("help")) {
+			rootView = (ViewGroup) inflater.inflate(
+					R.layout.fragment_screen_slide_help, container, false);
+			setHelpView(rootView, mServiceProviderType);
+
+		} else {
+			rootView = (ViewGroup) inflater.inflate(
+					R.layout.fragment_screen_slide_sp, container, false);
+			setSPView(rootView, mServiceProviderType);
+
+		}
+
+		// Map
+
+		if (!mServiceProviderType.equals("help")) {
+			mMapView = (MapView) rootView.findViewById(R.id.mapView);
+			mMapView.onCreate(savedInstanceState);
+			mMapView.onResume();// needed to get the map to display immediately
+
+			try {
+				MapsInitializer.initialize(getActivity()
+						.getApplicationContext());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			googleMap = mMapView.getMap();
+
+			LatLng positionSP = new LatLng(mSP.getLatitude(),
+					mSP.getLongitude());
+			googleMap.setOnMarkerClickListener(this);
+			googleMap.setMyLocationEnabled(true);
+			googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionSP,
+					12));
+			googleMap.addMarker(new MarkerOptions().position(positionSP).icon(
+					BitmapDescriptorFactory
+							.fromResource(R.drawable.ic_g_marker)));
+
+			LatLng currentUserPosition = new LatLng(
+					LoginActivity.user.getLatitude(),
+					LoginActivity.user.getLongitude());
+			googleMap.addMarker(new MarkerOptions()
+					.position(currentUserPosition));
+
+		} else {
+			// TODO Help map
+		}
+
+		return rootView;
+
+	}
+
+	private void setHelpView(ViewGroup v, String Type) {
+
+		// Set Task Title
+		((TextView) v.findViewById(R.id.text_task_name)).setText(mTask
+				.getTitle());
+
+		// Set Task Description
+		((TextView) v.findViewById(R.id.text_task_description)).setText(mTask
+				.getBody());
+
+		Button volunteerButton = (Button) v.findViewById(R.id.button_volunteer);
+		volunteerButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				mTask.addVolunteer(LoginActivity.user);
+				mTask.addTaskToDB();
+				Toast.makeText(getActivity().getApplicationContext(),
+						"Great! You're Amazing!", Toast.LENGTH_SHORT).show();
+			}
+		});
+
+		// TODO Set Verified
+
+		// if (!mTask.isVerified()) {
+		// ((ImageView) v.findViewById(R.id.img_is_verified))
+		// .setVisibility(View.INVISIBLE);
+
+		// TODO set mLocationView
+
+		// TODO set time and date
+
+	}
+
+	private void setSPView(View v, String Type) {
+
+		int colorID = getResources().getIdentifier(Type + "_bg_color", "color",
+				"il.co.togetthere");
+		int color = getResources().getColor(colorID);
+
+		SetViewColors(v, color);
+
+		// Set Title
+		((TextView) v.findViewById(R.id.text_location_name)).setText(mSP
+				.getName());
+
+		// Set Adress
+		((TextView) v.findViewById(R.id.text_location_description))
+				.setVisibility(View.GONE);
+
+		// Set Adress
+		((TextView) v.findViewById(R.id.text_location_adress)).setText(mSP
+				.getAddress());
+
+		// Set Verified
+		if (!mSP.isVerified()) {
+			((ImageView) v.findViewById(R.id.img_is_verified))
+					.setVisibility(View.INVISIBLE);
+		}
+
+		// Set Discount
+		((TextView) v.findViewById(R.id.text_location_discount)).setText("%"
+				+ mSP.getDiscount());
+
+		// set accecibility precantage
+		setAccecibility(v);
+
+		// set Stars rank
+		int starsNum = 0;
+		Random rand = new Random();
+		starsNum = rand.nextInt(5);
+		setStarsView(v, starsNum);
+
+		// Set Waze buttun
+		LinearLayout wazeButton = (LinearLayout) v
+				.findViewById(R.id.button_waze);
+		wazeButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				onWazeClick();
+			}
+		});
+
+		// TODO set List of reviews
+		// ListView listView = (ListView)
+		// rootView.findViewById(R.id.list_reviews);
+		// listView.setAdapter(new mListAdapter(getActivity(), getReviews()));
+		// listView.setOnTouchListener(new View.OnTouchListener() {
+
+		// Reviews
+		getReviews();
+		setReviewsView(v, color);
+		TextView readMore = (TextView) v
+				.findViewById(R.id.button_read_more_reviews);
+		if (mReviewsList.size() > 3) {
+			readMore.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Open an activity with list view of reviews;
+
+				}
+			});
+		} else {
+			readMore.setVisibility(View.GONE);
+		}
+	}
+
+	private void setAccecibility(View v) {
+		if (mSP.getElevator()) {
+			((ImageView) v.findViewById(R.id.image_check_toilet))
+					.setVisibility(View.VISIBLE);
+		}
+		if (mSP.getEntrance()) {
+			((ImageView) v.findViewById(R.id.image_check_entrance))
+					.setVisibility(View.VISIBLE);
+		}
+		if (mSP.getFacilities()) {
+			((ImageView) v.findViewById(R.id.image_check_furniture))
+					.setVisibility(View.VISIBLE);
+		}
+		if (mSP.getParking()) {
+			((ImageView) v.findViewById(R.id.image_check_parking))
+					.setVisibility(View.VISIBLE);
+		}
+		if (mSP.getToilets()) {
+			((ImageView) v.findViewById(R.id.image_check_toilet))
+					.setVisibility(View.VISIBLE);
+		}
+
+	}
+
+	private void setStarsView(View v, int starsNum) {
+		switch (starsNum) {
+		case 5:
+			((ImageView) v.findViewById(R.id.image_rank_5))
+					.setVisibility(View.VISIBLE);
+		case 4:
+			((ImageView) v.findViewById(R.id.image_rank_4))
+					.setVisibility(View.VISIBLE);
+		case 3:
+			((ImageView) v.findViewById(R.id.image_rank_3))
+					.setVisibility(View.VISIBLE);
+		case 2:
+			((ImageView) v.findViewById(R.id.image_rank_2))
+					.setVisibility(View.VISIBLE);
+		case 1:
+			((ImageView) v.findViewById(R.id.image_rank_1))
+					.setVisibility(View.VISIBLE);
+		}
+
+	}
+
+	private void setReviewsView(View v, int color) {
+		TextView noReviews = (TextView) v
+				.findViewById(R.id.text_be_first_reviewer);
+		RelativeLayout review1 = (RelativeLayout) v.findViewById(R.id.review1);
+		RelativeLayout review2 = (RelativeLayout) v.findViewById(R.id.review2);
+		RelativeLayout review3 = (RelativeLayout) v.findViewById(R.id.review3);
+
+		switch (mReviewsList.size()) {
+		case 1: // no reviews
+			Log.i("review", "0");
+			noReviews.setTextColor(color);
+			review1.setVisibility(View.GONE);
+			review2.setVisibility(View.GONE);
+			review3.setVisibility(View.GONE);
+			break;
+		case 2: // one review
+			Log.i("review", "1");
+			noReviews.setVisibility(View.GONE);
+			setReview(v, color, 1);
+			review2.setVisibility(View.GONE);
+			review3.setVisibility(View.GONE);
+			break;
+		case 3: // two reviews
+			Log.i("review", "2");
+			noReviews.setVisibility(View.GONE);
+			setReview(v, color, 1);
+			setReview(v, color, 2);
+			review3.setVisibility(View.GONE);
+			break;
+		default: // 3 or more
+			Log.i("review", "more");
+			noReviews.setVisibility(View.GONE);
+			setReview(v, color, 1);
+			setReview(v, color, 2);
+			setReview(v, color, 3);
+			break;
+		}
+
+	}
+
+	private void setReview(View v, int color, int num) {
+		int reviewerTextID = getResources().getIdentifier(
+				"review_item_title" + num, "id",
+				v.getContext().getPackageName());
+		int reviewTextID = getResources()
+				.getIdentifier("review_item_body" + num, "id",
+						v.getContext().getPackageName());
+		int likesID = getResources().getIdentifier("text_review_likes_" + num,
+				"id", v.getContext().getPackageName());
+		int userImageID = getResources().getIdentifier("img_review_user" + num,
+				"id", v.getContext().getPackageName());
+
+		Log.i("review", "ic_thumb_" + mServiceProviderType);
+		int likesDrawable = getResources().getIdentifier(
+				"ic_thumb_" + mServiceProviderType, "drawable",
+				v.getContext().getPackageName());
+
+		TextView reviewer = (TextView) v.findViewById(reviewerTextID);
+		TextView review = (TextView) v.findViewById(reviewTextID);
+		TextView likes = (TextView) v.findViewById(likesID);
+		ProfilePictureView profilePictureView = (ProfilePictureView) v
+				.findViewById(userImageID);
+
+		ReviewObj reviewObj = mReviewsList.get(num);
+
+		reviewer.setText(reviewObj.getReviewer());
+		review.setText(reviewObj.getReview());
+		likes.setText(reviewObj.getPoints() + "   ");
+		likes.setTextColor(color);
+		likes.setBackground(getResources().getDrawable(likesDrawable));
+		// TODO id of user that wrote review
+		// profilePictureView.setProfileId(mReviewsList.get(position).g);
+	}
+
+	public void onWazeClick() {
+		onMarkerClick(null);
+	}
+
+	public class mListAdapter extends BaseAdapter {
+		private ArrayList<ReviewObj> reviewsList;
+		private LayoutInflater mInflater;
+
+		public mListAdapter(Context screenSlidePageFragment,
+				ArrayList<ReviewObj> reviewsList) {
+			this.reviewsList = reviewsList;
+			this.mInflater = LayoutInflater.from(screenSlidePageFragment);
+		}
+
+		@Override
+		public int getCount() {
+			return reviewsList.size();
+		}
+
+		@Override
+		public Object getItem(int arg0) {
+			return reviewsList.get(arg0);
+		}
+
+		@Override
+		public long getItemId(int arg0) {
+			return arg0;
+		}
+
+		@SuppressLint("InflateParams")
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder;
+			if (convertView == null) {
+				convertView = mInflater.inflate(
+						R.layout.location_review_list_item, null);
+				holder = new ViewHolder();
+				holder.title = (TextView) convertView
+						.findViewById(R.id.review_item_title);
+				holder.body = (TextView) convertView
+						.findViewById(R.id.review_item_body);
+
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+
+			holder.title.setText(reviewsList.get(position).getTitle());
+			holder.body.setText(reviewsList.get(position).getReview());
+
+			return convertView;
+		}
+
+		class ViewHolder {
+			TextView title, body;
+		}
+	}
+
+	public ArrayList<ReviewObj> getReviews() {
+
+		mReviewsList = mSP.parseReviews();
+
+		ReviewObj review1 = new ReviewObj();
+		review1.setTitle("TitleA1");
+		review1.setReview("Great Place, Very Accecible");
+		review1.setReviewer("Rony Jacobson");
+		review1.setPoints(1);
+		mReviewsList.add(review1);
+
+		ReviewObj review2 = new ReviewObj();
+		review2.setTitle("TitleA2");
+		review2.setReview("I couldent find a close parking spot");
+		review2.setReviewer("John Doh");
+		review2.setPoints(10);
+		mReviewsList.add(review2);
+
+		ReviewObj review3 = new ReviewObj();
+		review3.setTitle("TitleA3");
+		review3.setReview("Good Atmospheir and great Service");
+		review3.setReviewer("Jane Doh");
+		review3.setPoints(0);
+		mReviewsList.add(review3);
+
+		return mReviewsList;
+	}
+
+	private void SetViewColors(View v, int color) {
+
+		// Title bg
+		((LinearLayout) v.findViewById(R.id.layout_location_name_bar))
+				.setBackgroundColor(color);
+
+		// Review text color
+		((Button) v.findViewById(R.id.button_read_more_reviews))
+				.setTextColor(color);
+
+		// Verified
+		((LinearLayout) v.findViewById(R.id.button_get_verified))
+				.setBackgroundColor(color);
+	}
+
+	/**
+	 * Returns the page number represented by this fragment object.
+	 */
+	public int getPageNumber() {
+		return mPageNumber;
+	}
+
+	@Override
+	public boolean onMarkerClick(Marker marker) {
+		try {
+
+			String lat = String.valueOf(mSP.getLatitude());
+			String lon = String.valueOf(mSP.getLongitude());
+			String url = "waze://?ll=" + lat + "," + lon + "&navigate=yes";
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			startActivity(intent);
+		} catch (ActivityNotFoundException ex) {
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("market://details?id=com.waze"));
+			startActivity(intent);
+		}
+		return false;
+	}
+
+}

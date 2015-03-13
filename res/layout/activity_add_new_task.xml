@@ -1,0 +1,136 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addNewTask_lower_bar"
+        android:layout_alignParentTop="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#70AD47"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/title_activity_add_new_task"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/addNewTaskTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/addNewTaskTitle" >
+
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/addNewTaskBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="@string/addNewTaskBody"
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/addNewTaskAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/addNewTaskAddress"
+                android:inputType="textPostalAddress" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/ButtonaddNewTaskDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:cropToPadding="true"
+                    android:gravity="bottom"
+                    android:src="@drawable/ic_calander" />
+
+                <EditText
+                    android:id="@+id/addNewTaskDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:hint="@string/addNewTaskDate"
+                    android:inputType="date" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/addNewTaskPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/addNewTaskPhone"
+                android:inputType="phone" />
+
+            <Button
+                android:id="@+id/addNewTaskSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFC000"
+                android:paddingLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:paddingRight="10dp"
+                android:text="@string/addNewTaskSubmitButton"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@id/addNewTask_lower_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#70AD47"
+        android:fitsSystemWindows="true" >
+
+        <com.facebook.widget.ProfilePictureView
+            android:id="@+id/button_show_user_details_addNewTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            facebook:preset_size="small" />
+
+        <ImageView
+            android:id="@+id/addNewTask_button_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_info" >
+        </ImageView>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,36 @@
+<resources>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="slide_screen_bg">#f3f5f3</color>
+
+    <!-- medical Category -->
+    <color name="medical_bg_color">#E68CBA</color>
+    <color name="medical_button_color">#ED7D31</color>
+    <color name="medical_review_bg_color">#513687</color>
+
+    <!-- shopping Category -->
+    <color name="shopping_bg_color">#513687</color>
+    <color name="shopping_button_color">#FFC000</color>
+    <color name="shopping_review_bg_color">#49BF8B</color>
+
+    <!-- help Category -->
+    <color name="help_bg_color">#49BF8B</color>
+    <color name="help_button_color">#FFC000</color>
+    <color name="help_review_bg_color">#513687</color>
+
+    <!-- transport Category -->
+    <color name="transport_bg_color">#FFC000</color>
+    <color name="transport_button_color">#513687</color>
+    <color name="transport_review_bg_color">#49BF8B</color>
+
+    <!-- restaurants Category -->
+    <color name="restaurants_bg_color">#ED7D31</color>
+    <color name="restaurants_button_color">#14B4C0</color>
+    <color name="restaurants_review_bg_color">#49BF8B</color>
+
+    <!-- public_services Category -->
+    <color name="public_services_bg_color">#7ccdda</color>
+    <color name="public_services_button_color">#C04B92</color>
+    <color name="public_services_review_bg_color">#C04B92</color>
+
+</resources>
