@@ -18,7 +18,6 @@ package il.co.togetthere;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,7 +27,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -43,6 +41,7 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.*;
 
 import il.co.togetthere.db.AmazonClientManager;
+import il.co.togetthere.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;

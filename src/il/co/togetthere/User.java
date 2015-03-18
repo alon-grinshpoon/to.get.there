@@ -2,8 +2,6 @@ package il.co.togetthere;
 
 import il.co.togetthere.db.DynamoDBManagerTask;
 import il.co.togetthere.db.DynamoDBManagerType;
-import android.content.Context;
-import android.telephony.TelephonyManager;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
