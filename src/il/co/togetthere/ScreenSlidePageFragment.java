@@ -122,6 +122,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
 		// Inflate the layout containing a title and body text.
 		if (mServiceProviderType.equals("help")) {
 			rootView = (ViewGroup) inflater.inflate(
@@ -221,11 +222,11 @@ public class ScreenSlidePageFragment extends Fragment implements
 		((TextView) v.findViewById(R.id.text_location_name)).setText(mSP
 				.getName());
 
-		// Set Adress
+		// Set Description
 		((TextView) v.findViewById(R.id.text_location_description))
 				.setVisibility(View.GONE);
 
-		// Set Adress
+		// Set Adddress
 		((TextView) v.findViewById(R.id.text_location_adress)).setText(mSP
 				.getAddress());
 
@@ -265,18 +266,16 @@ public class ScreenSlidePageFragment extends Fragment implements
 		// listView.setAdapter(new mListAdapter(getActivity(), getReviews()));
 		// listView.setOnTouchListener(new View.OnTouchListener() {
 
-		// Reviews
+		// Reviews		
 		getReviews();
 		setReviewsView(v, color);
 		TextView readMore = (TextView) v
 				.findViewById(R.id.button_read_more_reviews);
 		if (mReviewsList.size() > 3) {
 			readMore.setOnClickListener(new OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
 					// TODO Open an activity with list view of reviews;
-
 				}
 			});
 		} else {
@@ -328,7 +327,10 @@ public class ScreenSlidePageFragment extends Fragment implements
 		}
 
 	}
-
+	
+	/**
+	 * Sets the appearance if the reviews sections according to number of reviews that exist
+	 * */
 	private void setReviewsView(View v, int color) {
 		TextView noReviews = (TextView) v
 				.findViewById(R.id.text_be_first_reviewer);
@@ -338,28 +340,24 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 		switch (mReviewsList.size()) {
 		case 1: // no reviews
-			Log.i("review", "0");
 			noReviews.setTextColor(color);
 			review1.setVisibility(View.GONE);
 			review2.setVisibility(View.GONE);
 			review3.setVisibility(View.GONE);
 			break;
 		case 2: // one review
-			Log.i("review", "1");
 			noReviews.setVisibility(View.GONE);
 			setReview(v, color, 1);
 			review2.setVisibility(View.GONE);
 			review3.setVisibility(View.GONE);
 			break;
 		case 3: // two reviews
-			Log.i("review", "2");
 			noReviews.setVisibility(View.GONE);
 			setReview(v, color, 1);
 			setReview(v, color, 2);
 			review3.setVisibility(View.GONE);
 			break;
 		default: // 3 or more
-			Log.i("review", "more");
 			noReviews.setVisibility(View.GONE);
 			setReview(v, color, 1);
 			setReview(v, color, 2);
@@ -386,19 +384,37 @@ public class ScreenSlidePageFragment extends Fragment implements
 				"ic_thumb_" + mServiceProviderType, "drawable",
 				v.getContext().getPackageName());
 
+		// get the reviews view's
 		TextView reviewer = (TextView) v.findViewById(reviewerTextID);
 		TextView review = (TextView) v.findViewById(reviewTextID);
 		TextView likes = (TextView) v.findViewById(likesID);
 		ProfilePictureView profilePictureView = (ProfilePictureView) v
 				.findViewById(userImageID);
-
+		
+		// get the review object
 		ReviewObj reviewObj = mReviewsList.get(num);
 
+		// set review details
 		reviewer.setText(reviewObj.getReviewer());
 		review.setText(reviewObj.getReview());
 		likes.setText(reviewObj.getPoints() + "   ");
 		likes.setTextColor(color);
 		likes.setBackground(getResources().getDrawable(likesDrawable));
+		likes.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				TextView likes  = (TextView) v;
+				Toast.makeText(v.getContext(), "Thanks!",
+	         			   Toast.LENGTH_SHORT).show();
+				
+				int numLikes = Integer.parseInt(((String) likes.getText()).trim()) + 1;
+				likes.setText(numLikes + "   ");	
+				
+				//TODO - Send update to DB
+			}
+		});
+		
 		// TODO id of user that wrote review
 		// profilePictureView.setProfileId(mReviewsList.get(position).g);
 	}
@@ -463,7 +479,8 @@ public class ScreenSlidePageFragment extends Fragment implements
 	public ArrayList<ReviewObj> getReviews() {
 
 		mReviewsList = mSP.parseReviews();
-
+/* 		These are Mock reviews for testing
+ *  
 		ReviewObj review1 = new ReviewObj();
 		review1.setTitle("TitleA1");
 		review1.setReview("Great Place, Very Accecible");
@@ -484,7 +501,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		review3.setReviewer("Jane Doh");
 		review3.setPoints(0);
 		mReviewsList.add(review3);
-
+		*/
 		return mReviewsList;
 	}
 
