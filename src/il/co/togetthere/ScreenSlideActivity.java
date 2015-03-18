@@ -121,7 +121,6 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		/**
 		 * Set Lower Bar Functions
 		 */
-
 		((LinearLayout) findViewById(R.id.button_add_new_location))
 				.setOnClickListener(new View.OnClickListener() {
 
@@ -142,6 +141,42 @@ public class ScreenSlideActivity extends FragmentActivity implements
 
 					}
 				});
+
+		// TODO "Rank" button Handler
+
+		LinearLayout rankButton = (LinearLayout) findViewById(R.id.button_rank);
+		if (getmServiceProviderType().equals("help")) {
+			rankButton.setVisibility(View.INVISIBLE);
+		} else {
+			rankButton.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					// TODO Rank Dialog
+
+				}
+			});
+		}
+
+		LinearLayout editButton = (LinearLayout) findViewById(R.id.button_edit);
+		if (getmServiceProviderType().equals("help")) {
+			editButton.setVisibility(View.INVISIBLE);
+		} else {
+			editButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent editIntent = null;
+					editIntent = new Intent(ScreenSlideActivity.this,
+							EditActivity.class);
+					editIntent.putExtra("SP_NUMBER", mCurr);
+					ScreenSlideActivity.this.startActivity(editIntent);
+
+					// TODO - update SP when editing is finished
+				}
+			});
+		}
+
 		// TODO app info
 
 	}
@@ -165,6 +200,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		}
 
 		mPager.setAdapter(mPagerAdapter);
+
 		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
@@ -173,39 +209,6 @@ public class ScreenSlideActivity extends FragmentActivity implements
 				invalidateOptionsMenu();
 			}
 		});
-
-		// TODO "Rank" button Handler
-
-		LinearLayout rankButton = (LinearLayout) findViewById(R.id.button_rank);
-		if (getmServiceProviderType().equals("help")) {
-			rankButton.setVisibility(View.INVISIBLE);
-		} else {
-			rankButton.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Rank Dialog
-
-				}
-			});
-		}
-
-		LinearLayout editButton = (LinearLayout) findViewById(R.id.button_edit);
-		if (getmServiceProviderType().equals("help")) {
-			editButton.setVisibility(View.INVISIBLE);
-		} else {
-			editButton.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					Intent editIntent = null;
-					editIntent = new Intent(ScreenSlideActivity.this,
-							EditActivity.class);
-					editIntent.putExtra("SP_NUMBER", mCurr);
-					ScreenSlideActivity.this.startActivity(editIntent);
-				}
-			});
-		}
 
 	}
 
@@ -230,9 +233,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 	}
 
 	public static ServiceProvider getCurrSP(int position) {
-
 		return mServiceProviderArr.get(position);
-
 	}
 
 	/**
