@@ -5,6 +5,7 @@ import com.facebook.widget.ProfilePictureView;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +19,9 @@ public class UserInfoActivity extends Activity {
 	TextView mLocationView;
 	TextView mNameView;
 	TextView mPointsView;
+	TextView mPointsTitleView;
 	TextView mLevelView;
+	TextView mLevelTitleView;
 	TextView mPhoneTextView;
 	TextView mEmailTextView;
 	EditText mEditEmailView;
@@ -39,10 +42,10 @@ public class UserInfoActivity extends Activity {
 		 * View Initialization
 		 **/
 
-		View decorView = getWindow().getDecorView();
 		// Hide the status bar.
-		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		decorView.setSystemUiVisibility(uiOptions);
+		//View decorView = getWindow().getDecorView();
+		//int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+		//decorView.setSystemUiVisibility(uiOptions);
 		// Remember that you should never show the action bar if the
 		// status bar is hidden, so hide that too if necessary.
 		android.app.ActionBar actionBar = getActionBar();
@@ -113,10 +116,16 @@ public class UserInfoActivity extends Activity {
 	}
 
 	private void InitializeViewMembers() {
+		// Define Font
+		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.TTF");
+		Typeface fontBold = Typeface.createFromAsset(getAssets(), "fonts/GOTHICB.TTF");
+		
 		mLocationView = (TextView) findViewById(R.id.text_user_adress);
 		mNameView = (TextView) findViewById(R.id.text_user_name);
 		mPointsView = (TextView) findViewById(R.id.text_points);
+		mPointsTitleView = (TextView) findViewById(R.id.text_points_title);
 		mLevelView = (TextView) findViewById(R.id.text_level);
+		mLevelTitleView = (TextView) findViewById(R.id.text_level_title);
 		mPhoneTextView = (TextView) findViewById(R.id.text_user_phone);
 		mEmailTextView = (TextView) findViewById(R.id.text_user_email);
 		mEditEmailView = (EditText) findViewById(R.id.edit_text_user_email);
@@ -138,6 +147,23 @@ public class UserInfoActivity extends Activity {
 		mDiscard.setVisibility(View.GONE);
 		mEmailSwitcher = (ViewSwitcher) findViewById(R.id.email_switcher);
 		mPhoneSwitcher = (ViewSwitcher) findViewById(R.id.phone_switcher);
+		
+		// Set fonts
+		mLocationView.setTypeface(font);
+		mNameView.setTypeface(fontBold);
+		mPointsView.setTypeface(font);
+		mPointsTitleView.setTypeface(fontBold);
+		mLevelView.setTypeface(font);
+		mLevelTitleView.setTypeface(fontBold);
+		mPhoneTextView.setTypeface(font);
+		mEmailTextView.setTypeface(font);
+		mEditEmailView.setTypeface(font);
+		mEditPhoneView.setTypeface(font);
+		mEditUpdateButton.setTypeface(fontBold);
+		mVolunteerQuestion.setTypeface(font);
+		mVolunteerToggle.setTypeface(font);
+		mDiscard.setTypeface(font);
+		
 	}
 
 	private void setFixedDetailsView() {

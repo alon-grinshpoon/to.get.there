@@ -7,27 +7,54 @@
     android:gravity="center_horizontal"
     tools:context="${relativePackage}.${activityClass}" >
 
+    <RelativeLayout
+        android:id="@+id/upper_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#004274"
+        android:fitsSystemWindows="true" >
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:src="@drawable/logo_small" >
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/button_login_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_settings" >
+        </ImageView>
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/lowerBarInfo"
-        >
+        android:layout_below="@+id/upper_bar" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
+            android:paddingBottom="10dp"
             android:paddingLeft="40dp"
-            android:paddingRight="40dp"
-            android:paddingBottom="10dp"  >
+            android:paddingRight="40dp" >
 
             <com.facebook.widget.ProfilePictureView
                 android:id="@+id/image_info_facebook_picture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
                 facebook:preset_size="large" >
             </com.facebook.widget.ProfilePictureView>
@@ -35,10 +62,10 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="15dp"
-                android:paddingLeft="15dp"
                 android:background="#6070AD47"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" >
 
                 <TextView
                     android:id="@+id/text_user_name"
@@ -127,6 +154,7 @@
                     android:orientation="vertical" >
 
                     <TextView
+                        android:id="@+id/text_level_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#99FFC000"
@@ -158,6 +186,7 @@
                     android:orientation="vertical" >
 
                     <TextView
+                        android:id="@+id/text_points_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#99FFC000"
@@ -241,30 +270,5 @@
             </Button>
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:id="@id/lowerBarInfo"
-        style="?metaButtonBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#70AD47"
-        android:orientation="vertical"
-        tools:ignore="UselessParent" >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/button_info2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_info" >
-            </ImageView>
-        </RelativeLayout>
-    </LinearLayout>
 
 </RelativeLayout>
