@@ -37,7 +37,6 @@ public class SplashActivity extends Activity {
             	/* Prompt login if the user isn't logged in or the type choosing screen otherwise. */
             	if (!LoginActivity.user.isLoggedIn()){
             		Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
-                	//Intent mainIntent = new Intent(SplashActivity.this, TypeChooserActivity.class);
                     SplashActivity.this.startActivity(mainIntent);
                     SplashActivity.this.finish();
             	} else {

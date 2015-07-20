@@ -10,11 +10,15 @@ import com.facebook.widget.ProfilePictureView;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class TypeChooserActivity extends Activity {
 	List<String> mServiceProviderType = new ArrayList<String>();
@@ -76,6 +80,14 @@ public class TypeChooserActivity extends Activity {
 
 			mButtonsArr.add(i, btn);
 		}
+		
+        // Ask To Volunteer
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+            	askToVolunteer();
+            }
+        }, 1500);
 
 		// set Lower Bar
 		((ProfilePictureView) findViewById(R.id.button_show_user_details_chooser  ))
@@ -94,4 +106,31 @@ public class TypeChooserActivity extends Activity {
 		// TODO set button app info
 
 	}
+	
+	private void askToVolunteer(){
+
+    	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                	// Set Volunteer State
+                	LoginActivity.user.setVolunteering(true);
+                	// Show toast
+                	Toast.makeText(getApplicationContext(), "Great! You are awesome!",
+              			   Toast.LENGTH_SHORT).show();
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                	// Set Volunteer State
+                	LoginActivity.user.setVolunteering(false);
+                    break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Will you be willing to volunteer?").setPositiveButton("Yes", dialogClickListener)
+            .setNegativeButton("No", dialogClickListener).show();
+    }
 }

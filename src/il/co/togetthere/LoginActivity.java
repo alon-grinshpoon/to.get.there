@@ -25,7 +25,6 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -60,7 +59,6 @@ import com.facebook.widget.FriendPickerFragment;
 import com.facebook.widget.LoginButton;
 import com.facebook.widget.PickerFragment;
 import com.facebook.widget.PlacePickerFragment;
-import com.facebook.widget.ProfilePictureView;
 
 
 public class LoginActivity extends FragmentActivity {
@@ -73,7 +71,6 @@ public class LoginActivity extends FragmentActivity {
     private LoginButton buttonLoginFacebook;
     private Button buttonLoginGoogle;
     private Button buttonLoginTwitter;
-    private ProfilePictureView profilePictureView;
     private PendingAction pendingAction = PendingAction.NONE;
     private ViewGroup controlsContainer;
     private GraphUser facebookUser;
@@ -114,10 +111,11 @@ public class LoginActivity extends FragmentActivity {
     @SuppressLint("InlinedApi") @Override
     public void onCreate(Bundle savedInstanceState) {
     	
-    	View decorView = getWindow().getDecorView();
 		// Hide the status bar.
-		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		decorView.setSystemUiVisibility(uiOptions); 
+    	//View decorView = getWindow().getDecorView();
+		//int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+		//decorView.setSystemUiVisibility(uiOptions); 
+    	
 		// Remember that you should never show the action bar if the
 		// status bar is hidden, so hide that too if necessary.
 		android.app.ActionBar actionBar = getActionBar();
@@ -137,11 +135,6 @@ public class LoginActivity extends FragmentActivity {
         //initialize db credentialis for registering user
         clientManager = new AmazonClientManager(this);
         
-        
-        // Hide Profile Picture
-        profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
-        profilePictureView.setVisibility(View.GONE);
-        
         // Configure the Facebook login button
         buttonLoginFacebook = (LoginButton) findViewById(R.id.button_login_facebook);
         buttonLoginFacebook.setBackgroundResource(R.drawable.button_login_facebook);
@@ -153,9 +146,12 @@ public class LoginActivity extends FragmentActivity {
                 LoginActivity.user.init(user); //set facebook user in user
                 //TelephonyManager tMgr =  (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
                 //LoginActivity.user.setPhone(tMgr.getLine1Number());
-                if (user != null) LoginActivity.user.syncDB();
                 
-                updateUI();
+                if (user != null) {
+                	LoginActivity.user.syncDB();
+                	continuteToNextScreen();
+                }
+                
                 // It's possible that we were waiting for this.user to be populated in order to post a
                 // status update.
                 handlePendingAction();
@@ -168,7 +164,7 @@ public class LoginActivity extends FragmentActivity {
         buttonLoginGoogle.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
         buttonLoginGoogle.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-            	Toast.makeText(getApplicationContext(), "Coming soon...",
+            	Toast.makeText(getApplicationContext(), "Google+ support is coming soon...",
          			   Toast.LENGTH_SHORT).show();
             }
         });
@@ -179,7 +175,7 @@ public class LoginActivity extends FragmentActivity {
         buttonLoginTwitter.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
         buttonLoginTwitter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-            	Toast.makeText(getApplicationContext(), "Coming soon...",
+            	Toast.makeText(getApplicationContext(), "Twitter support is coming soon...",
             			   Toast.LENGTH_SHORT).show();
             }
         });
@@ -228,7 +224,6 @@ public class LoginActivity extends FragmentActivity {
         // the onResume methods of the primary Activities that an app may be launched into.
         AppEventsLogger.activateApp(this);
 
-        updateUI();
     }
 
     @Override
@@ -274,35 +269,7 @@ public class LoginActivity extends FragmentActivity {
         } else if (state == SessionState.OPENED_TOKEN_UPDATED) {
             handlePendingAction();
         }
-        updateUI();
-    }
-
-    @SuppressWarnings("unused")
-	private void updateUI() {
-        Session session = Session.getActiveSession();
-
-        if (facebookUser != null) {
-        	// Hide Buttons
-        	buttonLoginFacebook.setEnabled(false);
-        	buttonLoginFacebook.setVisibility(View.GONE);
-        	buttonLoginGoogle.setEnabled(false);
-        	buttonLoginGoogle.setVisibility(View.GONE);
-        	buttonLoginTwitter.setEnabled(false);
-        	buttonLoginTwitter.setVisibility(View.GONE);
-        	
-        	// Show Profile Picture
-        	profilePictureView.setVisibility(View.VISIBLE);
-            profilePictureView.setProfileId(facebookUser.getId());
-            
-            // Ask To Volunteer
-            new Handler().postDelayed(new Runnable(){
-                @Override
-                public void run() {
-                	askToVolunteer();
-                }
-            }, 1500);
-            
-        }
+        
     }
 
     private void continuteToNextScreen() {
@@ -315,37 +282,6 @@ public class LoginActivity extends FragmentActivity {
                 LoginActivity.this.finish();
             }
         }, 2000);
-	}
-
-	private void askToVolunteer(){
-
-    	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                	// Set Volunteer State
-                	LoginActivity.user.setVolunteering(true);
-                	// Show toast
-                	Toast.makeText(getApplicationContext(), "Great! You are awesome!",
-              			   Toast.LENGTH_SHORT).show();
-                	// Continue to next screen
-                    continuteToNextScreen();
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                	// Set Volunteer State
-                	LoginActivity.user.setVolunteering(false);
-                	// Continue to next screen
-                    continuteToNextScreen();
-                    break;
-                }
-            }
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Will you be willing to volunteer?").setPositiveButton("Yes", dialogClickListener)
-            .setNegativeButton("No", dialogClickListener).show();
     }
     
     @SuppressWarnings("incomplete-switch")
