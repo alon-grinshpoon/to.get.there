@@ -26,6 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:gravity="center"
                 android:text="Business Name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/white"
@@ -55,6 +57,7 @@
                     android:id="@+id/img_is_verified"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="5dp"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/ic_check" />
 
@@ -237,11 +240,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:paddingLeft="8dp"
                 android:src="@drawable/ic_waze" />
             <!-- TODO - WAZE -->
 
             <TextView
-                android:id="@+id/text_location_adress"
+                android:id="@+id/text_location_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -304,6 +308,7 @@
         <!-- PHOTOS -->
 
         <TextView
+            android:id="@+id/title_photos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
@@ -355,6 +360,7 @@
         <!-- Reviews -->
 
         <TextView
+            android:id="@+id/title_reviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
@@ -603,16 +609,20 @@
             android:paddingRight="25dp" >
 
             <TextView
+                android:id="@+id/title_business_button_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="3dp"
                 android:gravity="center"
                 android:text="@string/get_verified_1"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
 
             <TextView
+                android:id="@+id/title_business_button_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
                 android:gravity="center"
                 android:text="@string/get_verified_2"
                 android:textAppearance="?android:attr/textAppearanceSmall"

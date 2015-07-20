@@ -45,38 +45,38 @@
     </RelativeLayout>
 
     <RelativeLayout
-            android:id="@+id/searchBar"
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/upper_bar"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/searchText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/upper_bar"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:orientation="horizontal" >
+            android:layout_toLeftOf="@+id/searchButton"
+            android:hint="@string/search_hint"
+            android:textColor="#5C5C5C" />
 
-            <EditText
-                android:id="@+id/searchText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#5C5C5C"
-                android:layout_toLeftOf="@+id/searchButton"
-                android:hint="@string/search_hint" />
+        <ImageView
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="3dp"
+            android:src="@drawable/ic_search" />
+    </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/searchButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="3dp"
-                android:src="@drawable/ic_search" />
-        </RelativeLayout>
-        
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/fullscreen_content_controls"
         android:layout_below="@+id/searchBar"
-        android:layout_above="@+id/fullscreen_content_controls4"
         android:orientation="vertical" >
-        
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -93,21 +93,21 @@
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp" >
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp" >
             </android.support.v4.view.ViewPager>
         </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@id/fullscreen_content_controls4"
+        android:id="@id/fullscreen_content_controls"
         style="?metaButtonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="#004274"
         android:orientation="horizontal"
-        android:weightSum="5"
+        android:weightSum="3"
         tools:ignore="UselessParent" >
 
         <LinearLayout
@@ -125,6 +125,7 @@
             </ImageView>
 
             <TextView
+                android:id="@+id/button_rank_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -147,6 +148,7 @@
             </ImageView>
 
             <TextView
+                android:id="@+id/button_add_new_location_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -169,14 +171,13 @@
             </ImageView>
 
             <TextView
+                android:id="@+id/button_edit_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Edit"
                 android:textColor="@android:color/white" />
         </LinearLayout>
-
-
     </LinearLayout>
 
 </RelativeLayout>

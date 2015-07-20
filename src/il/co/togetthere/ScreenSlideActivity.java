@@ -28,6 +28,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentActivity;
@@ -37,6 +38,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.facebook.widget.ProfilePictureView;
 
@@ -179,7 +181,17 @@ public class ScreenSlideActivity extends FragmentActivity implements
 			});
 		}
 
-		// TODO app info
+		
+		// Titles
+		TextView titleRank = ((TextView) findViewById(R.id.button_rank_title));
+		TextView titleAdd = ((TextView) findViewById(R.id.button_add_new_location_title));
+		TextView titleEdit = ((TextView) findViewById(R.id.button_edit_title));
+						
+		// Define Font
+		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.TTF");
+		titleRank.setTypeface(font);
+		titleAdd.setTypeface(font);
+		titleEdit.setTypeface(font);
 
 	}
 

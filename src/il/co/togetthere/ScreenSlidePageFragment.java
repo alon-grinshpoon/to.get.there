@@ -27,6 +27,7 @@ import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -168,6 +169,20 @@ public class ScreenSlidePageFragment extends Fragment implements
 		} else {
 			// TODO Help map
 		}
+		
+		// Titles
+		TextView titlePhotos = ((TextView) rootView.findViewById(R.id.title_photos));
+		TextView titleReview = ((TextView) rootView.findViewById(R.id.title_reviews));
+		TextView titleBusinessButton1 = ((TextView) rootView.findViewById(R.id.title_business_button_1));
+		TextView titleBusinessButton2 = ((TextView) rootView.findViewById(R.id.title_business_button_2));
+				
+		// Define Font
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+		Typeface fontBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHICB.TTF");
+		titlePhotos.setTypeface(fontBold);
+		titleReview.setTypeface(fontBold);
+		titleBusinessButton1.setTypeface(fontBold);
+		titleBusinessButton2.setTypeface(font);
 
 		return rootView;
 
@@ -175,13 +190,20 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 	private void setHelpView(ViewGroup v, String Type) {
 
+		// Define Font
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+				
 		// Set Task Title
-		((TextView) v.findViewById(R.id.text_task_name)).setText(mTask
-				.getTitle());
+		TextView taskName = ((TextView) v.findViewById(R.id.text_task_name));
+		taskName.setText(mTask.getTitle());
+		taskName.setTypeface(font);
 
 		// Set Task Description
-		((TextView) v.findViewById(R.id.text_task_description)).setText(mTask
-				.getBody());
+		TextView taskDescription = ((TextView) v.findViewById(R.id.text_task_description));
+		taskDescription.setText(mTask.getBody());
+		taskDescription.setTypeface(font);
+		
+		
 
 		Button volunteerButton = (Button) v.findViewById(R.id.button_volunteer);
 		volunteerButton.setOnClickListener(new View.OnClickListener() {
@@ -214,28 +236,40 @@ public class ScreenSlidePageFragment extends Fragment implements
 		int color = getResources().getColor(colorID);
 
 		SetViewColors(v, color);
-
+		
+		// Define Font
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+		
 		// Set Title
-		((TextView) v.findViewById(R.id.text_location_name)).setText(mSP
-				.getName());
+		TextView locationName = ((TextView) v.findViewById(R.id.text_location_name));
+		locationName.setText(mSP.getName());
+		locationName.setTypeface(font);
 
 		// Set Description
-		((TextView) v.findViewById(R.id.text_location_description))
-				.setVisibility(View.GONE);
+		TextView locationDescription = ((TextView) v.findViewById(R.id.text_location_description));
+		locationDescription.setVisibility(View.GONE);
+		locationDescription.setTypeface(font);
 
 		// Set Adddress
-		((TextView) v.findViewById(R.id.text_location_adress)).setText(mSP
-				.getAddress());
+		TextView locationAddress = ((TextView) v.findViewById(R.id.text_location_address));
+		locationAddress.setText(mSP.getAddress());
+		locationAddress.setTypeface(font);
 
 		// Set Verified
 		if (!mSP.isVerified()) {
 			((ImageView) v.findViewById(R.id.img_is_verified))
 					.setVisibility(View.INVISIBLE);
 		}
+		
+		// Set Phone
+		TextView locationPhone = ((TextView) v.findViewById(R.id.text_location_phone));
+		locationPhone.setText(mSP.getPhone());
+		locationPhone.setTypeface(font);
 
 		// Set Discount
-		((TextView) v.findViewById(R.id.text_location_discount)).setText("%"
-				+ mSP.getDiscount());
+		TextView locationDiscount = ((TextView) v.findViewById(R.id.text_location_discount));
+		locationDiscount.setText("%" + mSP.getDiscount());
+		locationDiscount.setTypeface(font);
 
 		// set accecibility precantage
 		setAccecibility(v);
@@ -268,6 +302,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		setReviewsView(v, color);
 		TextView readMore = (TextView) v
 				.findViewById(R.id.button_read_more_reviews);
+		readMore.setTypeface(font);
 		if (mReviewsList.size() > 3) {
 			readMore.setOnClickListener(new OnClickListener() {
 				@Override
@@ -329,8 +364,13 @@ public class ScreenSlidePageFragment extends Fragment implements
 	 * Sets the appearance if the reviews sections according to number of reviews that exist
 	 * */
 	private void setReviewsView(View v, int color) {
+		
+		// Define Font
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+		
 		TextView noReviews = (TextView) v
 				.findViewById(R.id.text_be_first_reviewer);
+		noReviews.setTypeface(font);
 		RelativeLayout review1 = (RelativeLayout) v.findViewById(R.id.review1);
 		RelativeLayout review2 = (RelativeLayout) v.findViewById(R.id.review2);
 		RelativeLayout review3 = (RelativeLayout) v.findViewById(R.id.review3);
@@ -388,6 +428,13 @@ public class ScreenSlidePageFragment extends Fragment implements
 		ProfilePictureView profilePictureView = (ProfilePictureView) v
 				.findViewById(userImageID);
 		
+		// Define Font
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+		// set font
+		reviewer.setTypeface(font);
+		review.setTypeface(font);
+		likes.setTypeface(font);
+		
 		// get the review object
 		ReviewObj reviewObj = mReviewsList.get(num);
 
@@ -401,13 +448,17 @@ public class ScreenSlidePageFragment extends Fragment implements
 			
 			@Override
 			public void onClick(View v) {
+				
+				// Define Font
+				Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+				
 				TextView likes  = (TextView) v;
 				Toast.makeText(v.getContext(), "Thanks!",
 	         			   Toast.LENGTH_SHORT).show();
 				
 				int numLikes = Integer.parseInt(((String) likes.getText()).trim()) + 1;
 				likes.setText(numLikes + "   ");	
-				
+				likes.setTypeface(font);
 				//TODO - Send update to DB
 			}
 		});
@@ -456,7 +507,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 						.findViewById(R.id.review_item_title);
 				holder.body = (TextView) convertView
 						.findViewById(R.id.review_item_body);
-
+				
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -465,6 +516,12 @@ public class ScreenSlidePageFragment extends Fragment implements
 			holder.title.setText(reviewsList.get(position).getTitle());
 			holder.body.setText(reviewsList.get(position).getReview());
 
+			// Define Font
+			Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+			
+			holder.title.setTypeface(font);
+			holder.body.setTypeface(font);
+			
 			return convertView;
 		}
 
