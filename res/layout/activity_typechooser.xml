@@ -6,24 +6,54 @@
     android:background="@drawable/background_no_logo"
     tools:context="il.co.togetthere.TypeChooserActivity" >
 
+    <RelativeLayout
+        android:id="@+id/upper_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#004274"
+        android:fitsSystemWindows="true" >
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:src="@drawable/logo_small" >
+        </ImageView>
+
+        <com.facebook.widget.ProfilePictureView
+            android:id="@+id/button_show_user_details_chooser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/button_login_settings"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            facebook:preset_size="small" />
+
+        <ImageView
+            android:id="@+id/button_login_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_settings" >
+        </ImageView>
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/categoryLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/lower_bar"
+        android:layout_below="@+id/upper_bar"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical" >
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="5dp"
-            android:scaleType="center"
-            android:src="@drawable/ic_logo" />
-
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,20 +61,22 @@
             android:focusableInTouchMode="true"
             android:orientation="horizontal" >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:scaleType="center"
-                android:src="@drawable/ic_search" />
-
             <EditText
                 android:id="@+id/searchText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:textColor="#5C5C5C"
+                android:layout_toLeftOf="@+id/searchButton"
                 android:hint="@string/search_hint" />
-        </LinearLayout>
+
+            <ImageView
+                android:id="@+id/searchButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="3dp"
+                android:src="@drawable/ic_search" />
+        </RelativeLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -144,33 +176,5 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@id/lower_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#70AD47"
-        android:fitsSystemWindows="true" >
-
-        <com.facebook.widget.ProfilePictureView
-            android:id="@+id/button_show_user_details_chooser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:padding="5dp"
-            android:gravity="center_horizontal"
-            facebook:preset_size="small" />
-
-        <ImageView
-            android:id="@+id/button_info1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_info" >
-        </ImageView>
-    </RelativeLayout>
 
 </RelativeLayout>
