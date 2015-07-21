@@ -47,8 +47,8 @@ public class AddSPActivity extends Activity {
 		decorView.setSystemUiVisibility(uiOptions);
 		// Remember that you should never show the action bar if the
 		// status bar is hidden, so hide that too if necessary.
-		android.app.ActionBar actionBar = getActionBar();
-		actionBar.hide();
+		//android.app.ActionBar actionBar = getActionBar();
+		//actionBar.hide();
 
 		/**
 		 * Lower Bar
@@ -75,10 +75,10 @@ public class AddSPActivity extends Activity {
 		 **/
 		mTypeList = (Spinner) findViewById(R.id.addNewSPSpinner);
 		String[] types = getResources().getStringArray(R.array.types);
-		ArrayList<String> typesList = new ArrayList<String>();
+		ArrayList<String> typesList = new ArrayList<>();
 		typesList.add(0, "Choose Type");
 		typesList.addAll(Arrays.asList(types));
-		mListAdapter = new ArrayAdapter<String>(this, R.layout.type_list_item,
+		mListAdapter = new ArrayAdapter<>(this, R.layout.type_list_item,
 				typesList);
 		mTypeList.setAdapter(mListAdapter);
 
@@ -241,10 +241,7 @@ public class AddSPActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+		return (id == R.id.action_settings) ? true : super.onOptionsItemSelected(item);
 	}
 
 	public void rankClicked(View v) {

@@ -37,8 +37,8 @@ public class EditActivity extends Activity {
 		decorView.setSystemUiVisibility(uiOptions);
 		// Remember that you should never show the action bar if the
 		// status bar is hidden, so hide that too if necessary.
-		android.app.ActionBar actionBar = getActionBar();
-		actionBar.hide();
+		//android.app.ActionBar actionBar = getActionBar();
+		//actionBar.hide();
 
 		/**
 		 * Lower Bar
@@ -202,10 +202,7 @@ public class EditActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+		return (id == R.id.action_settings) ? true : super.onOptionsItemSelected(item);
 	}
 
 }
