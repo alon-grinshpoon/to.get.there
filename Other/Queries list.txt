@@ -1,0 +1,21 @@
+
+# show all SP's of curtain category
+#[medical|restaurants|shopping|public_services|transportation|help]
+#example:
+
+http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restaurants/
+
+# show sp by ID (show its details, reviews list, eanks list)
+#example:
+
+http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/
+
+# get all reviews of curtain SP
+#example:
+
+http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/reviews/
+
+# get details of curtain user
+#example:
+
+http://django-togetthereserver.rhcloud.com/ToGetThere/android/user/1/
