@@ -32,7 +32,7 @@ public class TypeChooserActivity extends Activity {
 
 		// Set Profile Picture
 		ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.button_show_user_details_chooser);
-		profilePictureView.setProfileId(LoginActivity.user.getID());
+		profilePictureView.setProfileId(LoginActivity.user.getFacebook_id());
 
 		/**
 		 * View Initialization
@@ -88,10 +88,8 @@ public class TypeChooserActivity extends Activity {
 			}, 1500);
 		}
 
-		// set Lower Bar
-		((ProfilePictureView) findViewById(R.id.button_show_user_details_chooser  ))
-				.setOnClickListener(new OnClickListener() {
-
+		// set Upper Bar
+		profilePictureView.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						Intent infoIntent = new Intent(

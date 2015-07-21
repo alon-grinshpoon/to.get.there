@@ -127,9 +127,10 @@ public class Server {
          * "isVolunteering": "true/false/True/False"}
          * if user exist returns http response like in:
          * http://django-togetthereserver.rhcloud.com/ToGetThere/android/user/<newUSerId>/
-         * else returns http 400 response - User already exist
+         * else registers and returns response as above.
          */
-        String json = "";
-        HTTPHandler.postRequest(server + "/adduser/", json);
+        String jsonUser = new Gson().toJson(user);
+        String json = HTTPHandler.postRequest(server + "/adduser/", jsonUser);
+        user = new Gson().fromJson(json, User.class);
     }
 }

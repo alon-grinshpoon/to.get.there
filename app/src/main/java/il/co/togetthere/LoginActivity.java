@@ -1,21 +1,6 @@
-/**
- * Copyright 2010-present Facebook.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package il.co.togetthere;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -53,6 +38,8 @@ import com.facebook.model.GraphPlace;
 import com.facebook.model.GraphUser;
 
 import il.co.togetthere.db.User;
+import il.co.togetthere.server.Server;
+
 import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.FriendPickerFragment;
 import com.facebook.widget.LoginButton;
@@ -136,17 +123,24 @@ public class LoginActivity extends FragmentActivity {
         buttonLoginFacebook.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
         buttonLoginFacebook.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
             @Override
-            public void onUserInfoFetched(GraphUser user) {
-                LoginActivity.this.facebookUser = user;
-                LoginActivity.user.init(user); //set facebook user in user
-                //TelephonyManager tMgr =  (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                //LoginActivity.user.setPhone(tMgr.getLine1Number());
-                
-                if (user != null) {
-                	//LoginActivity.user.syncDB();
-                	continueToNextScreen();
+            public void onUserInfoFetched(GraphUser facebookUser) {
+                // Store Facebook User
+                LoginActivity.this.facebookUser = facebookUser;
+                if (facebookUser != null) {
+                    // Set Facebook user in application user
+                    LoginActivity.user.init(facebookUser);
+                    // Register User
+                    try {
+                        Server.registerUser(LoginActivity.user);
+                    } catch (IOException e) {
+                        Toast.makeText(getApplicationContext(), "Oops! Unable to register your user.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    // Continue to type chooser screen
+                    continueToNextScreen();
                 }
-                
+
                 // It's possible that we were waiting for this.user to be populated in order to post a
                 // status update.
                 handlePendingAction();

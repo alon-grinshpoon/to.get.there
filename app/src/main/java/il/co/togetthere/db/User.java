@@ -8,7 +8,8 @@ import java.util.GregorianCalendar;
 
 public class User {
 
-	private GraphUser fbUser;
+	private transient GraphUser facebookUser;
+	private String facebook_id;
 
 	private String id;
 	private String first_name;
@@ -21,8 +22,8 @@ public class User {
 	private String phone;
 	private boolean isVolunteering = true;
 	private boolean wasAskedToVolunteer;
-	private double latitude;
-	private double longitude;
+	private transient double latitude;
+	private transient double longitude;
 
 	/*
 	 * Empty Constructor
@@ -46,29 +47,48 @@ public class User {
 	}
 
 	// Initialize user from Facebook
-	public void init(GraphUser user) {
-		this.fbUser = user;
-		if (user != null) {
-			this.first_name = user.getFirstName();
-			this.last_name = user.getLastName();
-			birthday = (user.getBirthday() != null) ? user.getBirthday() : "0000-00-00";
-			id = user.getId();
+	public void init(GraphUser facebookUser) {
+		// Set facebook user
+		this.facebookUser = facebookUser;
+
+		if (facebookUser != null) {
+			// Set Facebook ID
+			this.facebook_id = facebookUser.getId();
+			// Set name
+			this.first_name = facebookUser.getFirstName();
+			this.last_name = facebookUser.getLastName();
+			// Set Birthday
+			this.birthday = (facebookUser.getBirthday() != null) ? facebookUser.getBirthday() : "1900-01-01";
+			// Set Email
+			this.email = "";
+			// Set Phone
+			this.phone = "";
 			// Gets users current location from Facebook
-			GraphPlace location = user.getLocation();
 			// If user doesn't allow location services, location is null
+			GraphPlace location = facebookUser.getLocation();
 			if (location != null ) {
-				latitude = location.getLocation().getLatitude();
-				longitude = location.getLocation().getLongitude();
+				this.location = location.toString();
+				this.latitude = location.getLocation().getLatitude();
+				this.longitude = location.getLocation().getLongitude();
 			} else {
-				latitude = 0;
-				longitude = 0;
+				this.location = "Unknown";
+				this.latitude = 0;
+				this.longitude = 0;
 			}
 		}
 
 	}
 	
 	public GraphUser returnFacebookUser() {
-		return fbUser;
+		return facebookUser;
+	}
+
+	public String getFacebook_id() {
+		return facebook_id;
+	}
+
+	public void setFacebook_id(String facebook_id) {
+		this.facebook_id = facebook_id;
 	}
 
 	public String getID() {
@@ -184,7 +204,7 @@ public class User {
 		this.location = location;
 	}
 
-	public boolean isLoggedIn() { return (fbUser != null); }
+	public boolean isLoggedIn() { return (facebookUser != null); }
 
 	public boolean wasAskedToVolunteer() { return wasAskedToVolunteer; }
 	public void setWasAskedToVolunteer(boolean wasAskedToVolunteer) {  this.wasAskedToVolunteer = wasAskedToVolunteer; }

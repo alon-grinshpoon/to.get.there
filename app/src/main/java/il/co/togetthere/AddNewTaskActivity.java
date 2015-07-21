@@ -51,7 +51,7 @@ public class AddNewTaskActivity extends Activity {
 		 * Lower Bar Set UP
 		 **/
 		ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.button_show_user_details_addNewTask);
-		profilePictureView.setProfileId(LoginActivity.user.getID());
+		profilePictureView.setProfileId(LoginActivity.user.getFacebook_id());
 
 		profilePictureView.setOnClickListener(new View.OnClickListener() {
 

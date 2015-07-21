@@ -51,6 +51,11 @@ public class HTTPHandler {
         }
         String jsonRsponse = result.toString();
 
+        // Check for errors
+        if (response.getStatusLine().getStatusCode() != 200){
+            throw new IOException("ERROR " + response.getStatusLine().getStatusCode() + " " + jsonRsponse);
+        }
+
         // When HttpClient instance is no longer needed,
         // shut down the connection manager to ensure
         // immediate deallocation of all system resources
@@ -88,6 +93,11 @@ public class HTTPHandler {
             result.append(line);
         }
         String json = result.toString();
+
+        // Check for errors
+        if (response.getStatusLine().getStatusCode() != 200){
+            throw new IOException("ERROR " + response.getStatusLine().getStatusCode() + " " + json);
+        }
 
         // When HttpClient instance is no longer needed,
         // shut down the connection manager to ensure

@@ -68,7 +68,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 		 * Set Profile Picture
 		 **/
 		ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.button_show_user_details_slide);
-		profilePictureView.setProfileId(LoginActivity.user.getID());
+		profilePictureView.setProfileId(LoginActivity.user.getFacebook_id());
 
 		profilePictureView.setOnClickListener(new View.OnClickListener() {
 
