@@ -95,6 +95,12 @@ public class EditActivity extends Activity {
 		phone.setTypeface(font);
 		phone.setText(mSP.getPhone());
 
+		TextView titleWebsite = ((TextView) findViewById(R.id.title_editSPWebsite));
+		titleWebsite.setTypeface(font);
+		EditText website = ((EditText) findViewById(R.id.editSPWebsite));
+		website.setTypeface(font);
+		website.setText(mSP.getWebsite());
+
 		TextView titleDescription = ((TextView) findViewById(R.id.title_editSPDescription));
 		titleDescription.setTypeface(font);
 		EditText description = ((EditText) findViewById(R.id.editSPDescription));

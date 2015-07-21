@@ -61,6 +61,7 @@
     <string name="addNewSPDescription">Description</string>
     <string name="addNewSPType">Type: </string>
     <string name="addNewSPPhone">Phone Number</string>
+    <string name="addNewSPWebsite">Website</string>
     <string name="addNewSPDiscount">Discount Given \[\%\]</string>
     <string name="addNewSPRankText">How is this place accecible?</string>
     <string name="addNewSPSubmitButton">Submit</string>

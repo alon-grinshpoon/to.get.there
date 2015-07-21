@@ -91,6 +91,9 @@ public class AddSPActivity extends Activity {
 		EditText addNewSPSPPhone = (EditText) findViewById(R.id.addNewSPSPPhone);
 		addNewSPSPPhone.setTypeface(font);
 
+		EditText addNewSPSPWebsite = (EditText) findViewById(R.id.addNewSPSPWebsite);
+		addNewSPSPWebsite.setTypeface(font);
+
 		TextView title_addNewSPSpinner = (TextView) findViewById(R.id.title_addNewSPSpinner);
 		title_addNewSPSpinner.setTypeface(font);
 

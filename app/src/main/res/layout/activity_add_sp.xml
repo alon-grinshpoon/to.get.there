@@ -92,6 +92,15 @@
                 android:hint="@string/addNewSPPhone"
                 android:inputType="phone" />
 
+            <EditText
+                android:id="@+id/addNewSPSPWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/addNewSPWebsite"
+                android:inputType="textUri" />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
