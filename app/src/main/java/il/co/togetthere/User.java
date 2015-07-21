@@ -62,7 +62,7 @@ public class User implements DynamoDBMarshaller<User> {
 		if (user != null) {
 			mFirstName = user.getFirstName();
 			mLastName = user.getLastName();
-			mBirthday = user.getBirthday();
+			mBirthday = (user.getBirthday() != null) ? user.getBirthday() : "1990-05-06";
 			mId = user.getId();
 			//gets users current location from facebook
 			GraphPlace location = user.getLocation();

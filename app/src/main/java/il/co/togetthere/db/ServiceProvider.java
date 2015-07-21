@@ -15,6 +15,7 @@ public class ServiceProvider {
 	private String _phone;
 	private boolean _verified;
 	private int _discount;
+	private String _website;
 	private int _location;
 	private double mLatitude;
 	private double mLongitude; 
@@ -128,6 +129,13 @@ public class ServiceProvider {
 	}
 	public void setDiscount(int discount) {
 		_discount = discount;
+	}
+
+	public String getWebsite() {
+		return _website;
+	}
+	public void setWebsite(String website) {
+		_website = website;
 	}
 
 	@DynamoDBAttribute(attributeName = "latitude")
@@ -277,4 +285,6 @@ public class ServiceProvider {
 		}
 		
 	}
+
+
 }

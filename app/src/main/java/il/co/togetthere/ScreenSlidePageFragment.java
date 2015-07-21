@@ -271,7 +271,12 @@ public class ScreenSlidePageFragment extends Fragment implements
 		locationDiscount.setText("%" + mSP.getDiscount());
 		locationDiscount.setTypeface(font);
 
-		// set accecibility precantage
+		// Set Website
+		TextView locationWebsite = ((TextView) v.findViewById(R.id.text_location_website));
+		locationWebsite.setText(mSP.getWebsite() != null ? mSP.getWebsite() : "N/A");
+		locationWebsite.setTypeface(font);
+
+		// set accessibility percentage
 		setAccecibility(v);
 
 		// set Stars rank
@@ -280,7 +285,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		starsNum = rand.nextInt(5);
 		setStarsView(v, starsNum);
 
-		// Set Waze buttun
+		// Set Waze button
 		LinearLayout wazeButton = (LinearLayout) v
 				.findViewById(R.id.button_waze);
 		wazeButton.setOnClickListener(new OnClickListener() {
