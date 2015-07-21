@@ -113,3 +113,58 @@ if no like was found will return http 404
 will return an http 200 response if the review was deleted successfully
 if no review was found will return http 404
 
+
+# edit the details of a curtain User
+**POST** request with a JSON body, the body is key-value of the fields to change:
+{"name" : "new name"}
+possible fields are:
+      facebook_id
+      first_name
+      last_name
+      full_name
+      email
+      birthday
+      level
+      phone
+      points
+      isVolunteering
+      wasAskedToVolunteer
+# ex: /ToGetThere/android/editprofile/1/
+will return the new user profile in Json
+
+
+# edit the details of a curtain SP
+**POST** request with a JSON body, the body is key-value of the fields to change:
+{"name" : "new name"}
+possible fields are:
+      sp_name
+      address
+      category
+      longitude
+      latitude
+      phone
+      is_verified
+      discount
+      website
+      toilets
+      elevator
+      entrance
+      facilities
+      toilets_text
+      parking_text
+      elevator_text
+      entrance_text
+      facilities_text
+# ex: /ToGetThere/android/sp/1/edit/
+will return the new sp in Json
+
+#edit a curtain review
+**POST** request with a JSON body, the body is key-value of the fields to change:
+{"title" : "new title"}
+possible fields are:
+      title
+      content
+      created
+      user
+#  ex: /ToGetThere/android/editReview/2
+will return an http response of the sp which had the review
