@@ -27,6 +27,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,6 +71,17 @@ public class AddSPActivity extends Activity {
 						UserInfoActivity.class);
 				AddSPActivity.this.startActivity(infoIntent);
 
+			}
+		});
+
+		// Configure Settings Button
+		findViewById(R.id.button_settings).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				PopupMenu popupMenu = new PopupMenu(AddSPActivity.this, view);
+				popupMenu.setOnMenuItemClickListener(new SettingListener(AddSPActivity.this));
+				popupMenu.inflate(R.menu.settings_menu);
+				popupMenu.show();
 			}
 		});
 

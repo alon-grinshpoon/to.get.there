@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 public class TypeChooserActivity extends Activity {
@@ -107,7 +108,16 @@ public class TypeChooserActivity extends Activity {
 					}
 				});
 
-		// TODO set button app info
+		// Configure Settings Button
+		findViewById(R.id.button_settings).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				PopupMenu popupMenu = new PopupMenu(TypeChooserActivity.this, view);
+				popupMenu.setOnMenuItemClickListener(new SettingListener(TypeChooserActivity.this));
+				popupMenu.inflate(R.menu.settings_menu);
+				popupMenu.show();
+			}
+		});
 
 	}
 	

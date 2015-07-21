@@ -35,9 +35,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
@@ -81,7 +83,7 @@ public class LoginActivity extends FragmentActivity {
     
     public static AmazonClientManager clientManager = null;
     public static User user = new User();
-    
+
     private enum PendingAction {
         NONE,
         POST_PHOTO,
@@ -149,7 +151,7 @@ public class LoginActivity extends FragmentActivity {
                 
                 if (user != null) {
                 	LoginActivity.user.syncDB();
-                	continuteToNextScreen();
+                	continueToNextScreen();
                 }
                 
                 // It's possible that we were waiting for this.user to be populated in order to post a
@@ -204,6 +206,17 @@ public class LoginActivity extends FragmentActivity {
                     // We need to re-show our UI.
                     controlsContainer.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+        // Configure Settings Button
+        findViewById(R.id.button_login_settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(LoginActivity.this, view);
+                popupMenu.setOnMenuItemClickListener(new SettingListener(LoginActivity.this));
+                popupMenu.inflate(R.menu.settings_menu);
+                popupMenu.show();
             }
         });
 
@@ -272,7 +285,7 @@ public class LoginActivity extends FragmentActivity {
         
     }
 
-    private void continuteToNextScreen() {
+    private void continueToNextScreen() {
     	new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {

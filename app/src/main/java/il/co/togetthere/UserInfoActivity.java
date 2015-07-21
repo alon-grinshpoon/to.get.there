@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -59,6 +60,17 @@ public class UserInfoActivity extends Activity {
 			profilePictureView.setVisibility(View.VISIBLE);
 			profilePictureView.setProfileId(mUser.getId());
 		}
+
+		// Configure Settings Button
+		findViewById(R.id.button_settings).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				PopupMenu popupMenu = new PopupMenu(UserInfoActivity.this, view);
+				popupMenu.setOnMenuItemClickListener(new SettingListener(UserInfoActivity.this));
+				popupMenu.inflate(R.menu.settings_menu);
+				popupMenu.show();
+			}
+		});
 
 		// Initialize View
 		InitializeViewMembers();

@@ -37,6 +37,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -123,7 +124,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		}
 
 		/**
-		 * Set Lower Bar Functions
+		 * Set Upper Bar Functions
 		 */
 		((LinearLayout) findViewById(R.id.button_add_new_location))
 				.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +146,17 @@ public class ScreenSlideActivity extends FragmentActivity implements
 
 					}
 				});
+
+		// Configure Settings Button
+		findViewById(R.id.button_settings).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				PopupMenu popupMenu = new PopupMenu(ScreenSlideActivity.this, view);
+				popupMenu.setOnMenuItemClickListener(new SettingListener(ScreenSlideActivity.this));
+				popupMenu.inflate(R.menu.settings_menu);
+				popupMenu.show();
+			}
+		});
 
 		// TODO "Rank" button Handler
 
