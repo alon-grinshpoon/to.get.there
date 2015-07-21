@@ -5,11 +5,49 @@
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/editSP_upper_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/editSP_lower_bar"
-        android:layout_alignParentTop="true" >
+        android:background="#004274"
+        android:fitsSystemWindows="true" >
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:src="@drawable/logo_small" >
+        </ImageView>
+
+        <com.facebook.widget.ProfilePictureView
+            android:id="@+id/button_show_user_details_editSP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/button_settings"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            facebook:preset_size="small" />
+
+        <ImageView
+            android:id="@+id/button_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_settings" >
+        </ImageView>
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editSP_upper_bar" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -127,39 +165,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:background="#FFC000"
+                android:layout_margin="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="@string/addNewSPSubmitButton"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </ScrollView>
-
-    <RelativeLayout
-        android:id="@id/editSP_lower_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#70AD47"
-        android:fitsSystemWindows="true" >
-
-        <com.facebook.widget.ProfilePictureView
-            android:id="@+id/button_show_user_details_editSP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_horizontal"
-            android:padding="5dp"
-            facebook:preset_size="small" />
-
-        <ImageView
-            android:id="@+id/editSP_button_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_info" >
-        </ImageView>
-    </RelativeLayout>
 
 </RelativeLayout>
