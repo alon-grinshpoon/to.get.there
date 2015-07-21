@@ -55,7 +55,7 @@ to
 
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/add/
 
-*** If SP with this name already exist it will not be added and you will get a response that says
+*** If SP with this name already exist it will not be added and you will get an empty Json response
 else you will be redirected to the response given by 
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/
 with the newly created sp
