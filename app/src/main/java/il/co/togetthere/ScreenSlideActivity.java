@@ -158,19 +158,18 @@ public class ScreenSlideActivity extends FragmentActivity implements
 			}
 		});
 
-		// TODO "Rank" button Handler
-
+		// Rank Button Handler
 		LinearLayout rankButton = (LinearLayout) findViewById(R.id.button_rank);
 		if (getmServiceProviderType().equals("help")) {
 			rankButton.setVisibility(View.INVISIBLE);
 		} else {
 			rankButton.setOnClickListener(new View.OnClickListener() {
-
 				@Override
-				public void onClick(View v) {
-
-					// TODO Rank Dialog
-
+				public void onClick(View view) {
+					PopupMenu popupMenu = new PopupMenu(ScreenSlideActivity.this, view);
+					popupMenu.setOnMenuItemClickListener(new RankingListener(ScreenSlideActivity.this));
+					popupMenu.inflate(R.menu.ranking_menu);
+					popupMenu.show();
 				}
 			});
 		}
