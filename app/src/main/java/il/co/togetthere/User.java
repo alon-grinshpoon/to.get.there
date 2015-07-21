@@ -10,6 +10,10 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 import com.facebook.model.GraphPlace;
 import com.facebook.model.GraphUser;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 @DynamoDBTable(tableName = "registeredUsers")
 public class User implements DynamoDBMarshaller<User> {
 
@@ -18,7 +22,7 @@ public class User implements DynamoDBMarshaller<User> {
 	private String mId;
 	private String mFirstName;
 	private String mLastName;
-	private String mBirthday;
+	private String mBirthday; // YYYY-MM-DD
 	private String mLocation = "Tel Aviv-Yafo, Israel"; //TODO get from FB
 	private int mPoints = 0;
 	private int mLevel = 1;
@@ -182,6 +186,19 @@ public class User implements DynamoDBMarshaller<User> {
 		} else {
 			return "";
 		}
+	}
+
+	public int getAge(){
+		int year = Integer.parseInt(getBirthday().substring(0, 4));
+		int month = Integer.parseInt(getBirthday().substring(5, 7));
+		int day = Integer.parseInt(getBirthday().substring(8, 10));
+		Calendar dob = new GregorianCalendar();
+		dob.set(year + 1900, month, day);
+		Calendar today = Calendar.getInstance();
+		int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+		if (today.get(Calendar.DAY_OF_YEAR) <= dob.get(Calendar.DAY_OF_YEAR))
+			age--;
+		return age;
 	}
 
 	public void setLocation(String location) {
