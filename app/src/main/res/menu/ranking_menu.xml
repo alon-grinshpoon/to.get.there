@@ -3,31 +3,31 @@
 
     <item
         android:id="@+id/option_rank5"
-        android:title="\u2605\u2605\u2605\u2605\u2605"
+        android:title="\u2606\u2606\u2606\u2606\u2606"
         android:visible="true"
         android:icon="@drawable/ic_calander"/>
 
     <item
         android:id="@+id/option_rank4"
-        android:title="\u2605\u2605\u2605\u2605"
+        android:title="\u2606\u2606\u2606\u2606"
         android:visible="true"
         android:icon="@drawable/ic_rank"/>
 
     <item
         android:id="@+id/option_rank3"
-        android:title="\u2605\u2605\u2605"
+        android:title="\u2606\u2606\u2606"
         android:visible="true"
         android:icon="@drawable/ic_rank"/>
 
     <item
         android:id="@+id/option_rank2"
-        android:title="\u2605\u2605"
+        android:title="\u2606\u2606"
         android:visible="true"
         android:icon="@drawable/ic_rank"/>
 
     <item
         android:id="@+id/option_rank1"
-        android:title="\u2605"
+        android:title="\u2606"
         android:visible="true"
         android:icon="@drawable/ic_rank"/>
 
