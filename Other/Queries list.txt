@@ -1,21 +1,62 @@
 
 # show all SP's of curtain category
-#[medical|restaurants|shopping|public_services|transportation|help]
-#example:
-
+[medical|restaurants|shopping|public_services|transportation|help]
+example:
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restaurants/
 
-# show sp by ID (show its details, reviews list, eanks list)
-#example:
 
+
+
+# show sp by ID (show its details, reviews list, eanks list)
+example:
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/
 
-# get all reviews of curtain SP
-#example:
 
+
+
+
+# get all reviews of curtain SP
+example:
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/reviews/
 
-# get details of curtain user
-#example:
 
+
+
+# get details of curtain user
+example:
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/user/1/
+
+
+
+
+# add a new SP
+**POST** request with a JSON body
+the body should have the following json format (order doesn't matter):
+{"sp_name": "test",
+"address": "test_address",
+"longitude": "3.2",
+"latitude": "2.2",
+"phone": "03-7511034",
+"discount": "5",
+"category": "medical",
+"website": "website",
+"toilets": "true",
+"elevator": "true",
+"entrance": "false",
+"facilities": "false",
+"parking": "true",
+"toilets_text": "toilets_text",
+"elevator_text": "elevator_text",
+"entrance_text": "entrance_text",
+"facilities_text": "facilities_text",
+"parking_text": "parking_text"}
+
+to
+
+http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/add/
+
+*** If SP with this name already exist it will not be added and you will get a response that says
+else you will be redirected to the response given by 
+http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/
+with the newly created sp
+
