@@ -6,12 +6,9 @@ http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restauran
 
 
 
-
 # show sp by ID (show its details, reviews list, eanks list)
 example:
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/
-
-
 
 
 
@@ -59,4 +56,11 @@ http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/add/
 else you will be redirected to the response given by 
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/
 with the newly created sp
+
+
+# rank an SP with score between 1-5, with user ID, and SP id:
+SP id and User id must exist! (I'm not checking if they don't)
+example:
+http://django-togetthereserver.rhcloud.com/ToGetThere/android/ranksp/1/score/5/user/1
+http://django-togetthereserver.rhcloud.com/ToGetThere/android/ranksp/<sp_id>/score/5<rank>/user/<user_id- not facebook id>
 
