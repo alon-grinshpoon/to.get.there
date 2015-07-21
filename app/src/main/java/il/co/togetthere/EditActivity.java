@@ -1,8 +1,5 @@
 package il.co.togetthere;
 
-import il.co.togetthere.db.AmazonClientManager;
-import il.co.togetthere.db.DynamoDBManagerTask;
-import il.co.togetthere.db.DynamoDBManagerType;
 import il.co.togetthere.db.ServiceProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,7 +21,6 @@ import com.facebook.widget.ProfilePictureView;
 
 public class EditActivity extends Activity {
 	private ServiceProvider mSP;
-	public static AmazonClientManager clientManager = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +70,6 @@ public class EditActivity extends Activity {
 		int pageNumber = inIntent.getIntExtra("SP_NUMBER", 1);
 		Log.i("Position", "Position is" + pageNumber);
 		mSP = ScreenSlideActivity.getCurrSP(pageNumber);
-
-		clientManager = new AmazonClientManager(this);
 
 		// Define Font
 		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.TTF");
@@ -209,10 +203,7 @@ public class EditActivity extends Activity {
 										.show();
 
 								// update mSP in DB and finish;
-								DynamoDBManagerTask addProvider = new DynamoDBManagerTask();
-								addProvider.mSerivceProvider = mSP;
-								addProvider.execute(DynamoDBManagerType.INSERT_SERVICE_PROVIDER
-										.toString());
+								// TODO
 
 								// Close Activity
 								EditActivity.this.finish();

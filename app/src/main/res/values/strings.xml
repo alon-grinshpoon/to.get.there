@@ -41,7 +41,7 @@
     <string name="editProfile">Edit Profile</string>
     <string name="saveChanges">Save Changes</string>
     <string name="willingYes">I volunteer!</string>
-    <string name="willingNo">I\'m not volunteering</string>
+    <string name="willingNo">Not volunteering</string>
     <string name="willingtoVolunteer">Willing to volunteer?</string>
     <string name="discardChanges">Discard</string>
 

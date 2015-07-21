@@ -1,25 +1,9 @@
-/*
- * Copyright 2012 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package il.co.togetthere;
 
-import il.co.togetthere.db.ReviewObj;
+import il.co.togetthere.db.Review;
 import il.co.togetthere.db.ServiceProvider;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
@@ -72,7 +56,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 	private int mPageNumber;
 	private ServiceProvider mSP;
 	private Task mTask;
-	private ArrayList<ReviewObj> mReviewsList;
+	private List<Review> mReviewsList;
 
 	MapView mMapView;
 	private GoogleMap googleMap;
@@ -321,23 +305,23 @@ public class ScreenSlidePageFragment extends Fragment implements
 	}
 
 	private void setAccecibility(View v) {
-		if (mSP.getElevator()) {
+		if (mSP.hasElevator()) {
 			((ImageView) v.findViewById(R.id.image_check_toilet))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.getEntrance()) {
+		if (mSP.hasEntrance()) {
 			((ImageView) v.findViewById(R.id.image_check_entrance))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.getFacilities()) {
+		if (mSP.hasFacilities()) {
 			((ImageView) v.findViewById(R.id.image_check_furniture))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.getParking()) {
+		if (mSP.hasParking()) {
 			((ImageView) v.findViewById(R.id.image_check_parking))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.getToilets()) {
+		if (mSP.hasToilets()) {
 			((ImageView) v.findViewById(R.id.image_check_toilet))
 					.setVisibility(View.VISIBLE);
 		}
@@ -441,11 +425,11 @@ public class ScreenSlidePageFragment extends Fragment implements
 		likes.setTypeface(font);
 		
 		// get the review object
-		ReviewObj reviewObj = mReviewsList.get(num);
+		Review reviewObj = mReviewsList.get(num);
 
 		// set review details
 		reviewer.setText(reviewObj.getReviewer());
-		review.setText(reviewObj.getReview());
+		review.setText(reviewObj.getText());
 		likes.setText(reviewObj.getPoints() + "   ");
 		likes.setTextColor(color);
 		likes.setBackground(getResources().getDrawable(likesDrawable));
@@ -477,11 +461,11 @@ public class ScreenSlidePageFragment extends Fragment implements
 	}
 
 	public class mListAdapter extends BaseAdapter {
-		private ArrayList<ReviewObj> reviewsList;
+		private List<Review> reviewsList;
 		private LayoutInflater mInflater;
 
 		public mListAdapter(Context screenSlidePageFragment,
-				ArrayList<ReviewObj> reviewsList) {
+				List<Review> reviewsList) {
 			this.reviewsList = reviewsList;
 			this.mInflater = LayoutInflater.from(screenSlidePageFragment);
 		}
@@ -519,7 +503,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 			}
 
 			holder.title.setText(reviewsList.get(position).getTitle());
-			holder.body.setText(reviewsList.get(position).getReview());
+			holder.body.setText(reviewsList.get(position).getText());
 
 			// Define Font
 			Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
@@ -535,9 +519,9 @@ public class ScreenSlidePageFragment extends Fragment implements
 		}
 	}
 
-	public ArrayList<ReviewObj> getReviews() {
+	public List<Review> getReviews() {
 
-		mReviewsList = mSP.parseReviews();
+		mReviewsList = mSP.getReviews();
 /* 		These are Mock reviews for testing
  *  
 		ReviewObj review1 = new ReviewObj();

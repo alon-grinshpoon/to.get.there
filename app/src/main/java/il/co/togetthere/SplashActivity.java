@@ -9,15 +9,15 @@ import android.view.View;
 
 public class SplashActivity extends Activity {
 
-	private final int SPLASH_DISPLAY_LENGHT = 3000;
+	private final int SPLASH_DISPLAY_LENGTH = 3000;
 
     /** Called when the activity is first created. */
     @SuppressLint({ "InlinedApi", "NewApi" }) @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         
-        View decorView = getWindow().getDecorView();
 		// Hide the status bar.
+        View decorView = getWindow().getDecorView();
 		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
 		decorView.setSystemUiVisibility(uiOptions);
 		// Remember that you should never show the action bar if the
@@ -45,6 +45,6 @@ public class SplashActivity extends Activity {
                     SplashActivity.this.finish();
             	}
             }
-        }, SPLASH_DISPLAY_LENGHT);
+        }, SPLASH_DISPLAY_LENGTH);
     }
 }
