@@ -26,6 +26,10 @@ android {
         compile 'com.android.support:appcompat-v7:19.0.+'
 
         compile 'com.google.android.gms:play-services:7.5.0'
+
+        compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+        compile 'com.google.code.gson:gson:2.3.1'
+
     }
 
 }

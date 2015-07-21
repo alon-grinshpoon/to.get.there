@@ -25,5 +25,23 @@ public enum ServiceProviderType {
 			return ServiceProviderType.None;
 		}
 	}
+
+	public static final String enumToString(ServiceProviderType type) {
+		switch (type) {
+			case Medical:
+				return "medical";
+			case Restaurants:
+				return "restaurants";
+			case Shopping:
+				return "shopping";
+			case Help:
+				return "help";
+			case Transport:
+				return "transport";
+			case PublicServices:
+				return "publicservices";
+		}
+		return "none";
+	}
 	}
 

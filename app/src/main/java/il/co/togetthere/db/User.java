@@ -11,8 +11,8 @@ public class User {
 	private GraphUser fbUser;
 
 	private String id;
-	private String firstName;
-	private String lastName;
+	private String first_name;
+	private String last_name;
 	private String birthday;	// Format: YYYY-MM-DD
 	private String location;
 	private int points = 0;
@@ -34,11 +34,11 @@ public class User {
 	/*
 	 * Constructor
 	 */
-	public User(String firstName, String lastName, String birthday,
+	public User(String first_name, String last_name, String birthday,
 			String email, String phone, String location) {
 
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.first_name = first_name;
+		this.last_name = last_name;
 		this.birthday = birthday;
 		this.email = email;
 		this.phone = phone;
@@ -49,8 +49,8 @@ public class User {
 	public void init(GraphUser user) {
 		this.fbUser = user;
 		if (user != null) {
-			this.firstName = user.getFirstName();
-			this.lastName = user.getLastName();
+			this.first_name = user.getFirstName();
+			this.last_name = user.getLastName();
 			birthday = (user.getBirthday() != null) ? user.getBirthday() : "0000-00-00";
 			id = user.getId();
 			// Gets users current location from Facebook
@@ -80,19 +80,19 @@ public class User {
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return first_name;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirstName(String first_name) {
+		this.first_name = first_name;
 	}
 
 	public String getLastName() {
-		return this.lastName;
+		return this.last_name;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setLastName(String last_name) {
+		this.last_name = last_name;
 	}
 
 	public String getBirthday() {
@@ -163,6 +163,10 @@ public class User {
 		}
 	}
 
+	public String getFullName(){
+		return getFirstName() + " " + getLastName();
+	}
+
 	public int getAge(){
 		int year = Integer.parseInt(getBirthday().substring(0, 4));
 		int month = Integer.parseInt(getBirthday().substring(5, 7));
@@ -194,5 +198,10 @@ public class User {
 		if (!(other instanceof User))
 			return false;
 		return id.equals(((User) other).getID());
+	}
+
+	@Override
+	public String toString() {
+		return "User " + getID() + ": " + getFullName();
 	}
 }
