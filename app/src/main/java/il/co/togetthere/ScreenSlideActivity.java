@@ -1,7 +1,11 @@
 package il.co.togetthere;
 import il.co.togetthere.db.ServiceProvider;
+import il.co.togetthere.db.ServiceProviderType;
+import il.co.togetthere.server.Server;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -19,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.widget.ProfilePictureView;
 
@@ -30,8 +35,8 @@ public class ScreenSlideActivity extends FragmentActivity {
 	// current service provider type
 	private static String mServiceProviderType;
 	private int mCurr;
-	public static ArrayList<ServiceProvider> mServiceProviderArr;
-	public static ArrayList<Task> mTaskArr;
+	public static List<ServiceProvider> mServiceProviderArr;
+	public static List<Task> mTaskArr;
 
 	/**
 	 * The pager widget, which handles animation and allows swiping horizontally
@@ -92,6 +97,12 @@ public class ScreenSlideActivity extends FragmentActivity {
 			//mThread.execute(DynamoDBManagerType.GET_TASKS.toString());
 		} else {
 			//mThread.execute(DynamoDBManagerType.GET_PROVIDER.toString(), ServiceProvider.stringToEnum(getmServiceProviderType()).toString());
+			try {
+				mServiceProviderArr = Server.getSPsOfType(ServiceProviderType.stringToEnum(mServiceProviderType));
+			} catch (IOException e) {
+				Toast.makeText(getApplicationContext(), "Oops! Failed to load all " + mServiceProviderType + "...",
+						Toast.LENGTH_SHORT).show();
+			}
 		}
 
 		/**

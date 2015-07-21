@@ -3,7 +3,10 @@ package il.co.togetthere.server;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
+import il.co.togetthere.LoginActivity;
 import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderType;
 import il.co.togetthere.db.User;
@@ -13,8 +16,13 @@ public class Server {
     private static final String server = "http://django-togetthereserver.rhcloud.com/ToGetThere/android/";
 
     // Get all SP's of certain type
-    public static final void getSPsOfType(ServiceProviderType type) throws IOException {
-        HTTPHandler.getRequest(server + "/category/" + ServiceProviderType.enumToString(type) + "/");
+    public static final List<ServiceProvider> getSPsOfType(ServiceProviderType type) throws IOException {
+        /*
+         * example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restaurants/
+         */
+        String json = HTTPHandler.getRequest(server + "/category/" + ServiceProviderType.enumToString(type) + "/");
+        ServiceProvider[] sps = new Gson().fromJson(json, ServiceProvider[].class);
+        return Arrays.asList(sps);
     }
 
     // Get SP by ID (show its details, reviews list, ranks list)
@@ -131,6 +139,6 @@ public class Server {
          */
         String jsonUser = new Gson().toJson(user);
         String json = HTTPHandler.postRequest(server + "/adduser/", jsonUser);
-        user = new Gson().fromJson(json, User.class);
+        LoginActivity.user = new Gson().fromJson(json, User.class);
     }
 }
