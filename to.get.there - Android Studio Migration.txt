@@ -1,0 +1,17 @@
+1. Add Support Libraries
+https://developer.android.com/tools/support-library/setup.html
+compile 'com.android.support:support-v4:19.0.+'
+compile 'com.android.support:support-v13:21.0.+'
+
+2. Appcompat / add a library with android studio
+http://stackoverflow.com/questions/18364135/appcompat-add-a-library-with-android-studio
+
+3. Add Facebook Manually
+http://stackoverflow.com/questions/19961828/using-facebook-sdk-in-android-studio
+http://stackoverflow.com/questions/23999714/android-studio-gradle-buildtools-revision
+
+4. Add Google Play Services
+https://developers.google.com/android/guides/setup
+
+5. Add AWS DynamoDB
+http://docs.aws.amazon.com/mobile/sdkforandroid/developerguide/setup.html?adbsc=docs_20150227_41176976&adbid=571354183317585922&adbpl=tw&adbpr=66780587
