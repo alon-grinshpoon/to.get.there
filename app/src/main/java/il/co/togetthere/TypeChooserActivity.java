@@ -84,12 +84,14 @@ public class TypeChooserActivity extends Activity {
 		}
 		
         // Ask To Volunteer
-        new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
-            	askToVolunteer();
-            }
-        }, 1500);
+		if (!LoginActivity.user.wasAskedToVolunteer()) {
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					askToVolunteer();
+				}
+			}, 1500);
+		}
 
 		// set Lower Bar
 		((ProfilePictureView) findViewById(R.id.button_show_user_details_chooser  ))
@@ -118,6 +120,7 @@ public class TypeChooserActivity extends Activity {
                 case DialogInterface.BUTTON_POSITIVE:
                 	// Set Volunteer State
                 	LoginActivity.user.setVolunteering(true);
+					LoginActivity.user.setWasAskedToVolunteer(true);
                 	// Show toast
                 	Toast.makeText(getApplicationContext(), "Great! You are awesome!",
               			   Toast.LENGTH_SHORT).show();
@@ -126,6 +129,9 @@ public class TypeChooserActivity extends Activity {
                 case DialogInterface.BUTTON_NEGATIVE:
                 	// Set Volunteer State
                 	LoginActivity.user.setVolunteering(false);
+					LoginActivity.user.setWasAskedToVolunteer(true);
+					Toast.makeText(getApplicationContext(), "Too bad...",
+							Toast.LENGTH_SHORT).show();
                     break;
                 }
             }

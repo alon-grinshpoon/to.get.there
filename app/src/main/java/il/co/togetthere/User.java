@@ -25,9 +25,10 @@ public class User implements DynamoDBMarshaller<User> {
 	private String mEmail = "alongrinshpon@gmail.com";  //TODO get from FB
 	private String mPhone = "054-6606668";  //TODO get from FB
 	private boolean isVolunteering = true;
+	private boolean mWasAskedToVolunteer;
 	private double mLatitude;
 	private double mLongitude;
-	
+
 	private final int ID = 0;
 	private final int FIRSTNAME = 1;
 	private final int LASTNAME = 2;
@@ -190,6 +191,10 @@ public class User implements DynamoDBMarshaller<User> {
 	public boolean isLoggedIn() {
 		return (mUser != null);
 	}
+
+	public boolean wasAskedToVolunteer() { return mWasAskedToVolunteer; }
+
+	public void setWasAskedToVolunteer(boolean wasAskedToVolunteer) {  mWasAskedToVolunteer = wasAskedToVolunteer; }
 
 	public void syncDB() {
 		DynamoDBManagerTask registerUserToDB = new DynamoDBManagerTask();
