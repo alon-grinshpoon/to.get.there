@@ -23,8 +23,8 @@ public class ServiceProvider {
 	private String facilities_text;
 
 	private String address;
-	private transient double latitude;
-	private transient double longitude;
+	private double latitude;
+	private double longitude;
 	private String phone;
 	private int discount;
 	private String website;
