@@ -360,9 +360,9 @@ public class ScreenSlidePageFragment extends Fragment implements
 		TextView noReviews = (TextView) v
 				.findViewById(R.id.text_be_first_reviewer);
 		noReviews.setTypeface(font);
-		RelativeLayout review1 = (RelativeLayout) v.findViewById(R.id.review1);
-		RelativeLayout review2 = (RelativeLayout) v.findViewById(R.id.review2);
-		RelativeLayout review3 = (RelativeLayout) v.findViewById(R.id.review3);
+		RelativeLayout review1 = (RelativeLayout) v.findViewById(R.id.review0);
+		RelativeLayout review2 = (RelativeLayout) v.findViewById(R.id.review1);
+		RelativeLayout review3 = (RelativeLayout) v.findViewById(R.id.review2);
 
 		switch (mReviewsList.size()) {
 		case 0: // no reviews
