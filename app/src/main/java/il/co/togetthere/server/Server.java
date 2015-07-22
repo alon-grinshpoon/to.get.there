@@ -139,7 +139,7 @@ public class Server {
          */
         String jsonUser = new Gson().toJson(user);
         String json = HTTPHandler.postRequest(server + "/adduser/", jsonUser);
-        LoginActivity.user = new Gson().fromJson(json, User.class);
+        LoginActivity.user.join(new Gson().fromJson(json, User.class));
     }
 
     /*

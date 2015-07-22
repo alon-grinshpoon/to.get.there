@@ -86,7 +86,7 @@ public class EditActivity extends Activity {
 		TextView titleName = ((TextView) findViewById(R.id.title_editSPName));
 		titleName.setTypeface(font);
 		EditText name = ((EditText) findViewById(R.id.editSPName));
-		name.setText(mSP.getName());
+		name.setText(mSP.getSp_name());
 		name.setTypeface(font);
 
 		TextView titleAddress = ((TextView) findViewById(R.id.title_editSPSPAddress));
@@ -146,7 +146,7 @@ public class EditActivity extends Activity {
 
 				// Name
 				if (!name.equals("")) {
-					mSP.setName(name);
+					mSP.setSp_name(name);
 				} else {
 					Toast.makeText(getApplicationContext(),
 							"Location name is missing",
