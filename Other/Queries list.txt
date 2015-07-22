@@ -72,3 +72,28 @@ http://django-togetthereserver.rhcloud.com/ToGetThere/android/ranksp/<sp_id>/sco
 "user": "2",
 "title": "a new test review",
 "content": "the test review content"}
+
+
+# add like to a curtain review from curtain user
+if there is already like from that user nothing wil change
+# ex: /ToGetThere/android/addLike/
+**POST** request with a JSON body:
+{"user": "1",
+"review": "6"}
+will return an http response of the sp which had the review as in
+http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/<sp_id>/
+
+
+# register a new user
+# ex: http://django-togetthereserver.rhcloud.com/ToGetThere/android/adduser/
+**POST** request with a JSON body:
+{"facebook_id": "4331",
+"first_name": "fn",
+"last_name": "ln",
+"email": "2323@gmail.com",
+"birthday": "YYYY-MM-DD",
+"phone": "fn",
+"isVolunteering": "true/false/True/False"}
+if user exist returns http response like in:
+http://django-togetthereserver.rhcloud.com/ToGetThere/android/user/<newUSerId>/
+else returns http 400 response - User already exist
