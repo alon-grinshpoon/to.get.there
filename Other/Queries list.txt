@@ -6,7 +6,7 @@ http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restauran
 
 
 
-# show sp by ID (show its details, reviews list, eanks list)
+# show sp by ID (show its details, reviews list, ranks list)
 example:
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/
 
@@ -22,7 +22,6 @@ http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/reviews/
 # get details of curtain user
 example:
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/user/1/
-
 
 
 
@@ -54,13 +53,22 @@ http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/add/
 
 *** If SP with this name already exist it will not be added and you will get an empty Json response
 else you will be redirected to the response given by 
-http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/
+http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/<newliy created sp>/
 with the newly created sp
 
 
+
 # rank an SP with score between 1-5, with user ID, and SP id:
-SP id and User id must exist! (I'm not checking if they don't)
+SP id and User id must exist- if they dont you will get a 404 http response
 example:
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/ranksp/1/score/5/user/1
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/ranksp/<sp_id>/score/5<rank>/user/<user_id- not facebook id>
 
+
+# add a review to a curtain SP from curtain user
+# ex: /ToGetThere/android/addreview/
+**POST** request with a JSON body:
+{"sp": "1",
+"user": "2",
+"title": "a new test review",
+"content": "the test review content"}
