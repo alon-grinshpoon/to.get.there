@@ -14,9 +14,11 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import il.co.togetthere.db.User;
+
 public class UserInfoActivity extends Activity {
 
-	GraphUser mUser;
+	User mUser;
 	TextView mLocationView;
 	TextView mNameView;
 	TextView mPointsView;
@@ -53,12 +55,12 @@ public class UserInfoActivity extends Activity {
 		//actionBar.hide();
 
 		// Profile Picture
-		mUser = LoginActivity.user.getFacebookUser();
+		mUser = LoginActivity.user;
 		ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.image_info_facebook_picture);
 		if (mUser != null) {
 			// Show Profile Picture
 			profilePictureView.setVisibility(View.VISIBLE);
-			profilePictureView.setProfileId(mUser.getId());
+			profilePictureView.setProfileId(mUser.getFacebook_id());
 		}
 
 		// Configure Settings Button
