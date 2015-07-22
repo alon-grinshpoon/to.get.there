@@ -203,7 +203,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 		// TODO Set Verified
 
-		// if (!mTask.isVerified()) {
+		// if (!mTask.isIs_verified()) {
 		// ((ImageView) v.findViewById(R.id.img_is_verified))
 		// .setVisibility(View.INVISIBLE);
 
@@ -226,7 +226,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		
 		// Set Title
 		TextView locationName = ((TextView) v.findViewById(R.id.text_location_name));
-		locationName.setText(mSP.getName());
+		locationName.setText(mSP.getSp_name());
 		locationName.setTypeface(font);
 
 		// Set Description
@@ -240,7 +240,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		locationAddress.setTypeface(font);
 
 		// Set Verified
-		if (!mSP.isVerified()) {
+		if (!mSP.is_verified()) {
 			((ImageView) v.findViewById(R.id.img_is_verified))
 					.setVisibility(View.INVISIBLE);
 		}
@@ -305,23 +305,23 @@ public class ScreenSlidePageFragment extends Fragment implements
 	}
 
 	private void setAccecibility(View v) {
-		if (mSP.hasElevator()) {
+		if (mSP.isElevator()) {
 			((ImageView) v.findViewById(R.id.image_check_toilet))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.hasEntrance()) {
+		if (mSP.isEntrance()) {
 			((ImageView) v.findViewById(R.id.image_check_entrance))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.hasFacilities()) {
+		if (mSP.isFacilities()) {
 			((ImageView) v.findViewById(R.id.image_check_furniture))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.hasParking()) {
+		if (mSP.isParking()) {
 			((ImageView) v.findViewById(R.id.image_check_parking))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.hasToilets()) {
+		if (mSP.isToilets()) {
 			((ImageView) v.findViewById(R.id.image_check_toilet))
 					.setVisibility(View.VISIBLE);
 		}

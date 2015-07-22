@@ -8,7 +8,7 @@ import java.util.List;
 
 import il.co.togetthere.LoginActivity;
 import il.co.togetthere.db.ServiceProvider;
-import il.co.togetthere.db.ServiceProviderType;
+import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.db.User;
 
 public class Server {
@@ -16,11 +16,11 @@ public class Server {
     private static final String server = "http://django-togetthereserver.rhcloud.com/ToGetThere/android/";
 
     // Get all SP's of certain type
-    public static final List<ServiceProvider> getSPsOfType(ServiceProviderType type) throws IOException {
+    public static final List<ServiceProvider> getSPsOfType(ServiceProviderCategory type) throws IOException {
         /*
          * example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restaurants/
          */
-        String json = HTTPHandler.getRequest(server + "/category/" + ServiceProviderType.enumToString(type) + "/");
+        String json = HTTPHandler.getRequest(server + "/category/" + ServiceProviderCategory.enumToString(type) + "/");
         ServiceProvider[] sps = new Gson().fromJson(json, ServiceProvider[].class);
         return Arrays.asList(sps);
     }
@@ -141,4 +141,77 @@ public class Server {
         String json = HTTPHandler.postRequest(server + "/adduser/", jsonUser);
         LoginActivity.user = new Gson().fromJson(json, User.class);
     }
+
+    /*
+    # remove like of a curtain review from curtain user
+# ex: /ToGetThere/android/removeLike/
+**POST** request with a JSON body:
+{"user": "1",
+"review": "6"}
+will return an http 200 response if the like was deleted successfully
+if no like was found will return http 404
+
+# remove review
+# ex: /ToGetThere/android/removeLike/
+**POST** request with a JSON body:
+{"review_id": "6"}
+will return an http 200 response if the review was deleted successfully
+if no review was found will return http 404
+
+
+# edit the details of a curtain User
+**POST** request with a JSON body, the body is key-value of the fields to change:
+{"name" : "new name"}
+possible fields are:
+      facebook_id
+      first_name
+      last_name
+      full_name
+      email
+      birthday
+      level
+      phone
+      points
+      isVolunteering
+      wasAskedToVolunteer
+# ex: /ToGetThere/android/editprofile/1/
+will return the new user profile in Json
+
+
+# edit the details of a curtain SP
+**POST** request with a JSON body, the body is key-value of the fields to change:
+{"name" : "new name"}
+possible fields are:
+      sp_name
+      address
+      category
+      longitude
+      latitude
+      phone
+      is_verified
+      discount
+      website
+      toilets
+      elevator
+      entrance
+      facilities
+      toilets_text
+      parking_text
+      elevator_text
+      entrance_text
+      facilities_text
+# ex: /ToGetThere/android/sp/1/edit/
+will return the new sp in Json
+
+#edit a curtain review
+**POST** request with a JSON body, the body is key-value of the fields to change:
+{"title" : "new title"}
+possible fields are:
+      title
+      content
+      created
+      user
+#  ex: /ToGetThere/android/editReview/2
+will return an http response of the sp which had the review
+     */
 }

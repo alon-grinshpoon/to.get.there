@@ -1,30 +1,29 @@
 package il.co.togetthere.db;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceProvider {
 
 	private String id;
-	private ServiceProviderType type;
+	private ServiceProviderCategory category;
 
-	private String name;
-	private boolean verified;
+	private String sp_name;
+	private boolean is_verified;
 	private int rank;
 
-	private boolean hasToilets;
-	private String toiletsDescription;
-	private boolean hasParking;
-	private String parkingDescription;
-	private boolean hasElevator;
-	private String elevatorDescription;
-	private boolean hasEntrance;
-	private String entranceDescription;
-	private boolean hasFacilities;
-	private String facilitiesDescription;
+	private boolean toilets;
+	private String toilets_text;
+	private boolean parking;
+	private String parking_text;
+	private boolean elevator;
+	private String elevator_text;
+	private boolean entrance;
+	private String entrance_text;
+	private boolean facilities;
+	private String facilities_text;
 
 	private String address;
-	private double latitude;
-	private double longitude;
+	private transient double latitude;
+	private transient double longitude;
 	private String phone;
 	private int discount;
 	private String website;
@@ -36,21 +35,21 @@ public class ServiceProvider {
 	 */
 	public ServiceProvider() {
 
-		this.setID("");
-		this.setType(ServiceProviderType.None);
-		this.setName("");
-		this.setVerified(false);
+		this.setId("");
+		this.setCategory(ServiceProviderCategory.None);
+		this.setSp_name("");
+		this.setIs_verified(false);
 		this.setRank(0);
-		this.setHasToilets(false);
-		this.setToiletsDescription("");
-		this.setHasParking(false);
-		this.setParkingDescription("");
-		this.setHasElevator(false);
-		this.setElevatorDescription("");
-		this.setHasEntrance(false);
-		this.setEntranceDescription("");
-		this.setHasFacilities(false);
-		this.setFacilitiesDescription("");
+		this.setToilets(false);
+		this.setToilets_text("");
+		this.setParking(false);
+		this.setParking_text("");
+		this.setElevator(false);
+		this.setElevator_text("");
+		this.setEntrance(false);
+		this.setEntrance_text("");
+		this.setFacilities(false);
+		this.setFacilities_text("");
 		this.setAddress("");
 		this.setLatitude(0);
 		this.setLongitude(0);
@@ -63,22 +62,22 @@ public class ServiceProvider {
 	/**
 	 * Constructor
 	 */
-	public ServiceProvider(String id, ServiceProviderType type, String name, boolean verified, int rank, boolean hasToilets, String toiletsDescription, boolean hasParking, String parkingDescription, boolean hasElevator, String elevatorDescription, boolean hasEntrance, String entranceDescription, boolean hasFacilities, String facilitiesDescription, String address, double latitude, double longitude, String phone, int discount, String website, List<Review> reviews) {
+	public ServiceProvider(String id, ServiceProviderCategory category, String sp_name, boolean is_verified, int rank, boolean toilets, String toilets_text, boolean parking, String parking_text, boolean elevator, String elevator_text, boolean entrance, String entrance_text, boolean facilities, String facilities_text, String address, double latitude, double longitude, String phone, int discount, String website, List<Review> reviews) {
 		this.id = id;
-		this.type = type;
-		this.name = name;
-		this.verified = verified;
+		this.category = category;
+		this.sp_name = sp_name;
+		this.is_verified = is_verified;
 		this.rank = rank;
-		this.hasToilets = hasToilets;
-		this.toiletsDescription = toiletsDescription;
-		this.hasParking = hasParking;
-		this.parkingDescription = parkingDescription;
-		this.hasElevator = hasElevator;
-		this.elevatorDescription = elevatorDescription;
-		this.hasEntrance = hasEntrance;
-		this.entranceDescription = entranceDescription;
-		this.hasFacilities = hasFacilities;
-		this.facilitiesDescription = facilitiesDescription;
+		this.toilets = toilets;
+		this.toilets_text = toilets_text;
+		this.parking = parking;
+		this.parking_text = parking_text;
+		this.elevator = elevator;
+		this.elevator_text = elevator_text;
+		this.entrance = entrance;
+		this.entrance_text = entrance_text;
+		this.facilities = facilities;
+		this.facilities_text = facilities_text;
 		this.address = address;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -88,39 +87,40 @@ public class ServiceProvider {
 		this.reviews = reviews;
 	}
 
+
 	/*
 	 * Setter and Getters
 	 */
-	public String getID() {
+	public String getId() {
 		return id;
 	}
 
-	public void setID(String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public ServiceProviderType getType() {
-		return type;
+	public ServiceProviderCategory getCategory() {
+		return category;
 	}
 
-	public void setType(ServiceProviderType type) {
-		this.type = type;
+	public void setCategory(ServiceProviderCategory category) {
+		this.category = category;
 	}
 
-	public String getName() {
-		return name;
+	public String getSp_name() {
+		return sp_name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setSp_name(String sp_name) {
+		this.sp_name = sp_name;
 	}
 
-	public boolean isVerified() {
-		return verified;
+	public boolean is_verified() {
+		return is_verified;
 	}
 
-	public void setVerified(boolean verified) {
-		this.verified = verified;
+	public void setIs_verified(boolean is_verified) {
+		this.is_verified = is_verified;
 	}
 
 	public int getRank() {
@@ -131,84 +131,84 @@ public class ServiceProvider {
 		this.rank = rank;
 	}
 
-	public boolean hasToilets() {
-		return hasToilets;
+	public boolean isToilets() {
+		return toilets;
 	}
 
-	public void setHasToilets(boolean hasToilets) {
-		this.hasToilets = hasToilets;
+	public void setToilets(boolean toilets) {
+		this.toilets = toilets;
 	}
 
-	public String getToiletsDescription() {
-		return toiletsDescription;
+	public String getToilets_text() {
+		return toilets_text;
 	}
 
-	public void setToiletsDescription(String toiletsDescription) {
-		this.toiletsDescription = toiletsDescription;
+	public void setToilets_text(String toilets_text) {
+		this.toilets_text = toilets_text;
 	}
 
-	public boolean hasParking() {
-		return hasParking;
+	public boolean isParking() {
+		return parking;
 	}
 
-	public void setHasParking(boolean hasParking) {
-		this.hasParking = hasParking;
+	public void setParking(boolean parking) {
+		this.parking = parking;
 	}
 
-	public String getParkingDescription() {
-		return parkingDescription;
+	public String getParking_text() {
+		return parking_text;
 	}
 
-	public void setParkingDescription(String parkingDescription) {
-		this.parkingDescription = parkingDescription;
+	public void setParking_text(String parking_text) {
+		this.parking_text = parking_text;
 	}
 
-	public boolean hasElevator() {
-		return hasElevator;
+	public boolean isElevator() {
+		return elevator;
 	}
 
-	public void setHasElevator(boolean hasElevator) {
-		this.hasElevator = hasElevator;
+	public void setElevator(boolean elevator) {
+		this.elevator = elevator;
 	}
 
-	public String getElevatorDescription() {
-		return elevatorDescription;
+	public String getElevator_text() {
+		return elevator_text;
 	}
 
-	public void setElevatorDescription(String elevatorDescription) {
-		this.elevatorDescription = elevatorDescription;
+	public void setElevator_text(String elevator_text) {
+		this.elevator_text = elevator_text;
 	}
 
-	public boolean hasEntrance() {
-		return hasEntrance;
+	public boolean isEntrance() {
+		return entrance;
 	}
 
-	public void setHasEntrance(boolean hasEntrance) {
-		this.hasEntrance = hasEntrance;
+	public void setEntrance(boolean entrance) {
+		this.entrance = entrance;
 	}
 
-	public String getEntranceDescription() {
-		return entranceDescription;
+	public String getEntrance_text() {
+		return entrance_text;
 	}
 
-	public void setEntranceDescription(String entranceDescription) {
-		this.entranceDescription = entranceDescription;
+	public void setEntrance_text(String entrance_text) {
+		this.entrance_text = entrance_text;
 	}
 
-	public boolean hasFacilities() {
-		return hasFacilities;
+	public boolean isFacilities() {
+		return facilities;
 	}
 
-	public void setHasFacilities(boolean hasFacilities) {
-		this.hasFacilities = hasFacilities;
+	public void setFacilities(boolean facilities) {
+		this.facilities = facilities;
 	}
 
-	public String getFacilitiesDescription() {
-		return facilitiesDescription;
+	public String getFacilities_text() {
+		return facilities_text;
 	}
 
-	public void setFacilitiesDescription(String facilitiesDescription) {
-		this.facilitiesDescription = facilitiesDescription;
+	public void setFacilities_text(String facilities_text) {
+		this.facilities_text = facilities_text;
 	}
 
 	public String getAddress() {
@@ -266,5 +266,4 @@ public class ServiceProvider {
 	public void setReviews(List<Review> reviews) {
 		this.reviews = reviews;
 	}
-
 }

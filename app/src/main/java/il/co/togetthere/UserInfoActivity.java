@@ -153,7 +153,7 @@ public class UserInfoActivity extends Activity {
 		mEmailTextView.setText(LoginActivity.user.getEmail());
 		mPhoneTextView.setText(LoginActivity.user.getPhone());
 		// TODO user location - mLocationView.setText(User.getLocation());
-		// TODO user name- mNameView.setText(User.getName());
+		// TODO user name- mNameView.setText(User.getSp_name());
 		// TODO user points- mPointsView.setText(User.getPoints());
 		// TODO user level -mLevelView.setText(User.getLevel());
 		mDiscard.setVisibility(View.GONE);

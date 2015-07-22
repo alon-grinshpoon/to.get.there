@@ -1,10 +1,9 @@
 package il.co.togetthere;
 import il.co.togetthere.db.ServiceProvider;
-import il.co.togetthere.db.ServiceProviderType;
+import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.server.Server;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -98,7 +97,8 @@ public class ScreenSlideActivity extends FragmentActivity {
 		} else {
 			//mThread.execute(DynamoDBManagerType.GET_PROVIDER.toString(), ServiceProvider.stringToEnum(getmServiceProviderType()).toString());
 			try {
-				mServiceProviderArr = Server.getSPsOfType(ServiceProviderType.stringToEnum(mServiceProviderType));
+				mServiceProviderArr = Server.getSPsOfType(ServiceProviderCategory.stringToEnum(mServiceProviderType));
+				showPager();
 			} catch (IOException e) {
 				Toast.makeText(getApplicationContext(), "Oops! Failed to load all " + mServiceProviderType + "...",
 						Toast.LENGTH_SHORT).show();
