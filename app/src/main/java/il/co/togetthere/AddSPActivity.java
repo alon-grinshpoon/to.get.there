@@ -1,9 +1,7 @@
 package il.co.togetthere;
 
-import il.co.togetthere.db.AmazonClientManager;
-import il.co.togetthere.db.DynamoDBManagerTask;
-import il.co.togetthere.db.DynamoDBManagerType;
 import il.co.togetthere.db.ServiceProvider;
+import il.co.togetthere.db.ServiceProviderType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +34,6 @@ public class AddSPActivity extends Activity {
 	private Spinner mTypeList;
 	private ArrayAdapter<String> mListAdapter;
 	private ServiceProvider mSP;
-	public static AmazonClientManager clientManager = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +83,6 @@ public class AddSPActivity extends Activity {
 		});
 
 		mSP = new ServiceProvider();
-		clientManager = new AmazonClientManager(this);
 
 		/**
 		 * Titles
@@ -157,12 +153,12 @@ public class AddSPActivity extends Activity {
 				String[] types = getResources().getStringArray(R.array.types);
 				if (position != 0) {
 					if (position == 3) {
-						mSP.setType("PublicServices");
+						mSP.setType(ServiceProviderType.PublicServices);
 					} else {
-						mSP.setType(types[position - 1]);
+						mSP.setType(ServiceProviderType.stringToEnum(types[position - 1]));
 					}
 				} else {
-					mSP.setType("");
+					mSP.setType(ServiceProviderType.None);
 				}
 			}
 
@@ -263,11 +259,7 @@ public class AddSPActivity extends Activity {
 										.show();
 
 								// send mSP to DB and finish;
-								DynamoDBManagerTask addProvider = new DynamoDBManagerTask();
-								addProvider.mSerivceProvider = mSP;
-								addProvider
-										.execute(DynamoDBManagerType.INSERT_SERVICE_PROVIDER
-												.toString());
+								// TODO
 
 								// Close Activity
 								AddSPActivity.this.finish();

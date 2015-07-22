@@ -1,6 +1,5 @@
 package il.co.togetthere;
 
-import il.co.togetthere.db.AmazonClientManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +24,6 @@ public class TypeChooserActivity extends Activity {
 	List<String> mServiceProviderType = new ArrayList<String>();
 	List<Button> mButtonsArr = new ArrayList<Button>();
 
-	public static AmazonClientManager clientManager = null;
-
 	@SuppressLint("InlinedApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +33,6 @@ public class TypeChooserActivity extends Activity {
 		// Set Profile Picture
 		ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.button_show_user_details_chooser);
 		profilePictureView.setProfileId(LoginActivity.user.getID());
-
-		// database client manager initialize
-		clientManager = new AmazonClientManager(this);
 
 		/**
 		 * View Initialization

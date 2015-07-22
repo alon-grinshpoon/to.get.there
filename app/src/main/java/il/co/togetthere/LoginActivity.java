@@ -16,8 +16,6 @@
 
 package il.co.togetthere;
 
-import il.co.togetthere.db.AmazonClientManager;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -35,7 +33,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -55,7 +52,7 @@ import com.facebook.model.GraphObject;
 import com.facebook.model.GraphPlace;
 import com.facebook.model.GraphUser;
 
-import il.co.togetthere.User;
+import il.co.togetthere.db.User;
 import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.FriendPickerFragment;
 import com.facebook.widget.LoginButton;
@@ -80,8 +77,7 @@ public class LoginActivity extends FragmentActivity {
     private List<GraphUser> tags;
     private boolean canPresentShareDialog;
     private boolean canPresentShareDialogWithPhotos;
-    
-    public static AmazonClientManager clientManager = null;
+
     public static User user = new User();
 
     private enum PendingAction {
@@ -133,9 +129,6 @@ public class LoginActivity extends FragmentActivity {
         }
 
         setContentView(R.layout.activity_login);
-
-        //initialize db credentialis for registering user
-        clientManager = new AmazonClientManager(this);
         
         // Configure the Facebook login button
         buttonLoginFacebook = (LoginButton) findViewById(R.id.button_login_facebook);
@@ -150,7 +143,7 @@ public class LoginActivity extends FragmentActivity {
                 //LoginActivity.user.setPhone(tMgr.getLine1Number());
                 
                 if (user != null) {
-                	LoginActivity.user.syncDB();
+                	//LoginActivity.user.syncDB();
                 	continueToNextScreen();
                 }
                 

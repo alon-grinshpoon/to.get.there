@@ -27,13 +27,9 @@ android {
 
         compile 'com.google.android.gms:play-services:7.5.0'
 
-        compile 'com.amazonaws:aws-android-sdk-core:2.+'
-        compile 'com.amazonaws:aws-android-sdk-cognito:2.+'
-        compile 'com.amazonaws:aws-android-sdk-s3:2.+'
-        compile 'com.amazonaws:aws-android-sdk-ddb:2.+'
+        compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+        compile 'com.google.code.gson:gson:2.3.1'
 
-        compile 'com.amazonaws:aws-android-sdk-ddb:2.+'
-        compile 'com.amazonaws:aws-android-sdk-ddb-mapper:2.+'
     }
 
 }

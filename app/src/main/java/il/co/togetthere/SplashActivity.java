@@ -5,19 +5,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.view.View;
+
+import java.io.IOException;
+
+import il.co.togetthere.server.Server;
 
 public class SplashActivity extends Activity {
 
-	private final int SPLASH_DISPLAY_LENGHT = 3000;
+	private final int SPLASH_DISPLAY_LENGTH = 3000;
 
     /** Called when the activity is first created. */
     @SuppressLint({ "InlinedApi", "NewApi" }) @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         
-        View decorView = getWindow().getDecorView();
 		// Hide the status bar.
+        View decorView = getWindow().getDecorView();
 		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
 		decorView.setSystemUiVisibility(uiOptions);
 		// Remember that you should never show the action bar if the
@@ -33,6 +38,14 @@ public class SplashActivity extends Activity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
+
+                /* Disable strict thread policy to enable communication to our server. */
+                /* This can also be removed if we don't write network call in Main UI Thread, and use Async Task for that. */
+                if (android.os.Build.VERSION.SDK_INT > 9) {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+                }
+
                 /* Create an Intent that will start the next Activity. */
             	/* Prompt login if the user isn't logged in or the type choosing screen otherwise. */
             	if (!LoginActivity.user.isLoggedIn()){
@@ -45,6 +58,6 @@ public class SplashActivity extends Activity {
                     SplashActivity.this.finish();
             	}
             }
-        }, SPLASH_DISPLAY_LENGHT);
+        }, SPLASH_DISPLAY_LENGTH);
     }
 }

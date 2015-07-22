@@ -1,7 +1,5 @@
 package il.co.togetthere;
 
-
-
 import java.util.Calendar;
 
 import android.app.Activity;
