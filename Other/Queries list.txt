@@ -80,7 +80,7 @@ if there is already like from that user nothing wil change
 **POST** request with a JSON body:
 {"user": "1",
 "review": "6"}
-will return an http response of the sp which had the review as in
+will return an http response of the sp which had the review:
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/<sp_id>/
 
 
@@ -97,3 +97,12 @@ http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/<sp_id>/
 if user exist returns http response like in:
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/user/<newUSerId>/
 else returns http 400 response - User already exist
+
+# remove like of a curtain review from curtain user
+# ex: /ToGetThere/android/removeLike/
+**POST** request with a JSON body:
+{"user": "1",
+"review": "6"}
+will return an http 200 response if the like was deleted successfully
+if no like was found will return http 404
+
