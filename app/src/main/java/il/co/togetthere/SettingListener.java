@@ -19,6 +19,7 @@ public class SettingListener implements PopupMenu.OnMenuItemClickListener{
         switch (menuItem.getItemId()) {
             case R.id.menuitem_settings:
                 Toast.makeText(this.context, "Version 2.0", Toast.LENGTH_SHORT).show();
+
                 return true;
         }
         return false;

@@ -90,15 +90,15 @@ public class TypeChooserActivity extends Activity {
 
 		// set Upper Bar
 		profilePictureView.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent infoIntent = new Intent(
-								TypeChooserActivity.this,
-								UserInfoActivity.class);
-						startActivity(infoIntent);
+			@Override
+			public void onClick(View v) {
+				Intent infoIntent = new Intent(
+						TypeChooserActivity.this,
+						UserInfoActivity.class);
+				startActivity(infoIntent);
 
-					}
-				});
+			}
+		});
 
 		// Configure Settings Button
 		findViewById(R.id.button_settings).setOnClickListener(new View.OnClickListener() {
@@ -110,7 +110,6 @@ public class TypeChooserActivity extends Activity {
 				popupMenu.show();
 			}
 		});
-
 	}
 	
 	private void askToVolunteer(){

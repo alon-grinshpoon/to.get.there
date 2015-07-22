@@ -2,17 +2,26 @@ package il.co.togetthere;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import il.co.togetthere.db.User;
 import il.co.togetthere.server.Server;
@@ -60,6 +69,15 @@ public class SplashActivity extends Activity {
                     LoginActivity.user = user;
                 }
 
+                /* Get location */
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    Toast.makeText(getApplicationContext(), "Your GPS is off, please turn it ON.", Toast.LENGTH_LONG).show();
+                }
+                LocationListener locationListener = new UserLocationListener();
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300000, 100, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300000, 100, locationListener);
+
                 /* Create an Intent that will start the next Activity. */
             	/* Prompt login if the user isn't logged in or the type choosing screen otherwise. */
             	if (LoginActivity.user == null || !LoginActivity.user.isLoggedIn()){
@@ -73,5 +91,26 @@ public class SplashActivity extends Activity {
             	}
             }
         }, SPLASH_DISPLAY_LENGTH);
+    }
+
+    private class UserLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location loc) {
+            // Update user location
+            if (LoginActivity.user != null && loc.getLatitude() != 0.0 && loc.getLongitude() != 0.0){
+                LoginActivity.user.setLatitude(loc.getLatitude());
+                LoginActivity.user.setLongitude(loc.getLongitude());
+            }
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
     }
 }
