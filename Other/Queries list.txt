@@ -106,3 +106,10 @@ else returns http 400 response - User already exist
 will return an http 200 response if the like was deleted successfully
 if no like was found will return http 404
 
+# remove review 
+# ex: /ToGetThere/android/removeLike/
+**POST** request with a JSON body:
+{"review_id": "6"}
+will return an http 200 response if the review was deleted successfully
+if no review was found will return http 404
+
