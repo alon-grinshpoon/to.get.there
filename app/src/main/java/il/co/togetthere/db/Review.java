@@ -7,18 +7,16 @@ public class Review {
 	private User user;
 	private String content;
 	private int likes;
-	private boolean didYouLike;
 
 	/*
 	 * Constructor
 	 */
-	public Review(String id, User user, String content, int likes, boolean didYouLike) {
+	public Review(String id, User user, String content, int likes) {
 		this.id = id;
 		this.title = user.getFullName();
 		this.user = user;
 		this.content = content;
 		this.likes = likes;
-		this.didYouLike = didYouLike;
 	}
 
 	/*
@@ -62,13 +60,5 @@ public class Review {
 
 	public void setLikes(int likes) {
 		this.likes = likes;
-	}
-
-	public boolean didYouLike() {
-		return didYouLike;
-	}
-
-	public void setDidYouLike(boolean didYouLike) {
-		this.didYouLike = didYouLike;
 	}
 }

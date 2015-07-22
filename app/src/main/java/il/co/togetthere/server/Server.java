@@ -219,5 +219,12 @@ possible fields are:
       user
 #  ex: /ToGetThere/android/editReview/2
 will return an http response of the sp which had the review
+
+# search by cateogry and vicinity of 5 KM n/s e/w
+# ex: /ToGetThere/android/lng/34.3/lat/23.3/category/medical/
+
+
+# search by cateogry and vicinity of 5 KM n/s e/w
+# ex: /ToGetThere/android/lng/34.3/lat/23.3/category/medical/
      */
 }

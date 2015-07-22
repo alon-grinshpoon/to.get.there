@@ -9,7 +9,7 @@ public class ServiceProvider {
 
 	private String sp_name;
 	private boolean is_verified;
-	private int rank;
+	private int avg_rank;
 
 	private boolean toilets;
 	private String toilets_text;
@@ -40,7 +40,7 @@ public class ServiceProvider {
 		this.setCategory(ServiceProviderCategory.None);
 		this.setSp_name("");
 		this.setIs_verified(false);
-		this.setRank(0);
+		this.setAverageRank(0);
 		this.setToilets(false);
 		this.setToilets_text("");
 		this.setParking(false);
@@ -63,12 +63,12 @@ public class ServiceProvider {
 	/**
 	 * Constructor
 	 */
-	public ServiceProvider(String id, ServiceProviderCategory category, String sp_name, boolean is_verified, int rank, boolean toilets, String toilets_text, boolean parking, String parking_text, boolean elevator, String elevator_text, boolean entrance, String entrance_text, boolean facilities, String facilities_text, String address, double latitude, double longitude, String phone, int discount, String website, Review[] reviews) {
+	public ServiceProvider(String id, ServiceProviderCategory category, String sp_name, boolean is_verified, int avg_rank, boolean toilets, String toilets_text, boolean parking, String parking_text, boolean elevator, String elevator_text, boolean entrance, String entrance_text, boolean facilities, String facilities_text, String address, double latitude, double longitude, String phone, int discount, String website, Review[] reviews) {
 		this.id = id;
 		this.category = category;
 		this.sp_name = sp_name;
 		this.is_verified = is_verified;
-		this.rank = rank;
+		this.avg_rank = avg_rank;
 		this.toilets = toilets;
 		this.toilets_text = toilets_text;
 		this.parking = parking;
@@ -124,12 +124,12 @@ public class ServiceProvider {
 		this.is_verified = is_verified;
 	}
 
-	public int getRank() {
-		return rank;
+	public int getAverageRank() {
+		return avg_rank;
 	}
 
-	public void setRank(int rank) {
-		this.rank = rank;
+	public void setAverageRank(int avg_rank) {
+		this.avg_rank = avg_rank;
 	}
 
 	public boolean isToilets() {
