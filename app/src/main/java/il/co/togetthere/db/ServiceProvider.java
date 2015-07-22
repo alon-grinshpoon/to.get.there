@@ -1,4 +1,5 @@
 package il.co.togetthere.db;
+import java.util.Arrays;
 import java.util.List;
 
 public class ServiceProvider {
@@ -28,7 +29,7 @@ public class ServiceProvider {
 	private int discount;
 	private String website;
 
-	private List<Review> reviews;
+	private Review[] reviews;
 
 	/**
 	 * Empty Constructor
@@ -62,7 +63,7 @@ public class ServiceProvider {
 	/**
 	 * Constructor
 	 */
-	public ServiceProvider(String id, ServiceProviderCategory category, String sp_name, boolean is_verified, int rank, boolean toilets, String toilets_text, boolean parking, String parking_text, boolean elevator, String elevator_text, boolean entrance, String entrance_text, boolean facilities, String facilities_text, String address, double latitude, double longitude, String phone, int discount, String website, List<Review> reviews) {
+	public ServiceProvider(String id, ServiceProviderCategory category, String sp_name, boolean is_verified, int rank, boolean toilets, String toilets_text, boolean parking, String parking_text, boolean elevator, String elevator_text, boolean entrance, String entrance_text, boolean facilities, String facilities_text, String address, double latitude, double longitude, String phone, int discount, String website, Review[] reviews) {
 		this.id = id;
 		this.category = category;
 		this.sp_name = sp_name;
@@ -259,11 +260,21 @@ public class ServiceProvider {
 		this.website = website;
 	}
 
-	public List<Review> getReviews() {
+	public Review[] getReviews() {
 		return reviews;
 	}
 
-	public void setReviews(List<Review> reviews) {
+	public List<Review> getReviewsAsList() {
+		return (this.reviews != null) ? Arrays.asList(this.reviews) : null;
+	}
+
+	public void setReviews(Review[] reviews) {
 		this.reviews = reviews;
+	}
+	public void setReviewsFromList(List<Review> reviews) {
+		if (this.reviews == null && reviews != null){
+			this.reviews = new Review[reviews.size()];
+			reviews.toArray(this.reviews);
+		}
 	}
 }

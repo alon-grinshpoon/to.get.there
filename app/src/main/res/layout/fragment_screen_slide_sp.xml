@@ -460,7 +460,7 @@
             <!-- Like -->
 
             <TextView
-                android:id="@id/text_review_likes_1"
+                android:id="@+id/text_review_likes_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -525,7 +525,7 @@
             <!-- Like -->
 
             <TextView
-                android:id="@id/text_review_likes_2"
+                android:id="@+id/text_review_likes_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -590,7 +590,7 @@
             <!-- Like -->
 
             <TextView
-                android:id="@id/text_review_likes_3"
+                android:id="@+id/text_review_likes_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

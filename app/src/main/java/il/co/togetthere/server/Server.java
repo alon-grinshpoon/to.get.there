@@ -16,7 +16,7 @@ public class Server {
     private static final String server = "http://django-togetthereserver.rhcloud.com/ToGetThere/android/";
 
     // Get all SP's of certain type
-    public static final List<ServiceProvider> getSPsOfType(ServiceProviderCategory type) throws IOException {
+    public static final List<ServiceProvider> getSPsOfCategory(ServiceProviderCategory type) throws IOException {
         /*
          * example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restaurants/
          */
@@ -27,11 +27,13 @@ public class Server {
 
     // Get SP by ID (show its details, reviews list, ranks list)
     public static final void getSPByID(int id) throws IOException {
+        // TODO
         HTTPHandler.getRequest(server + "/sp/" + id + "/");
     }
 
     // Get all reviews of certain SP
     public static final void getSPReviewsByID(int id) throws IOException {
+        // TODO
         HTTPHandler.getRequest(server + "/sp/" + id + "/reviews/");
     }
 
@@ -47,6 +49,7 @@ public class Server {
 
     // Add a new SP
     public static final void addSP(ServiceProvider sp) throws IOException {
+        // TODO
         /**
          * to add a new SP
          **POST** request with a JSON body
@@ -84,6 +87,7 @@ public class Server {
 
     // Rank an SP with score between 1-5, with user ID, and SP id:
     public static final void rankSP(int userID, int spID, int rank) throws IOException {
+        // TODO
         /**
          * example:
          * http://django-togetthereserver.rhcloud.com/ToGetThere/android/ranksp/1/score/5/user/1
@@ -94,6 +98,7 @@ public class Server {
 
     // Add a review to a certain SP from certain user
     public static final void addReviewToSP(int userID, int spID, String title, String content) throws IOException {
+        // TODO
         /**
          * # ex: /ToGetThere/android/addreview/
          * **POST** request with a JSON body:
@@ -108,6 +113,7 @@ public class Server {
 
     // Add like to a certain review from certain user
     public static final void addLikeToReview(int userID, int spID, int reviewID) throws IOException {
+        // TODO
         /**
          * if there is already like from that user nothing wil change
          * # ex: /ToGetThere/android/addLike/

@@ -97,7 +97,8 @@ public class ScreenSlideActivity extends FragmentActivity {
 		} else {
 			//mThread.execute(DynamoDBManagerType.GET_PROVIDER.toString(), ServiceProvider.stringToEnum(getmServiceProviderType()).toString());
 			try {
-				mServiceProviderArr = Server.getSPsOfType(ServiceProviderCategory.stringToEnum(mServiceProviderType));
+				ServiceProviderCategory category = ServiceProviderCategory.stringToEnum(mServiceProviderType);
+				mServiceProviderArr = Server.getSPsOfCategory(category);
 				showPager();
 			} catch (IOException e) {
 				Toast.makeText(getApplicationContext(), "Oops! Failed to load all " + mServiceProviderType + "...",
