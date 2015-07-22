@@ -202,7 +202,7 @@ public class User {
 		this.location = location;
 	}
 
-	public boolean isLoggedIn() { return (facebookUser != null); }
+	public boolean isLoggedIn() { return (this.facebook_id != null); }
 
 	public boolean wasAskedToVolunteer() { return wasAskedToVolunteer; }
 	public void setWasAskedToVolunteer(boolean wasAskedToVolunteer) {  this.wasAskedToVolunteer = wasAskedToVolunteer; }
