@@ -9,10 +9,12 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -45,6 +47,7 @@ import com.facebook.widget.FriendPickerFragment;
 import com.facebook.widget.LoginButton;
 import com.facebook.widget.PickerFragment;
 import com.facebook.widget.PlacePickerFragment;
+import com.google.gson.Gson;
 
 
 public class LoginActivity extends FragmentActivity {
@@ -136,7 +139,13 @@ public class LoginActivity extends FragmentActivity {
                         Toast.makeText(getApplicationContext(), "Oops! Unable to register your user.",
                                 Toast.LENGTH_SHORT).show();
                     }
-
+                    // Save user as a shared preference
+                    SharedPreferences  mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(LoginActivity.user);
+                    prefsEditor.putString("User", json);
+                    prefsEditor.commit();
                     // Continue to type chooser screen
                     continueToNextScreen();
                 }

@@ -2,24 +2,35 @@ package il.co.togetthere.db;
 
 public class Review {
 
+	private String id;
 	private String title;
-	private String reviewer;
-	private String text;
-	private int points;
+	private User user;
+	private String content;
+	private int likes;
+	private boolean didYouLike;
 
 	/*
 	 * Constructor
 	 */
-	public Review(String title, String reviewer, String text, int points) {
-		this.title = title;
-		this.reviewer = reviewer;
-		this.text = text;
-		this.points = points;
+	public Review(String id, User user, String content, int likes, boolean didYouLike) {
+		this.id = id;
+		this.title = user.getFullName();
+		this.user = user;
+		this.content = content;
+		this.likes = likes;
+		this.didYouLike = didYouLike;
 	}
 
 	/*
 	 * Setters and Getters
 	 */
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getTitle() {
 		return title;
@@ -29,27 +40,35 @@ public class Review {
 		this.title = title;
 	}
 
-	public String getReviewer() {
-		return reviewer;
+	public User getUser() {
+		return user;
 	}
 
-	public void setReviewer(String reviewer) {
-		this.reviewer = reviewer;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public String getText() {
-		return text;
+	public String getContent() {
+		return content;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
-	public int getPoints() {
-		return points;
+	public int getLikes() {
+		return likes;
 	}
 
-	public void setPoints(int points) {
-		this.points = points;
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
+
+	public boolean didYouLike() {
+		return didYouLike;
+	}
+
+	public void setDidYouLike(boolean didYouLike) {
+		this.didYouLike = didYouLike;
 	}
 }

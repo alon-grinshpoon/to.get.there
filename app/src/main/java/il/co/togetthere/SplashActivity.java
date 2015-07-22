@@ -3,13 +3,18 @@ package il.co.togetthere;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.view.View;
+
+import com.google.gson.Gson;
 
 import java.io.IOException;
 
+import il.co.togetthere.db.User;
 import il.co.togetthere.server.Server;
 
 public class SplashActivity extends Activity {
@@ -46,9 +51,18 @@ public class SplashActivity extends Activity {
                     StrictMode.setThreadPolicy(policy);
                 }
 
+                /* Retrieve a shared preference */
+                SharedPreferences  mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                Gson gson = new Gson();
+                String json = mPrefs.getString("User", "");
+                User user = gson.fromJson(json, User.class);
+                if (user != null){
+                    LoginActivity.user = user;
+                }
+
                 /* Create an Intent that will start the next Activity. */
             	/* Prompt login if the user isn't logged in or the type choosing screen otherwise. */
-            	if (!LoginActivity.user.isLoggedIn()){
+            	if (LoginActivity.user == null || !LoginActivity.user.isLoggedIn()){
             		Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
                     SplashActivity.this.startActivity(mainIntent);
                     SplashActivity.this.finish();

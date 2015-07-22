@@ -3,9 +3,12 @@ package il.co.togetthere.server;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
+import il.co.togetthere.LoginActivity;
 import il.co.togetthere.db.ServiceProvider;
-import il.co.togetthere.db.ServiceProviderType;
+import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.db.User;
 
 public class Server {
@@ -13,17 +16,24 @@ public class Server {
     private static final String server = "http://django-togetthereserver.rhcloud.com/ToGetThere/android/";
 
     // Get all SP's of certain type
-    public static final void getSPsOfType(ServiceProviderType type) throws IOException {
-        HTTPHandler.getRequest(server + "/category/" + ServiceProviderType.enumToString(type) + "/");
+    public static final List<ServiceProvider> getSPsOfCategory(ServiceProviderCategory type) throws IOException {
+        /*
+         * example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restaurants/
+         */
+        String json = HTTPHandler.getRequest(server + "/category/" + ServiceProviderCategory.enumToString(type) + "/");
+        ServiceProvider[] sps = new Gson().fromJson(json, ServiceProvider[].class);
+        return Arrays.asList(sps);
     }
 
     // Get SP by ID (show its details, reviews list, ranks list)
     public static final void getSPByID(int id) throws IOException {
+        // TODO
         HTTPHandler.getRequest(server + "/sp/" + id + "/");
     }
 
     // Get all reviews of certain SP
     public static final void getSPReviewsByID(int id) throws IOException {
+        // TODO
         HTTPHandler.getRequest(server + "/sp/" + id + "/reviews/");
     }
 
@@ -39,6 +49,7 @@ public class Server {
 
     // Add a new SP
     public static final void addSP(ServiceProvider sp) throws IOException {
+        // TODO
         /**
          * to add a new SP
          **POST** request with a JSON body
@@ -76,6 +87,7 @@ public class Server {
 
     // Rank an SP with score between 1-5, with user ID, and SP id:
     public static final void rankSP(int userID, int spID, int rank) throws IOException {
+        // TODO
         /**
          * example:
          * http://django-togetthereserver.rhcloud.com/ToGetThere/android/ranksp/1/score/5/user/1
@@ -86,6 +98,7 @@ public class Server {
 
     // Add a review to a certain SP from certain user
     public static final void addReviewToSP(int userID, int spID, String title, String content) throws IOException {
+        // TODO
         /**
          * # ex: /ToGetThere/android/addreview/
          * **POST** request with a JSON body:
@@ -100,6 +113,7 @@ public class Server {
 
     // Add like to a certain review from certain user
     public static final void addLikeToReview(int userID, int spID, int reviewID) throws IOException {
+        // TODO
         /**
          * if there is already like from that user nothing wil change
          * # ex: /ToGetThere/android/addLike/
@@ -131,6 +145,79 @@ public class Server {
          */
         String jsonUser = new Gson().toJson(user);
         String json = HTTPHandler.postRequest(server + "/adduser/", jsonUser);
-        user = new Gson().fromJson(json, User.class);
+        LoginActivity.user.join(new Gson().fromJson(json, User.class));
     }
+
+    /*
+    # remove like of a curtain review from curtain user
+# ex: /ToGetThere/android/removeLike/
+**POST** request with a JSON body:
+{"user": "1",
+"review": "6"}
+will return an http 200 response if the like was deleted successfully
+if no like was found will return http 404
+
+# remove review
+# ex: /ToGetThere/android/removeLike/
+**POST** request with a JSON body:
+{"review_id": "6"}
+will return an http 200 response if the review was deleted successfully
+if no review was found will return http 404
+
+
+# edit the details of a curtain User
+**POST** request with a JSON body, the body is key-value of the fields to change:
+{"name" : "new name"}
+possible fields are:
+      facebook_id
+      first_name
+      last_name
+      full_name
+      email
+      birthday
+      level
+      phone
+      points
+      isVolunteering
+      wasAskedToVolunteer
+# ex: /ToGetThere/android/editprofile/1/
+will return the new user profile in Json
+
+
+# edit the details of a curtain SP
+**POST** request with a JSON body, the body is key-value of the fields to change:
+{"name" : "new name"}
+possible fields are:
+      sp_name
+      address
+      category
+      longitude
+      latitude
+      phone
+      is_verified
+      discount
+      website
+      toilets
+      elevator
+      entrance
+      facilities
+      toilets_text
+      parking_text
+      elevator_text
+      entrance_text
+      facilities_text
+# ex: /ToGetThere/android/sp/1/edit/
+will return the new sp in Json
+
+#edit a curtain review
+**POST** request with a JSON body, the body is key-value of the fields to change:
+{"title" : "new title"}
+possible fields are:
+      title
+      content
+      created
+      user
+#  ex: /ToGetThere/android/editReview/2
+will return an http response of the sp which had the review
+     */
 }

@@ -60,9 +60,9 @@ public class User {
 			// Set Birthday
 			this.birthday = (facebookUser.getBirthday() != null) ? facebookUser.getBirthday() : "1900-01-01";
 			// Set Email
-			this.email = "";
+			this.email = "Unknown";
 			// Set Phone
-			this.phone = "";
+			this.phone = "Unknown";
 			// Gets users current location from Facebook
 			// If user doesn't allow location services, location is null
 			GraphPlace location = facebookUser.getLocation();
@@ -79,9 +79,7 @@ public class User {
 
 	}
 	
-	public GraphUser returnFacebookUser() {
-		return facebookUser;
-	}
+	public GraphUser getFacebookUser() { return facebookUser; }
 
 	public String getFacebook_id() {
 		return facebook_id;
@@ -204,10 +202,26 @@ public class User {
 		this.location = location;
 	}
 
-	public boolean isLoggedIn() { return (facebookUser != null); }
+	public boolean isLoggedIn() { return (this.facebook_id != null); }
 
 	public boolean wasAskedToVolunteer() { return wasAskedToVolunteer; }
 	public void setWasAskedToVolunteer(boolean wasAskedToVolunteer) {  this.wasAskedToVolunteer = wasAskedToVolunteer; }
+
+	public void join(User user){
+		if (this.facebookUser == null) { this.facebookUser = user.getFacebookUser(); }
+		if (this.facebook_id == null || this.facebook_id.equalsIgnoreCase("")) { this.facebook_id = user.getFacebook_id(); }
+		if (this.id == null || this.id.equalsIgnoreCase("")) { this.id = user.getID(); }
+		if (this.first_name == null || this.first_name.equalsIgnoreCase("")) { this.first_name = user.getFirstName(); }
+		if (this.last_name == null || this.last_name.equalsIgnoreCase("")) { this.last_name = user.getLastName(); }
+		if (this.birthday == null || this.birthday.equalsIgnoreCase("")) { this.birthday = user.getBirthday(); }
+		if (this.location == null || this.location.equalsIgnoreCase("")) { this.location = user.getLocation(); }
+		this.points = user.getPoints();
+		this.level = user.getLevel();
+		if (this.email == null || this.email.equalsIgnoreCase("")) { this.email = user.getEmail(); }
+		if (this.phone == null || this.phone.equalsIgnoreCase("")) { this.phone = user.getPhone(); }
+		this.isVolunteering = user.isVolunteering();
+		this.wasAskedToVolunteer = user.wasAskedToVolunteer();
+	}
 
 	@Override
 	public boolean equals(Object other) {

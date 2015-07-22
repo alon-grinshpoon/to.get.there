@@ -53,7 +53,7 @@ public class UserInfoActivity extends Activity {
 		//actionBar.hide();
 
 		// Profile Picture
-		mUser = LoginActivity.user.returnFacebookUser();
+		mUser = LoginActivity.user.getFacebookUser();
 		ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.image_info_facebook_picture);
 		if (mUser != null) {
 			// Show Profile Picture
@@ -152,10 +152,10 @@ public class UserInfoActivity extends Activity {
 						: R.string.willingNo);
 		mEmailTextView.setText(LoginActivity.user.getEmail());
 		mPhoneTextView.setText(LoginActivity.user.getPhone());
-		// TODO user location - mLocationView.setText(User.getLocation());
-		// TODO user name- mNameView.setText(User.getName());
-		// TODO user points- mPointsView.setText(User.getPoints());
-		// TODO user level -mLevelView.setText(User.getLevel());
+		mLocationView.setText(LoginActivity.user.getLocation());
+		mNameView.setText(LoginActivity.user.getFullName());
+		mPointsView.setText(String.valueOf(LoginActivity.user.getPoints()));
+		mLevelView.setText(String.valueOf(LoginActivity.user.getLevel()));
 		mDiscard.setVisibility(View.GONE);
 		mEmailSwitcher = (ViewSwitcher) findViewById(R.id.email_switcher);
 		mPhoneSwitcher = (ViewSwitcher) findViewById(R.id.phone_switcher);

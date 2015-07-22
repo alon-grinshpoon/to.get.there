@@ -1,7 +1,7 @@
 package il.co.togetthere;
 
 import il.co.togetthere.db.ServiceProvider;
-import il.co.togetthere.db.ServiceProviderType;
+import il.co.togetthere.db.ServiceProviderCategory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,12 +153,12 @@ public class AddSPActivity extends Activity {
 				String[] types = getResources().getStringArray(R.array.types);
 				if (position != 0) {
 					if (position == 3) {
-						mSP.setType(ServiceProviderType.PublicServices);
+						mSP.setCategory(ServiceProviderCategory.PublicServices);
 					} else {
-						mSP.setType(ServiceProviderType.stringToEnum(types[position - 1]));
+						mSP.setCategory(ServiceProviderCategory.stringToEnum(types[position - 1]));
 					}
 				} else {
-					mSP.setType(ServiceProviderType.None);
+					mSP.setCategory(ServiceProviderCategory.None);
 				}
 			}
 
@@ -194,7 +194,7 @@ public class AddSPActivity extends Activity {
 
 				// Name
 				if (!name.equals("")) {
-					mSP.setName(name);
+					mSP.setSp_name(name);
 				} else {
 					Toast.makeText(getApplicationContext(),
 							"Location name is missing",
@@ -238,7 +238,9 @@ public class AddSPActivity extends Activity {
 				}
 
 				// Type
-				if (mSP.getType().equals("")) {
+				if (mSP.getCategory()
+
+						.equals("")) {
 					Toast.makeText(getApplicationContext(),
 							"You must select location type",
 							Toast.LENGTH_SHORT).show();

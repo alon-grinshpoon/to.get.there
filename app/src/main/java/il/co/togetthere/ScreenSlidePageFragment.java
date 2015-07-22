@@ -203,7 +203,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 		// TODO Set Verified
 
-		// if (!mTask.isVerified()) {
+		// if (!mTask.isIs_verified()) {
 		// ((ImageView) v.findViewById(R.id.img_is_verified))
 		// .setVisibility(View.INVISIBLE);
 
@@ -226,7 +226,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		
 		// Set Title
 		TextView locationName = ((TextView) v.findViewById(R.id.text_location_name));
-		locationName.setText(mSP.getName());
+		locationName.setText(mSP.getSp_name());
 		locationName.setTypeface(font);
 
 		// Set Description
@@ -240,7 +240,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		locationAddress.setTypeface(font);
 
 		// Set Verified
-		if (!mSP.isVerified()) {
+		if (!mSP.is_verified()) {
 			((ImageView) v.findViewById(R.id.img_is_verified))
 					.setVisibility(View.INVISIBLE);
 		}
@@ -305,23 +305,23 @@ public class ScreenSlidePageFragment extends Fragment implements
 	}
 
 	private void setAccecibility(View v) {
-		if (mSP.hasElevator()) {
+		if (mSP.isElevator()) {
 			((ImageView) v.findViewById(R.id.image_check_toilet))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.hasEntrance()) {
+		if (mSP.isEntrance()) {
 			((ImageView) v.findViewById(R.id.image_check_entrance))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.hasFacilities()) {
+		if (mSP.isFacilities()) {
 			((ImageView) v.findViewById(R.id.image_check_furniture))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.hasParking()) {
+		if (mSP.isParking()) {
 			((ImageView) v.findViewById(R.id.image_check_parking))
 					.setVisibility(View.VISIBLE);
 		}
-		if (mSP.hasToilets()) {
+		if (mSP.isToilets()) {
 			((ImageView) v.findViewById(R.id.image_check_toilet))
 					.setVisibility(View.VISIBLE);
 		}
@@ -365,29 +365,29 @@ public class ScreenSlidePageFragment extends Fragment implements
 		RelativeLayout review3 = (RelativeLayout) v.findViewById(R.id.review3);
 
 		switch (mReviewsList.size()) {
-		case 1: // no reviews
+		case 0: // no reviews
 			noReviews.setTextColor(color);
 			review1.setVisibility(View.GONE);
 			review2.setVisibility(View.GONE);
 			review3.setVisibility(View.GONE);
 			break;
-		case 2: // one review
+		case 1: // one review
 			noReviews.setVisibility(View.GONE);
-			setReview(v, color, 1);
+			setReview(v, color, 0);
 			review2.setVisibility(View.GONE);
 			review3.setVisibility(View.GONE);
 			break;
-		case 3: // two reviews
+		case 2: // two reviews
 			noReviews.setVisibility(View.GONE);
+			setReview(v, color, 0);
 			setReview(v, color, 1);
-			setReview(v, color, 2);
 			review3.setVisibility(View.GONE);
 			break;
 		default: // 3 or more
 			noReviews.setVisibility(View.GONE);
+			setReview(v, color, 0);
 			setReview(v, color, 1);
 			setReview(v, color, 2);
-			setReview(v, color, 3);
 			break;
 		}
 
@@ -428,9 +428,9 @@ public class ScreenSlidePageFragment extends Fragment implements
 		Review reviewObj = mReviewsList.get(num);
 
 		// set review details
-		reviewer.setText(reviewObj.getReviewer());
-		review.setText(reviewObj.getText());
-		likes.setText(reviewObj.getPoints() + "   ");
+		reviewer.setText(reviewObj.getUser().getFullName());
+		review.setText(reviewObj.getContent());
+		likes.setText(reviewObj.getLikes() + "   ");
 		likes.setTextColor(color);
 		likes.setBackground(getResources().getDrawable(likesDrawable));
 		likes.setOnClickListener(new OnClickListener() {
@@ -502,8 +502,8 @@ public class ScreenSlidePageFragment extends Fragment implements
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			holder.title.setText(reviewsList.get(position).getTitle());
-			holder.body.setText(reviewsList.get(position).getText());
+			holder.title.setText(reviewsList.get(position).getUser().getFullName());
+			holder.body.setText(reviewsList.get(position).getContent());
 
 			// Define Font
 			Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
@@ -521,7 +521,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 	public List<Review> getReviews() {
 
-		mReviewsList = mSP.getReviews();
+		mReviewsList = mSP.getReviewsAsList();
 /* 		These are Mock reviews for testing
  *  
 		ReviewObj review1 = new ReviewObj();
