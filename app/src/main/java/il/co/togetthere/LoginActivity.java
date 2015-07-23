@@ -217,6 +217,7 @@ public class LoginActivity extends FragmentActivity implements AsyncResponse {
                 PopupMenu popupMenu = new PopupMenu(LoginActivity.this, view);
                 popupMenu.setOnMenuItemClickListener(new SettingListener(LoginActivity.this));
                 popupMenu.inflate(R.menu.settings_menu);
+                popupMenu.getMenu().findItem(R.id.menuitem_logout).setVisible(false);
                 popupMenu.show();
             }
         });
