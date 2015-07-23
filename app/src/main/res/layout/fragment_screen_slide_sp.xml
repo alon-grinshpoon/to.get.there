@@ -112,19 +112,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="5" >
+            android:weightSum="5"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:id="@+id/toilet_layout"
+                android:clickable="false">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_toilets" />
+                    android:src="@drawable/ic_toilets"
+                    android:id="@+id/image_toilets"
+                    android:clickable="true" />
 
                 <ImageView
                     android:id="@+id/image_check_toilet"
@@ -139,13 +144,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:id="@+id/parking_layout"
+                android:clickable="false">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_parking" />
+                    android:src="@drawable/ic_parking"
+                    android:id="@+id/image_parking"
+                    android:clickable="true" />
 
                 <ImageView
                     android:id="@+id/image_check_parking"
@@ -160,13 +169,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:id="@+id/elevator_layout"
+                android:clickable="false">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_elevator" />
+                    android:src="@drawable/ic_elevator"
+                    android:id="@+id/image_elevator"
+                    android:clickable="true" />
 
                 <ImageView
                     android:id="@+id/image_check_elevator"
@@ -181,13 +194,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:id="@+id/entrance_layout"
+                android:clickable="false">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_entrance" />
+                    android:src="@drawable/ic_entrance"
+                    android:id="@+id/image_entrance"
+                    android:clickable="true" />
 
                 <ImageView
                     android:id="@+id/image_check_entrance"
@@ -202,13 +219,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:id="@+id/facilities_layout"
+                android:clickable="false">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_furniture" />
+                    android:src="@drawable/ic_furniture"
+                    android:id="@+id/image_facilities"
+                    android:clickable="true" />
 
                 <ImageView
                     android:id="@+id/image_check_furniture"
@@ -221,6 +242,23 @@
         </LinearLayout>
 
         <!-- MAP -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/text_location_accecability_header"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/text_location_accecability"
+            android:layout_gravity="center_horizontal" />
 
         <com.google.android.gms.maps.MapView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -322,7 +360,9 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="12dp"
                 android:text="www.my.com"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical" />
 
         </LinearLayout>
 

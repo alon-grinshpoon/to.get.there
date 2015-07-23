@@ -305,30 +305,80 @@ public class ScreenSlidePageFragment extends Fragment implements
 	}
 
 	private void setAccecibility(View v) {
+        ImageView accessibleView;
+        ImageView accessibilityImage;
+        TextView tv = (TextView) rootView.findViewById(R.id.text_location_accecability);
+        tv.setVisibility(View.GONE);
+        TextView htv = (TextView) rootView.findViewById(R.id.text_location_accecability_header);
+        htv.setVisibility(View.GONE);
+
 		if (mSP.isElevator()) {
-			((ImageView) v.findViewById(R.id.image_check_toilet))
-					.setVisibility(View.VISIBLE);
-		}
+            accessibleView = (ImageView) v.findViewById(R.id.image_check_toilet);
+            accessibleView.setVisibility(View.VISIBLE);}
 		if (mSP.isEntrance()) {
-			((ImageView) v.findViewById(R.id.image_check_entrance))
-					.setVisibility(View.VISIBLE);
+            accessibleView = (ImageView) v.findViewById(R.id.image_check_entrance);
+            accessibleView.setVisibility(View.VISIBLE);
 		}
 		if (mSP.isFacilities()) {
-			((ImageView) v.findViewById(R.id.image_check_furniture))
-					.setVisibility(View.VISIBLE);
+            accessibleView = (ImageView) v.findViewById(R.id.image_check_furniture);
+            accessibleView.setVisibility(View.VISIBLE);
 		}
 		if (mSP.isParking()) {
-			((ImageView) v.findViewById(R.id.image_check_parking))
-					.setVisibility(View.VISIBLE);
+            accessibleView = (ImageView) v.findViewById(R.id.image_check_parking);
+            accessibleView.setVisibility(View.VISIBLE);
 		}
 		if (mSP.isToilets()) {
-			((ImageView) v.findViewById(R.id.image_check_toilet))
-					.setVisibility(View.VISIBLE);
+            accessibleView = (ImageView) v.findViewById(R.id.image_check_toilet);
+            accessibleView.setVisibility(View.VISIBLE);
 		}
-
+        // Set onClickListeneres for text
+        accessibilityImage = (ImageView) v.findViewById(R.id.image_elevator);
+        accessibilityImage.setOnClickListener(new AccessibilityListener("Elevator", mSP.getElevator_text()));
+        accessibilityImage = (ImageView) v.findViewById(R.id.image_toilets);
+        accessibilityImage.setOnClickListener(new AccessibilityListener("Toilets", mSP.getToilets_text()));
+        accessibilityImage = (ImageView) v.findViewById(R.id.image_parking);
+        accessibilityImage.setOnClickListener(new AccessibilityListener("Parking", mSP.getParking_text()));
+        accessibilityImage = (ImageView) v.findViewById(R.id.image_facilities);
+        accessibilityImage.setOnClickListener(new AccessibilityListener("Facilities", mSP.getFacilities_text()));
+        accessibilityImage = (ImageView) v.findViewById(R.id.image_entrance);
+        accessibilityImage.setOnClickListener(new AccessibilityListener("Entrance", mSP.getEntrance_text()));
 	}
 
-	private void setStarsView(View v, int starsNum) {
+    class AccessibilityListener implements OnClickListener{
+        String accecibilityHeader;
+        String accecibilityText;
+
+        public AccessibilityListener(String header, String accecibilityText) {
+            Log.i("accecibility", "Adding listener to accessibility test: " + this.accecibilityText);
+            this.accecibilityHeader = header;
+            this.accecibilityText = accecibilityText;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Log.i("CLICKKKKKKKKKKKKK", "CLICKKKKKKKKKKKKK");
+            //Get Accessibility text view
+            TextView tv = (TextView) rootView.findViewById(R.id.text_location_accecability);
+            //tv.setTypeface(font);
+            TextView htv = (TextView) rootView.findViewById(R.id.text_location_accecability_header);
+            //htv.setTypeface(font);
+
+            // If no txt, hide box
+            if (accecibilityText== null || accecibilityText.equals("")) {
+                tv.setVisibility(View.GONE);
+                htv.setVisibility(View.GONE);
+            } else {
+                Log.i("accessability", "Showing: " + accecibilityText);
+                tv.setText(accecibilityText);
+                htv.setText(accecibilityHeader);
+                htv.setVisibility(View.VISIBLE);
+                tv.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+
+    private void setStarsView(View v, int starsNum) {
 		switch (starsNum) {
 		case 5:
 			((ImageView) v.findViewById(R.id.image_rank_5))
@@ -430,6 +480,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		// set review details
 		reviewer.setText(reviewObj.getUser().getFullName());
 		review.setText(reviewObj.getContent());
+        profilePictureView.setProfileId(reviewObj.getUser().getFacebook_id());
 		likes.setText(reviewObj.getLikes() + "   ");
 		likes.setTextColor(color);
 		likes.setBackground(getResources().getDrawable(likesDrawable));

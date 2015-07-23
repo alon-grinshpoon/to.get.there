@@ -211,7 +211,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 			@Override
 			public void onPageSelected(int position) {
 				curr = position;
-				Log.i("Position", "Position is" + position);
+				Log.i("Position", "Position is " + position);
 				invalidateOptionsMenu();
 			}
 		});
