@@ -356,7 +356,6 @@ public class ScreenSlidePageFragment extends Fragment implements
 
         @Override
         public void onClick(View view) {
-            Log.i("CLICKKKKKKKKKKKKK", "CLICKKKKKKKKKKKKK");
             //Get Accessibility text view
             TextView tv = (TextView) rootView.findViewById(R.id.text_location_accecability);
             //tv.setTypeface(font);
