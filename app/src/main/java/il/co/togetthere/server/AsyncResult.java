@@ -1,5 +1,6 @@
 package il.co.togetthere.server;
 
+import java.io.IOException;
 import java.util.List;
 
 import il.co.togetthere.db.ServiceProvider;
@@ -13,6 +14,8 @@ public class AsyncResult {
     private List<Task> taskList;
 
     private boolean error = false;
+    private String message = "";
+    private int statusCode = 200;
 
     public ServiceProviderCategory getResultCategory() {
         return resultCategory;
@@ -44,5 +47,27 @@ public class AsyncResult {
 
     public void setError(boolean error) {
         this.error = error;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public void catchException(IOException e){
+        this.setError(true);
+        this.setMessage(e.getMessage().substring(e.getMessage().indexOf(")") + 1));
+        this.setStatusCode(Integer.parseInt(e.getMessage().substring(e.getMessage().indexOf("(") + 1, e.getMessage().indexOf(")"))));
     }
 }

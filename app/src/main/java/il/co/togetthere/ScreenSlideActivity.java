@@ -39,6 +39,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 	private int curr;
 	public static List<ServiceProvider> serviceProviderList;
 	public static List<Task> taskList;
+	public int currentIndex = 0;
 
 	/**
 	 * The pager widget, which handles animation and allows swiping horizontally
@@ -98,7 +99,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 				&& getServiceProviderCategory().equals("help")) {
 			//mThread.execute(DynamoDBManagerType.GET_TASKS.toString());
 		} else {
-			AsyncRequest asyncRequest = new AsyncRequest(getApplicationContext(), ScreenSlideActivity.this);
+			AsyncRequest asyncRequest = new AsyncRequest(ScreenSlideActivity.this);
 			ServiceProviderCategory category = ServiceProviderCategory.stringToEnum(serviceProviderCategory);
 			asyncRequest.execute(Server.SERVER_ACTION_GET_SPS_OF_CATEGORY, category);
 		}
@@ -147,7 +148,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 				@Override
 				public void onClick(View view) {
 					PopupMenu popupMenu = new PopupMenu(ScreenSlideActivity.this, view);
-					popupMenu.setOnMenuItemClickListener(new RankingListener(ScreenSlideActivity.this));
+					popupMenu.setOnMenuItemClickListener(new RankingListener(ScreenSlideActivity.this, getCurrentServiceProvider()));
 					popupMenu.inflate(R.menu.ranking_menu);
 					popupMenu.show();
 				}
@@ -256,6 +257,10 @@ public class ScreenSlideActivity extends FragmentActivity implements
 
 	public static ServiceProvider getServiceProvider(int position) {
 		return serviceProviderList.get(position);
+	}
+
+	public ServiceProvider getCurrentServiceProvider() {
+		return serviceProviderList.get(currentIndex);
 	}
 
 	/**

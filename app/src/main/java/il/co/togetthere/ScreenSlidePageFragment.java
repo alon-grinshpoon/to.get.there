@@ -452,15 +452,20 @@ public class ScreenSlidePageFragment extends Fragment implements
             this.v =(TextView) v;
             TextView likes  = (TextView) v;
             // Register Like
-            AsyncRequest asyncRequest = new AsyncRequest( v.getContext().getApplicationContext() , LikeListener.this);
+            AsyncRequest asyncRequest = new AsyncRequest(LikeListener.this);
             asyncRequest.execute(Server.SERVER_ACTION_ADD_LIKE_TO_REVIEW, LoginActivity.user, mReviewsList.get(mReviewPos));
-
         }
 
         @Override
         public void handleResult(AsyncResult result) {
             if (result.errored()) {
-                Toast.makeText(v.getContext().getApplicationContext(), "Oops! Unable to add your like.",
+				String message;
+				if (result.getStatusCode() == 400){
+					message = "Uh-oh! You already liked this review.";
+				} else {
+					message = "Oops! Unable to add your like.";
+				}
+                Toast.makeText(v.getContext().getApplicationContext(), message,
                         Toast.LENGTH_SHORT).show();
             } else {
                 // Inc Likes
@@ -538,7 +543,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 		mReviewsList = mSP.getReviewsAsList();
 /* 		These are Mock reviews for testing
- *  
+ *
 		ReviewObj review1 = new ReviewObj();
 		review1.setTitle("TitleA1");
 		review1.setReview("Great Place, Very Accecible");

@@ -141,7 +141,7 @@ public class LoginActivity extends FragmentActivity implements AsyncResponse {
                     // Set Facebook user in application user
                     LoginActivity.user.init(facebookUser);
                     // Register User
-                    AsyncRequest asyncRequest = new AsyncRequest(getApplicationContext(), LoginActivity.this);
+                    AsyncRequest asyncRequest = new AsyncRequest(LoginActivity.this);
                     asyncRequest.execute(Server.SERVER_ACTION_REGISTER_USER, LoginActivity.user);
                 }
 

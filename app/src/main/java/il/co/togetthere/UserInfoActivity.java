@@ -112,7 +112,7 @@ public class UserInfoActivity extends Activity implements AsyncResponse {
 					mPhoneTextView.setText(newPhone);
 					setFixedDetailsView();
 					// Save on server
-					AsyncRequest asyncRequest = new AsyncRequest(getApplicationContext(), UserInfoActivity.this);
+					AsyncRequest asyncRequest = new AsyncRequest(UserInfoActivity.this);
 					asyncRequest.execute(Server.SERVER_ACTION_EDIT_USER_BY_ID, LoginActivity.user, Integer.parseInt(LoginActivity.user.getID()));
 				}
 

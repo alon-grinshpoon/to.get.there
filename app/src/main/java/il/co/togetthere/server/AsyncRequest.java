@@ -14,12 +14,10 @@ import il.co.togetthere.db.User;
 
 public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
 
-    Context applicationContext;
     AsyncResponse sendResponseTo;
 
     /* Constructor */
-    public AsyncRequest(Context applicationContext, AsyncResponse sendResponseTo){
-        this.applicationContext = applicationContext;
+    public AsyncRequest(AsyncResponse sendResponseTo){
         this.sendResponseTo = sendResponseTo;
     }
 
@@ -52,7 +50,7 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                     result.setServiceProviderList(serviceProviderList);
                 } catch (IOException e) {
                     // Configure result as error
-                    result.setError(true);
+                    result.catchException(e);
                 }
                 break;
             case Server.SERVER_ACTION_REGISTER_USER:
@@ -63,7 +61,7 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                     Server.registerUser(user);
                 } catch (IOException e) {
                     // Configure result as error
-                    result.setError(true);
+                    result.catchException(e);
                 }
                 break;
             case Server.SERVER_ACTION_EDIT_USER_BY_ID:
@@ -75,8 +73,9 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                     Server.editUserByID(user, userID);
                 } catch (IOException e) {
                     // Configure result as error
-                    result.setError(true);
+                    result.catchException(e);
                 }
+                break;
             case Server.SERVER_ACTION_ADD_LIKE_TO_REVIEW:
                 // Parse parameter
                 user = (User) objects[1];
@@ -85,9 +84,10 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                 try {
                     Server.addLikeToReview(user, review);
                 } catch (IOException e) {
-                    // Configure result as error
-                    result.setError(true);
+                        // Configure result as error
+                        result.catchException(e);
                 }
+                break;
             default:
                 break;
 

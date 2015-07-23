@@ -53,7 +53,7 @@ public class HTTPHandler {
 
         // Check for errors
         if (response.getStatusLine().getStatusCode() != 200){
-            throw new IOException("ERROR " + response.getStatusLine().getStatusCode() + " " + jsonRsponse);
+            throw new IOException("ERROR(" + response.getStatusLine().getStatusCode() + ")" + jsonRsponse);
         }
 
         // When HttpClient instance is no longer needed,
@@ -96,7 +96,7 @@ public class HTTPHandler {
 
         // Check for errors
         if (response.getStatusLine().getStatusCode() != 200){
-            throw new IOException("ERROR " + response.getStatusLine().getStatusCode() + " " + json);
+            throw new IOException("ERROR(" + response.getStatusLine().getStatusCode() + ")" + json);
         }
 
         // When HttpClient instance is no longer needed,
