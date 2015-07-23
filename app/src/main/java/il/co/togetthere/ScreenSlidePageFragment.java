@@ -5,7 +5,6 @@ import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.Task;
 
 import java.util.List;
-import java.util.Random;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -95,7 +94,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 	}
 
 	private ServiceProvider getCurrSP(int PageNumber) {
-		return ScreenSlideActivity.getCurrSP(PageNumber);
+		return ScreenSlideActivity.getServiceProvider(PageNumber);
 	}
 
 	private Task getCurrTask(int PageNumber) {

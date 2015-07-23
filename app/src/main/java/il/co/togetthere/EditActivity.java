@@ -69,7 +69,7 @@ public class EditActivity extends Activity {
 		Intent inIntent = getIntent();
 		int pageNumber = inIntent.getIntExtra("SP_NUMBER", 1);
 		Log.i("Position", "Position is" + pageNumber);
-		mSP = ScreenSlideActivity.getCurrSP(pageNumber);
+		mSP = ScreenSlideActivity.getServiceProvider(pageNumber);
 
 		// Define Font
 		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.TTF");

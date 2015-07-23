@@ -98,19 +98,9 @@ public class ScreenSlideActivity extends FragmentActivity implements
 				&& getServiceProviderCategory().equals("help")) {
 			//mThread.execute(DynamoDBManagerType.GET_TASKS.toString());
 		} else {
-			//mThread.execute(DynamoDBManagerType.GET_PROVIDER.toString(), ServiceProvider.stringToEnum(getmServiceProviderType()).toString());
 			AsyncRequest asyncRequest = new AsyncRequest(getApplicationContext(), ScreenSlideActivity.this);
 			ServiceProviderCategory category = ServiceProviderCategory.stringToEnum(serviceProviderCategory);
 			asyncRequest.execute(Server.SERVER_ACTION_GET_SPS_OF_CATEGORY, category);
-			/*
-			try {
-				ServiceProviderCategory category = ServiceProviderCategory.stringToEnum(serviceProviderCategory);
-				serviceProviderList = Server.getSPsOfCategory(category);
-				showPager();
-			} catch (IOException e) {
-				Toast.makeText(getApplicationContext(), "Oops! Failed to load all " + serviceProviderCategory + "...",
-						Toast.LENGTH_SHORT).show();
-			}*/
 		}
 
 		/**
@@ -264,7 +254,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		}
 	}
 
-	public static ServiceProvider getCurrSP(int position) {
+	public static ServiceProvider getServiceProvider(int position) {
 		return serviceProviderList.get(position);
 	}
 

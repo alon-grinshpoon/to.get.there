@@ -1,6 +1,9 @@
 package il.co.togetthere.server;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -230,7 +233,18 @@ public class Server {
         * wasAskedToVolunteer
         * Example: /ToGetThere/android/editprofile/1/
         * will return the new user profile in Json */
-        String json = new Gson().toJson(user);
+        Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() { // Create JSON from User but exclude id
+            @Override
+            public boolean shouldSkipField(FieldAttributes f) {
+                return (f.getDeclaringClass() == User.class && f.getName().equals("id"));
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        }).create();
+        String json = gson.toJson(user);
         String jsonResponse = HTTPHandler.postRequest(server + "/editprofile/" + userID + "/", json);
         User newUser = new Gson().fromJson(jsonResponse, User.class);
         return newUser;
