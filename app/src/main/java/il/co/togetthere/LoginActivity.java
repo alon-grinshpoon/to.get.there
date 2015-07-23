@@ -127,6 +127,12 @@ public class LoginActivity extends FragmentActivity implements AsyncResponse {
         buttonLoginFacebook = (LoginButton) findViewById(R.id.button_login_facebook);
         buttonLoginFacebook.setBackgroundResource(R.drawable.button_login_facebook);
         buttonLoginFacebook.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
+        buttonLoginFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.progress_bar_login).setVisibility(View.VISIBLE);
+            }
+        });
         buttonLoginFacebook.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
             @Override
             public void onUserInfoFetched(GraphUser facebookUser) {
@@ -200,6 +206,9 @@ public class LoginActivity extends FragmentActivity implements AsyncResponse {
                 }
             }
         });
+
+        // Configure Progress Bar
+        findViewById(R.id.progress_bar_login).setVisibility(View.GONE);
 
         // Configure Settings Button
         findViewById(R.id.button_login_settings).setOnClickListener(new View.OnClickListener() {
@@ -281,6 +290,8 @@ public class LoginActivity extends FragmentActivity implements AsyncResponse {
     	new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
+                // Hide Progress Bar
+                findViewById(R.id.progress_bar_login).setVisibility(View.GONE);
                 /* Create an Intent that will start the Menu-Activity. */
                 Intent mainIntent = new Intent(LoginActivity.this, TypeChooserActivity.class);
                 LoginActivity.this.startActivity(mainIntent);
@@ -462,6 +473,7 @@ public class LoginActivity extends FragmentActivity implements AsyncResponse {
             Toast.makeText(getApplicationContext(), "Oops! Unable to register your user.",
                     Toast.LENGTH_SHORT).show();
         } else {
+
             // Save user as a shared preference
             SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor prefsEditor = mPrefs.edit();
