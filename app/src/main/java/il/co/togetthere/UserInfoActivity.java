@@ -253,7 +253,7 @@ public class UserInfoActivity extends Activity implements AsyncResponse {
 			prefsEditor.putString("User", json);
 			prefsEditor.commit();
 			// Show message
-			Toast.makeText(getApplicationContext(), "Awesome! your user was update.",
+			Toast.makeText(getApplicationContext(), "Awesome! your profile was updated.",
 					Toast.LENGTH_SHORT).show();
 		}
 	}

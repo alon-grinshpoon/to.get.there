@@ -60,9 +60,9 @@ public class User {
 			// Set Birthday
 			this.birthday = (facebookUser.getBirthday() != null) ? facebookUser.getBirthday() : "1900-01-01";
 			// Set Email
-			this.email = "Unknown";
+			this.email = "Email";
 			// Set Phone
-			this.phone = "Unknown";
+			this.phone = "Phone";
 			// Gets users current location from Facebook
 			// If user doesn't allow location services, location is null
 			GraphPlace location = facebookUser.getLocation();
@@ -71,7 +71,7 @@ public class User {
 				this.latitude = location.getLocation().getLatitude();
 				this.longitude = location.getLocation().getLongitude();
 			} else {
-				this.location = "Unknown";
+				this.location = "Location";
 				this.latitude = 0;
 				this.longitude = 0;
 			}
