@@ -7,6 +7,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.List;
 
+import il.co.togetthere.db.Review;
 import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.db.User;
@@ -34,6 +35,7 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
         // Define parameters
         User user;
         int userID;
+        Review review;
 
         // Perform server action
         switch (serverAction){
@@ -71,6 +73,17 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                 // Run server action
                 try {
                     Server.editUserByID(user, userID);
+                } catch (IOException e) {
+                    // Configure result as error
+                    result.setError(true);
+                }
+            case Server.SERVER_ACTION_ADD_LIKE_TO_REVIEW:
+                // Parse parameter
+                user = (User) objects[1];
+                review = (Review) objects[2];
+                // Run server action
+                try {
+                    Server.addLikeToReview(user, review);
                 } catch (IOException e) {
                     // Configure result as error
                     result.setError(true);
