@@ -1,6 +1,5 @@
 package il.co.togetthere;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -144,12 +143,6 @@ public class LoginActivity extends FragmentActivity implements AsyncResponse {
                     // Register User
                     AsyncRequest asyncRequest = new AsyncRequest(getApplicationContext(), LoginActivity.this);
                     asyncRequest.execute(Server.SERVER_ACTION_REGISTER_USER, LoginActivity.user);
-                    /*try {
-                        Server.registerUser(LoginActivity.user);
-                    } catch (IOException e) {
-                        Toast.makeText(getApplicationContext(), "Oops! Unable to register your user.",
-                                Toast.LENGTH_SHORT).show();
-                    }*/
                 }
 
                 // It's possible that we were waiting for this.user to be populated in order to post a

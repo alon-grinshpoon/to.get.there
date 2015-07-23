@@ -31,8 +31,13 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
         // Get server action (Always the first parameter)
         int serverAction = (int) objects[0];
 
+        // Define parameters
+        User user;
+        int userID;
+
         // Perform server action
         switch (serverAction){
+
             case Server.SERVER_ACTION_GET_SPS_OF_CATEGORY:
                 // Parse parameter
                 ServiceProviderCategory category = (ServiceProviderCategory) objects[1];
@@ -50,7 +55,7 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                 break;
             case Server.SERVER_ACTION_REGISTER_USER:
                 // Parse parameter
-                User user = (User) objects[1];
+                user = (User) objects[1];
                 // Run server action
                 try {
                     Server.registerUser(user);
@@ -59,6 +64,17 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                     result.setError(true);
                 }
                 break;
+            case Server.SERVER_ACTION_EDIT_USER_BY_ID:
+                // Parse parameter
+                user = (User) objects[1];
+                userID = (int) objects[2];
+                // Run server action
+                try {
+                    Server.editUserByID(user, userID);
+                } catch (IOException e) {
+                    // Configure result as error
+                    result.setError(true);
+                }
             default:
                 break;
 

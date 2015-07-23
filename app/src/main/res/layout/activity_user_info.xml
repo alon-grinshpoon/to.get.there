@@ -77,13 +77,32 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@android:color/white" />
 
-                <TextView
-                    android:id="@+id/text_user_adress"
+                <ViewSwitcher
+                    android:id="@+id/address_switcher"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="Tel Aviv, Israel"
-                    android:textColor="@android:color/white" />
+                    android:gravity="center" >
+
+                    <TextView
+                        android:id="@+id/text_user_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Tel Aviv, Israel"
+                        android:textColor="@android:color/white"
+                        android:visibility="invisible" />
+
+                    <EditText
+                        android:id="@+id/edit_text_user_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:inputType="textMultiLine"
+                        android:text="email here"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/white"
+                        android:visibility="visible" />
+                </ViewSwitcher>
 
                 <ViewSwitcher
                     android:id="@+id/email_switcher"
