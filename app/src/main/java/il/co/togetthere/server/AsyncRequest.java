@@ -34,6 +34,7 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
         User user;
         int userID;
         Review review;
+        ServiceProvider serviceProvider;
 
         // Perform server action
         switch (serverAction){
@@ -86,6 +87,19 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                 } catch (IOException e) {
                         // Configure result as error
                         result.catchException(e);
+                }
+                break;
+            case Server.SERVER_ACTION_RANK_SP:
+                // Parse parameter
+                user = (User) objects[1];
+                serviceProvider = (ServiceProvider) objects[2];
+                int rank = (int) objects[3];
+                // Run server action
+                try {
+                    Server.rankSP(user, serviceProvider, rank);
+                } catch (IOException e) {
+                    // Configure result as error
+                    result.catchException(e);
                 }
                 break;
             default:

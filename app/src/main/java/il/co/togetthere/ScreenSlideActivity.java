@@ -36,10 +36,9 @@ public class ScreenSlideActivity extends FragmentActivity implements
 	private static int NUM_PAGES = 1;
 	// current service provider type
 	private static String serviceProviderCategory;
-	private int curr;
+	public static int currentIndex;
 	public static List<ServiceProvider> serviceProviderList;
 	public static List<Task> taskList;
-	public int currentIndex = 0;
 
 	/**
 	 * The pager widget, which handles animation and allows swiping horizontally
@@ -148,7 +147,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 				@Override
 				public void onClick(View view) {
 					PopupMenu popupMenu = new PopupMenu(ScreenSlideActivity.this, view);
-					popupMenu.setOnMenuItemClickListener(new RankingListener(ScreenSlideActivity.this, getCurrentServiceProvider()));
+					popupMenu.setOnMenuItemClickListener(new RankingListener(ScreenSlideActivity.this, serviceProviderList));
 					popupMenu.inflate(R.menu.ranking_menu);
 					popupMenu.show();
 				}
@@ -165,7 +164,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 					Intent editIntent = null;
 					editIntent = new Intent(ScreenSlideActivity.this,
 							EditActivity.class);
-					editIntent.putExtra("SP_NUMBER", curr);
+					editIntent.putExtra("SP_NUMBER", currentIndex);
 					ScreenSlideActivity.this.startActivity(editIntent);
 
 					// TODO - update SP when editing is finished
@@ -196,12 +195,12 @@ public class ScreenSlideActivity extends FragmentActivity implements
 
 		if (getServiceProviderCategory().equals("help")) {
 			NUM_PAGES = taskList.size();
-			curr = 0;
+			currentIndex = 0;
 			mPagerAdapter = new ScreenSlidePagerAdapterTask(
 					getFragmentManager());
 		} else {
 			NUM_PAGES = serviceProviderList.size();
-			curr = 0;
+			currentIndex = 0;
 			mPagerAdapter = new ScreenSlidePagerAdapterSP(getFragmentManager());
 		}
 
@@ -210,7 +209,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
-				curr = position;
+				currentIndex = position;
 				Log.i("Position", "Position is" + position);
 				invalidateOptionsMenu();
 			}
@@ -283,9 +282,12 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		}
 	}
 
-	public static Task getCurrTask(int position) {
+	public static Task getTask(int position) {
 		return taskList.get(position);
+	}
 
+	public static Task getCurrentTask() {
+		return taskList.get(currentIndex);
 	}
 
 	public static String getServiceProviderCategory() {

@@ -6,37 +6,65 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 import android.content.Context;
 
-import il.co.togetthere.db.ServiceProvider;
+import java.util.List;
 
-public class RankingListener implements PopupMenu.OnMenuItemClickListener{
+import il.co.togetthere.db.ServiceProvider;
+import il.co.togetthere.server.AsyncRequest;
+import il.co.togetthere.server.AsyncResponse;
+import il.co.togetthere.server.AsyncResult;
+import il.co.togetthere.server.Server;
+
+public class RankingListener implements PopupMenu.OnMenuItemClickListener, AsyncResponse {
 
     private Context context;
-    private ServiceProvider sp;
+    private List<ServiceProvider> serviceProvidersList;
+    int rank = 0;
 
-    RankingListener(Context context, ServiceProvider sp){
+    RankingListener(Context context, List<ServiceProvider> serviceProvidersList){
         this.context = context;
-        this.sp = sp;
+        this.serviceProvidersList = serviceProvidersList;
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
+        // Define rank value
         switch (menuItem.getItemId()) {
             case R.id.option_rank5:
-                Toast.makeText(this.context, "5" + sp.getId(), Toast.LENGTH_SHORT).show();
-                return true;
+                rank = 5;
+                break;
             case R.id.option_rank4:
-                Toast.makeText(this.context, "4" + sp.getId(), Toast.LENGTH_SHORT).show();
-                return true;
+                rank = 4;
+                break;
             case R.id.option_rank3:
-                Toast.makeText(this.context, "3" + sp.getId(), Toast.LENGTH_SHORT).show();
-                return true;
+                rank = 3;
+                break;
             case R.id.option_rank2:
-                Toast.makeText(this.context, "2" + sp.getId(), Toast.LENGTH_SHORT).show();
-                return true;
+                rank = 2;
+                break;
             case R.id.option_rank1:
-                Toast.makeText(this.context, "1" + sp.getId(), Toast.LENGTH_SHORT).show();
-                return true;
+                rank = 1;
+                break;
         }
-        return false;
+        // Rank Service Provider
+        ServiceProvider serviceProvider = serviceProvidersList.get(ScreenSlideActivity.currentIndex);
+        AsyncRequest asyncRequest = new AsyncRequest(RankingListener.this);
+        asyncRequest.execute(Server.SERVER_ACTION_RANK_SP, LoginActivity.user, serviceProvider, rank);
+        return true;
+    }
+
+    @Override
+    public void handleResult(AsyncResult result) {
+        if (result.errored()){
+            String message;
+            if (result.getStatusCode() == 400){
+                message = "Uh-oh! You already ranked this placed.";
+            } else {
+                message = "Oops! Your rank failed to process.";
+            }
+            Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this.context, "Great! You gave a " + rank + "-star ranking to " + serviceProvidersList.get(ScreenSlideActivity.currentIndex).getSp_name(), Toast.LENGTH_LONG).show();
+        }
+
     }
 }

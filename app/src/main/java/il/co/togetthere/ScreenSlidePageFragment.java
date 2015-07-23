@@ -102,7 +102,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 	}
 
 	private Task getCurrTask(int PageNumber) {
-		return ScreenSlideActivity.getCurrTask(PageNumber);
+		return ScreenSlideActivity.getTask(PageNumber);
 	}
 
 	@Override
