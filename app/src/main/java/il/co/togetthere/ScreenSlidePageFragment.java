@@ -265,10 +265,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		setAccecibility(v);
 
 		// set Stars rank
-		int starsNum = 0;
-		Random rand = new Random();
-		starsNum = rand.nextInt(5);
-		setStarsView(v, starsNum);
+		setStarsView(v, mSP.getAverageRank());
 
 		// Set Waze button
 		LinearLayout wazeButton = (LinearLayout) v
