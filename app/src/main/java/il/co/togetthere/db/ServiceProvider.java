@@ -9,7 +9,7 @@ public class ServiceProvider {
 
 	private String sp_name;
 	private boolean is_verified;
-	private int avg_rank;
+	private float avg_rank;
 
 	private boolean toilets;
 	private String toilets_text;
@@ -63,7 +63,7 @@ public class ServiceProvider {
 	/**
 	 * Constructor
 	 */
-	public ServiceProvider(String id, ServiceProviderCategory category, String sp_name, boolean is_verified, int avg_rank, boolean toilets, String toilets_text, boolean parking, String parking_text, boolean elevator, String elevator_text, boolean entrance, String entrance_text, boolean facilities, String facilities_text, String address, double latitude, double longitude, String phone, int discount, String website, Review[] reviews) {
+	public ServiceProvider(String id, ServiceProviderCategory category, String sp_name, boolean is_verified, float avg_rank, boolean toilets, String toilets_text, boolean parking, String parking_text, boolean elevator, String elevator_text, boolean entrance, String entrance_text, boolean facilities, String facilities_text, String address, double latitude, double longitude, String phone, int discount, String website, Review[] reviews) {
 		this.id = id;
 		this.category = category;
 		this.sp_name = sp_name;
@@ -124,11 +124,11 @@ public class ServiceProvider {
 		this.is_verified = is_verified;
 	}
 
-	public int getAverageRank() {
+	public float getAverageRank() {
 		return avg_rank;
 	}
 
-	public void setAverageRank(int avg_rank) {
+	public void setAverageRank(float avg_rank) {
 		this.avg_rank = avg_rank;
 	}
 
