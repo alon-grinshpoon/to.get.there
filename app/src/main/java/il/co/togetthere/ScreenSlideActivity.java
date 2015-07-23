@@ -1,12 +1,14 @@
 package il.co.togetthere;
 import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderCategory;
+import il.co.togetthere.db.Task;
+import il.co.togetthere.server.AsyncRequest;
+import il.co.togetthere.server.AsyncResponse;
+import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
 
-import java.io.IOException;
-import java.util.List;
-
 import android.annotation.SuppressLint;
+import java.util.List;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -29,13 +31,14 @@ import com.facebook.widget.ProfilePictureView;
 /**
  * @see ScreenSlidePageFragment
  */
-public class ScreenSlideActivity extends FragmentActivity {
+public class ScreenSlideActivity extends FragmentActivity implements
+		AsyncResponse {
 	private static int NUM_PAGES = 1;
 	// current service provider type
-	private static String mServiceProviderType;
-	private int mCurr;
-	public static List<ServiceProvider> mServiceProviderArr;
-	public static List<Task> mTaskArr;
+	private static String serviceProviderCategory;
+	private int curr;
+	public static List<ServiceProvider> serviceProviderList;
+	public static List<Task> taskList;
 
 	/**
 	 * The pager widget, which handles animation and allows swiping horizontally
@@ -89,21 +92,25 @@ public class ScreenSlideActivity extends FragmentActivity {
 		 * Get Values
 		 **/
 		Intent inIntent = getIntent();
-		setmServiceProviderType(inIntent.getStringExtra("TYPE_EXTRA"));
+		setServiceProviderCategory(inIntent.getStringExtra("TYPE_EXTRA"));
 
-		if (getmServiceProviderType() != null
-				&& getmServiceProviderType().equals("help")) {
+		if (getServiceProviderCategory() != null
+				&& getServiceProviderCategory().equals("help")) {
 			//mThread.execute(DynamoDBManagerType.GET_TASKS.toString());
 		} else {
 			//mThread.execute(DynamoDBManagerType.GET_PROVIDER.toString(), ServiceProvider.stringToEnum(getmServiceProviderType()).toString());
+			AsyncRequest asyncRequest = new AsyncRequest(getApplicationContext(), ScreenSlideActivity.this);
+			ServiceProviderCategory category = ServiceProviderCategory.stringToEnum(serviceProviderCategory);
+			asyncRequest.execute(Server.SERVER_ACTION_GET_SPS_OF_CATEGORY, category);
+			/*
 			try {
-				ServiceProviderCategory category = ServiceProviderCategory.stringToEnum(mServiceProviderType);
-				mServiceProviderArr = Server.getSPsOfCategory(category);
+				ServiceProviderCategory category = ServiceProviderCategory.stringToEnum(serviceProviderCategory);
+				serviceProviderList = Server.getSPsOfCategory(category);
 				showPager();
 			} catch (IOException e) {
-				Toast.makeText(getApplicationContext(), "Oops! Failed to load all " + mServiceProviderType + "...",
+				Toast.makeText(getApplicationContext(), "Oops! Failed to load all " + serviceProviderCategory + "...",
 						Toast.LENGTH_SHORT).show();
-			}
+			}*/
 		}
 
 		/**
@@ -115,7 +122,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 					@Override
 					public void onClick(View v) {
 						Intent addNewIntent;
-						if (getmServiceProviderType().equals("help")) {
+						if (getServiceProviderCategory().equals("help")) {
 							addNewIntent = new Intent(ScreenSlideActivity.this,
 									AddNewTaskActivity.class);
 							ScreenSlideActivity.this
@@ -143,7 +150,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 
 		// Rank Button Handler
 		LinearLayout rankButton = (LinearLayout) findViewById(R.id.button_rank);
-		if (getmServiceProviderType().equals("help")) {
+		if (getServiceProviderCategory().equals("help")) {
 			rankButton.setVisibility(View.INVISIBLE);
 		} else {
 			rankButton.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +165,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 		}
 
 		LinearLayout editButton = (LinearLayout) findViewById(R.id.button_edit);
-		if (getmServiceProviderType().equals("help")) {
+		if (getServiceProviderCategory().equals("help")) {
 			editButton.setVisibility(View.INVISIBLE);
 		} else {
 			editButton.setOnClickListener(new View.OnClickListener() {
@@ -167,7 +174,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 					Intent editIntent = null;
 					editIntent = new Intent(ScreenSlideActivity.this,
 							EditActivity.class);
-					editIntent.putExtra("SP_NUMBER", mCurr);
+					editIntent.putExtra("SP_NUMBER", curr);
 					ScreenSlideActivity.this.startActivity(editIntent);
 
 					// TODO - update SP when editing is finished
@@ -196,14 +203,14 @@ public class ScreenSlideActivity extends FragmentActivity {
 		((ProgressBar) findViewById(R.id.progress)).setVisibility(View.GONE);
 		mPager = (ViewPager) findViewById(R.id.pager);
 
-		if (getmServiceProviderType().equals("help")) {
-			NUM_PAGES = mTaskArr.size();
-			mCurr = 0;
+		if (getServiceProviderCategory().equals("help")) {
+			NUM_PAGES = taskList.size();
+			curr = 0;
 			mPagerAdapter = new ScreenSlidePagerAdapterTask(
 					getFragmentManager());
 		} else {
-			NUM_PAGES = mServiceProviderArr.size();
-			mCurr = 0;
+			NUM_PAGES = serviceProviderList.size();
+			curr = 0;
 			mPagerAdapter = new ScreenSlidePagerAdapterSP(getFragmentManager());
 		}
 
@@ -212,12 +219,29 @@ public class ScreenSlideActivity extends FragmentActivity {
 		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
-				mCurr = position;
+				curr = position;
 				Log.i("Position", "Position is" + position);
 				invalidateOptionsMenu();
 			}
 		});
 
+	}
+
+	@Override
+	public void handleResult(AsyncResult result) {
+		if (result.errored()){
+			Toast.makeText(getApplicationContext(), "Oops! Failed to load all " + serviceProviderCategory + "...",
+					Toast.LENGTH_SHORT).show();
+			finish();
+		} else {
+			if (getServiceProviderCategory() != null
+					&& getServiceProviderCategory().equals("help")) {
+				taskList = result.getTaskList();
+			} else {
+				serviceProviderList = result.getServiceProviderList();
+			}
+			showPager();
+		}
 	}
 
 	/**
@@ -231,7 +255,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 		@Override
 		public Fragment getItem(int position) {
 			return ScreenSlidePageFragment.create(position,
-					getmServiceProviderType());
+					getServiceProviderCategory());
 		}
 
 		@Override
@@ -241,7 +265,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 	}
 
 	public static ServiceProvider getCurrSP(int position) {
-		return mServiceProviderArr.get(position);
+		return serviceProviderList.get(position);
 	}
 
 	/**
@@ -255,7 +279,7 @@ public class ScreenSlideActivity extends FragmentActivity {
 		@Override
 		public Fragment getItem(int position) {
 			return ScreenSlidePageFragment.create(position,
-					getmServiceProviderType());
+					getServiceProviderCategory());
 		}
 
 		@Override
@@ -265,31 +289,15 @@ public class ScreenSlideActivity extends FragmentActivity {
 	}
 
 	public static Task getCurrTask(int position) {
-		return mTaskArr.get(position);
+		return taskList.get(position);
 
 	}
 
-	/*
-	@Override
-	public void processFinish(DynamoDBManagerTaskResult result) {
-
-		if (getmServiceProviderType() != null
-				&& getmServiceProviderType().equals("help")) {
-			mTaskArr = result.mTaskArray;
-		} else {
-			mServiceProviderArr = result.mServiceProviderArray;
-		}
-		Log.i("DB result", "db info loaded");
-		showPager();
-
-	}
-	*/
-
-	public static String getmServiceProviderType() {
-		return mServiceProviderType;
+	public static String getServiceProviderCategory() {
+		return serviceProviderCategory;
 	}
 
-	public static void setmServiceProviderType(String mServiceProviderType) {
-		ScreenSlideActivity.mServiceProviderType = mServiceProviderType;
+	public static void setServiceProviderCategory(String serviceProviderCategory) {
+		ScreenSlideActivity.serviceProviderCategory = serviceProviderCategory;
 	}
 }

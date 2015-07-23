@@ -40,6 +40,9 @@ import com.facebook.model.GraphPlace;
 import com.facebook.model.GraphUser;
 
 import il.co.togetthere.db.User;
+import il.co.togetthere.server.AsyncRequest;
+import il.co.togetthere.server.AsyncResponse;
+import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
 
 import com.facebook.widget.FacebookDialog;
@@ -50,7 +53,7 @@ import com.facebook.widget.PlacePickerFragment;
 import com.google.gson.Gson;
 
 
-public class LoginActivity extends FragmentActivity {
+public class LoginActivity extends FragmentActivity implements AsyncResponse {
 
     @SuppressWarnings("unused")
 	private static final String PERMISSION = "publish_actions";
@@ -133,21 +136,14 @@ public class LoginActivity extends FragmentActivity {
                     // Set Facebook user in application user
                     LoginActivity.user.init(facebookUser);
                     // Register User
-                    try {
+                    AsyncRequest asyncRequest = new AsyncRequest(getApplicationContext(), LoginActivity.this);
+                    asyncRequest.execute(Server.SERVER_ACTION_REGISTER_USER, LoginActivity.user);
+                    /*try {
                         Server.registerUser(LoginActivity.user);
                     } catch (IOException e) {
                         Toast.makeText(getApplicationContext(), "Oops! Unable to register your user.",
                                 Toast.LENGTH_SHORT).show();
-                    }
-                    // Save user as a shared preference
-                    SharedPreferences  mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    SharedPreferences.Editor prefsEditor = mPrefs.edit();
-                    Gson gson = new Gson();
-                    String json = gson.toJson(LoginActivity.user);
-                    prefsEditor.putString("User", json);
-                    prefsEditor.commit();
-                    // Continue to type chooser screen
-                    continueToNextScreen();
+                    }*/
                 }
 
                 // It's possible that we were waiting for this.user to be populated in order to post a
@@ -458,5 +454,23 @@ public class LoginActivity extends FragmentActivity {
     private boolean hasPublishPermission() {
         Session session = Session.getActiveSession();
         return session != null && session.getPermissions().contains("publish_actions");
+    }
+
+    @Override
+    public void handleResult(AsyncResult result) {
+        if (result.errored()){
+            Toast.makeText(getApplicationContext(), "Oops! Unable to register your user.",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            // Save user as a shared preference
+            SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor prefsEditor = mPrefs.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(LoginActivity.user);
+            prefsEditor.putString("User", json);
+            prefsEditor.commit();
+            // Continue to type chooser screen
+            continueToNextScreen();
+        }
     }
 }

@@ -1,4 +1,4 @@
-package il.co.togetthere;
+package il.co.togetthere.db;
 
 import java.util.ArrayList;
 import java.util.HashSet;

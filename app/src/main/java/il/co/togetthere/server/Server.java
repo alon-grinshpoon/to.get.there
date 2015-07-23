@@ -16,7 +16,8 @@ public class Server {
     private static final String server = "http://django-togetthereserver.rhcloud.com/ToGetThere/android/";
 
     // Get all SP's of certain type
-    public static final List<ServiceProvider> getSPsOfCategory(ServiceProviderCategory type) throws IOException {
+    public static final int SERVER_ACTION_GET_SPS_OF_CATEGORY = 0;
+    protected static final List<ServiceProvider> getSPsOfCategory(ServiceProviderCategory type) throws IOException {
         /*
          * example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restaurants/
          */
@@ -26,19 +27,22 @@ public class Server {
     }
 
     // Get SP by ID (show its details, reviews list, ranks list)
-    public static final void getSPByID(int id) throws IOException {
+    public static final int SERVER_ACTION_GET_SP_BY_ID = 1;
+    protected static final void getSPByID(int id) throws IOException {
         // TODO
         HTTPHandler.getRequest(server + "/sp/" + id + "/");
     }
 
     // Get all reviews of certain SP
-    public static final void getSPReviewsByID(int id) throws IOException {
+    public static final int SERVER_ACTION_GET_SP_REVIEWS_BY_ID = 2;
+    protected static final void getSPReviewsByID(int id) throws IOException {
         // TODO
         HTTPHandler.getRequest(server + "/sp/" + id + "/reviews/");
     }
 
     // Get details on a certain user
-    public static final User getUserByID(int id) throws IOException {
+    public static final int SERVER_ACTION_GET_USER_BY_ID = 3;
+    protected static final User getUserByID(int id) throws IOException {
         // GET
         String json = HTTPHandler.getRequest(server + "/user/" + id + "/");
         // User GSON to convert JSON to User
@@ -48,7 +52,8 @@ public class Server {
     }
 
     // Add a new SP
-    public static final void addSP(ServiceProvider sp) throws IOException {
+    public static final int SERVER_ACTION_ADD_SP = 4;
+    protected static final void addSP(ServiceProvider sp) throws IOException {
         // TODO
         /**
          * to add a new SP
@@ -86,7 +91,8 @@ public class Server {
     }
 
     // Rank an SP with score between 1-5, with user ID, and SP id:
-    public static final void rankSP(int userID, int spID, int rank) throws IOException {
+    public static final int SERVER_ACTION_RANK_SP = 5;
+    protected static final void rankSP(int userID, int spID, int rank) throws IOException {
         // TODO
         /**
          * example:
@@ -97,7 +103,8 @@ public class Server {
     }
 
     // Add a review to a certain SP from certain user
-    public static final void addReviewToSP(int userID, int spID, String title, String content) throws IOException {
+    public static final int SERVER_ACTION_ADD_REVIEW_TO_SP = 6;
+    protected static final void addReviewToSP(int userID, int spID, String title, String content) throws IOException {
         // TODO
         /**
          * # ex: /ToGetThere/android/addreview/
@@ -112,7 +119,8 @@ public class Server {
     }
 
     // Add like to a certain review from certain user
-    public static final void addLikeToReview(int userID, int spID, int reviewID) throws IOException {
+    public static final int SERVER_ACTION_ADD_LIKE_TO_REVIEWS = 7;
+    protected static final void addLikeToReview(int userID, int spID, int reviewID) throws IOException {
         // TODO
         /**
          * if there is already like from that user nothing wil change
@@ -127,9 +135,10 @@ public class Server {
         HTTPHandler.postRequest(server + "/addLike/", json);
     }
 
-    public static final void registerUser(User user) throws IOException {
+    // Register a new user
+    public static final int SERVER_ACTION_REGISTER_USER = 8;
+    protected static final void registerUser(User user) throws IOException {
         /*
-         * # register a new user
          * # ex: http://django-togetthereserver.rhcloud.com/ToGetThere/android/adduser/
          * **POST** request with a JSON body:
          * {"facebook_id": "4331",

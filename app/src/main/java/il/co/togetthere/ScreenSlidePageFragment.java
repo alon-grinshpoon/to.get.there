@@ -2,6 +2,7 @@ package il.co.togetthere;
 
 import il.co.togetthere.db.Review;
 import il.co.togetthere.db.ServiceProvider;
+import il.co.togetthere.db.Task;
 
 import java.util.List;
 import java.util.Random;

@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.facebook.widget.ProfilePictureView;
 
+import il.co.togetthere.db.Task;
+
 public class AddNewTaskActivity extends Activity {
 
 	private Task mTask;
