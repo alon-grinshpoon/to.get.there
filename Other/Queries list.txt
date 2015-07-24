@@ -34,7 +34,7 @@ the body should have the following json format (order doesn't matter):
 "latitude": "2.2",
 "phone": "03-7511034",
 "discount": "5",
-"category": "medical",
+"category": [medical|restaurants|shopping|public_services|transportation|help]
 "website": "website",
 "toilets": "true",
 "elevator": "true",
@@ -175,3 +175,6 @@ ex: /ToGetThere/android/search?q=serach-text
 
 # search by cateogry and vicinity of 5 KM n/s e/w
 # ex: /ToGetThere/android/lng/34.3/lat/23.3/category/medical/
+
+# search by string and within cateogry
+ex: /ToGetThere/android/[medical|restaurants|shopping|public_services|transportation|help]/search?q=serach-text
