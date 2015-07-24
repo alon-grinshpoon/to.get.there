@@ -251,7 +251,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		locationDescription.setVisibility(View.GONE);
 		locationDescription.setTypeface(font);
 
-		// Set Adddress
+		// Set Address
 		TextView locationAddress = ((TextView) v.findViewById(R.id.text_location_address));
 		locationAddress.setText(mSP.getAddress());
 		locationAddress.setTypeface(font);
@@ -266,6 +266,18 @@ public class ScreenSlidePageFragment extends Fragment implements
 		TextView locationPhone = ((TextView) v.findViewById(R.id.text_location_phone));
 		locationPhone.setText(mSP.getPhone());
 		locationPhone.setTypeface(font);
+
+		LinearLayout locationPhoneButton = ((LinearLayout) v.findViewById(R.id.button_phone));
+		locationPhoneButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (!mSP.getPhone().equals("")) {
+					Intent callIntent = new Intent(Intent.ACTION_CALL);
+					callIntent.setData(Uri.parse("tel:" + mSP.getPhone()));
+					startActivity(callIntent);
+				}
+			}
+		});
 
 		// Set Discount
 		TextView locationDiscount = ((TextView) v.findViewById(R.id.text_location_discount));
