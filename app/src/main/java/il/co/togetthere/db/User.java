@@ -173,6 +173,10 @@ public class User {
 	}
 	public void setLongitude(double longitude) { this.longitude = longitude; }
 
+	public boolean hasLatLng(){
+		return (getLatitude() != 0.0) || (getLongitude() != 0.0);
+	}
+
 	public String getLocation() {
 		if (location != null) {
 			return location;
