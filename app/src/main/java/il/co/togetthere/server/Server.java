@@ -19,13 +19,17 @@ public class Server {
 
     private static final String server = "http://django-togetthereserver.rhcloud.com/ToGetThere/android/";
 
-    // Get all SP's of certain type and sort by rank)
+    // Get all SP's of certain type and sort by rank (my use vicinity)
     public static final int SERVER_ACTION_GET_SPS_OF_CATEGORY = 0;
     protected static final List<ServiceProvider> getSPsOfCategory(ServiceProviderCategory category) throws IOException {
+        if (LoginActivity.user.hasLatLng()){
+            return searchByCategoryAndVicinity(category, LoginActivity.user.getLatitude(), LoginActivity.user.getLongitude());
+        } else {
         /* example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restaurants/ */
-        String json = HTTPHandler.getRequest(server + "/category/" + ServiceProviderCategory.enumToString(category) + "/");
-        ServiceProvider[] sps = new Gson().fromJson(json, ServiceProvider[].class);
-        return Arrays.asList(sps);
+            String json = HTTPHandler.getRequest(server + "/category/" + ServiceProviderCategory.enumToString(category) + "/");
+            ServiceProvider[] sps = new Gson().fromJson(json, ServiceProvider[].class);
+            return Arrays.asList(sps);
+        }
     }
 
     // Get SP by ID (show its details, reviews list, ranks list)
@@ -359,7 +363,7 @@ public class Server {
     }
 
     // Search by string, category and vicinity of 5 KM n/s e/w and sort by vicinity and rank
-    public static final int SERVER_ACTION_SEARCH_CATEGORY_BY_STRING__AND_VICINITY = 18;
+    public static final int SERVER_ACTION_SEARCH_CATEGORY_BY_STRING_AND_VICINITY = 18;
     protected static final List<ServiceProvider> searchCategoryByStringAndVicinity(ServiceProviderCategory category, String text, double lat, double lng) throws IOException {
         /* example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/lng/34.3/lat/23.3/category/medical/ */
         String json = HTTPHandler.getRequest(server + "/lng/" + lng + "/lat/" + lat + "/category/" + ServiceProviderCategory.enumToString(category) + "/search?q=" + text);
