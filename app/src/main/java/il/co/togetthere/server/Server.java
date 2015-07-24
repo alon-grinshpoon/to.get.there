@@ -19,7 +19,7 @@ public class Server {
 
     private static final String server = "http://django-togetthereserver.rhcloud.com/ToGetThere/android/";
 
-    // Get all SP's of certain type
+    // Get all SP's of certain type and sort by rank)
     public static final int SERVER_ACTION_GET_SPS_OF_CATEGORY = 0;
     protected static final List<ServiceProvider> getSPsOfCategory(ServiceProviderCategory category) throws IOException {
         /* example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restaurants/ */
@@ -314,7 +314,7 @@ public class Server {
         return sp;
     }
 
-    // Search by string
+    // Search by string and sort by rank (no vicinity)
     public static final int SERVER_ACTION_SEARCH_BY_STRING = 14;
     protected static final List<ServiceProvider> searchByString(String text) throws IOException {
         /* example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/search?q=serach-text */
@@ -323,11 +323,38 @@ public class Server {
         return Arrays.asList(sps);
     }
 
-    // Search by category and vicinity of 5 KM n/s e/w
+    // Search by category and vicinity of 5 KM n/s e/w and sort by vicinity and rank
     public static final int SERVER_ACTION_SEARCH_BY_CATEGORY_AND_VICINITY = 15;
     protected static final List<ServiceProvider> searchByCategoryAndVicinity(ServiceProviderCategory category, double lat, double lng) throws IOException {
         /* example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/lng/34.3/lat/23.3/category/medical/ */
         String json = HTTPHandler.getRequest(server + "/lng/" + lng + "/lat/" + lat + "/category/" + ServiceProviderCategory.enumToString(category) + "/");
+        ServiceProvider[] sps = new Gson().fromJson(json, ServiceProvider[].class);
+        return Arrays.asList(sps);
+    }
+
+    //  Search by string within category, (no vicinity)
+    public static final int SERVER_ACTION_SEARCH_CATEGORY_BY_STRING = 16;
+    protected static final List<ServiceProvider> searchCategoryByString(ServiceProviderCategory category, String text) throws IOException {
+        /* example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/[medical|restaurants|shopping|public_services|transportat|help]/search?q=serach-text */
+        String json = HTTPHandler.getRequest(server + ServiceProviderCategory.enumToString(category) + "/search?q=" + text);
+        ServiceProvider[] sps = new Gson().fromJson(json, ServiceProvider[].class);
+        return Arrays.asList(sps);
+    }
+
+    // Search by string and vicinity of 5 KM n/s e/w and sort by vicinity and rank
+    public static final int SERVER_ACTION_SEARCH_BY_STRING_AND_VICINITY = 17;
+    protected static final List<ServiceProvider> searchByStringAndVicinity(String text, double lat, double lng) throws IOException {
+        /* example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/lng/34.3/lat/23.3/search?q=search-text */
+        String json = HTTPHandler.getRequest(server + "/lng/" + lng + "/lat/" + lat + "/search?q=" + text);
+        ServiceProvider[] sps = new Gson().fromJson(json, ServiceProvider[].class);
+        return Arrays.asList(sps);
+    }
+
+    // Search by string, category and vicinity of 5 KM n/s e/w and sort by vicinity and rank
+    public static final int SERVER_ACTION_SEARCH_BY_STRING_AND_CATEGORY_AND_VICINITY = 18;
+    protected static final List<ServiceProvider> searchByStringAndCategoryAndVicinity(String text, ServiceProviderCategory category, double lat, double lng) throws IOException {
+        /* example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/lng/34.3/lat/23.3/category/medical/ */
+        String json = HTTPHandler.getRequest(server + "/lng/" + lng + "/lat/" + lat + "/category/" + ServiceProviderCategory.enumToString(category) + "/search?q=" + text);
         ServiceProvider[] sps = new Gson().fromJson(json, ServiceProvider[].class);
         return Arrays.asList(sps);
     }
