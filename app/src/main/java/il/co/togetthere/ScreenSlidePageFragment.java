@@ -309,10 +309,8 @@ public class ScreenSlidePageFragment extends Fragment implements
         ImageView accessibilityImage;
         TextView tv = (TextView) rootView.findViewById(R.id.text_location_accecability);
         tv.setVisibility(View.GONE);
-        TextView htv = (TextView) rootView.findViewById(R.id.text_location_accecability_header);
-        htv.setVisibility(View.GONE);
 
-		if (mSP.isElevator()) {
+        if (mSP.isElevator()) {
             accessibleView = (ImageView) v.findViewById(R.id.image_check_toilet);
             accessibleView.setVisibility(View.VISIBLE);}
 		if (mSP.isEntrance()) {
@@ -333,44 +331,36 @@ public class ScreenSlidePageFragment extends Fragment implements
 		}
         // Set onClickListeneres for text
         accessibilityImage = (ImageView) v.findViewById(R.id.image_elevator);
-        accessibilityImage.setOnClickListener(new AccessibilityListener("Elevator", mSP.getElevator_text()));
+        accessibilityImage.setOnClickListener(new AccessibilityListener(mSP.getElevator_text()));
         accessibilityImage = (ImageView) v.findViewById(R.id.image_toilets);
-        accessibilityImage.setOnClickListener(new AccessibilityListener("Toilets", mSP.getToilets_text()));
+        accessibilityImage.setOnClickListener(new AccessibilityListener(mSP.getToilets_text()));
         accessibilityImage = (ImageView) v.findViewById(R.id.image_parking);
-        accessibilityImage.setOnClickListener(new AccessibilityListener("Parking", mSP.getParking_text()));
+        accessibilityImage.setOnClickListener(new AccessibilityListener(mSP.getParking_text()));
         accessibilityImage = (ImageView) v.findViewById(R.id.image_facilities);
-        accessibilityImage.setOnClickListener(new AccessibilityListener("Facilities", mSP.getFacilities_text()));
+        accessibilityImage.setOnClickListener(new AccessibilityListener(mSP.getFacilities_text()));
         accessibilityImage = (ImageView) v.findViewById(R.id.image_entrance);
-        accessibilityImage.setOnClickListener(new AccessibilityListener("Entrance", mSP.getEntrance_text()));
+        accessibilityImage.setOnClickListener(new AccessibilityListener(mSP.getEntrance_text()));
 	}
 
     class AccessibilityListener implements OnClickListener{
-        String accecibilityHeader;
         String accecibilityText;
 
-        public AccessibilityListener(String header, String accecibilityText) {
+        public AccessibilityListener(String accecibilityText) {
             Log.i("accecibility", "Adding listener to accessibility test: " + this.accecibilityText);
-            this.accecibilityHeader = header;
             this.accecibilityText = accecibilityText;
         }
 
         @Override
         public void onClick(View view) {
             //Get Accessibility text view
-            TextView tv = (TextView) rootView.findViewById(R.id.text_location_accecability);
-            //tv.setTypeface(font);
-            TextView htv = (TextView) rootView.findViewById(R.id.text_location_accecability_header);
-            //htv.setTypeface(font);
+            TextView tv = (TextView) rootView.findViewById(R.id.text_location_accecability);;
 
             // If no txt, hide box
             if (accecibilityText== null || accecibilityText.equals("")) {
                 tv.setVisibility(View.GONE);
-                htv.setVisibility(View.GONE);
             } else {
                 Log.i("accessability", "Showing: " + accecibilityText);
                 tv.setText(accecibilityText);
-                htv.setText(accecibilityHeader);
-                htv.setVisibility(View.VISIBLE);
                 tv.setVisibility(View.VISIBLE);
             }
         }
