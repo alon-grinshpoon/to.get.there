@@ -132,6 +132,28 @@ public class EditActivity extends Activity implements AsyncResponse {
 		if(mSP.isToilets()) rankToggle(toilets);
 		if(mSP.isElevator()) rankToggle(elevator);
 
+		//parking Description
+		if (!mSP.getParking_text().equals("")) {
+			((EditText) findViewById(R.id.editViewRank1)).setText(mSP.getParking_text());
+		}
+		//entranceDescription
+		if (!mSP.getEntrance_text().equals("")) {
+			((EditText) findViewById(R.id.editViewRank2)).setText(mSP.getEntrance_text());
+		}
+		//furniture Description
+		if (!mSP.getFacilities_text().equals("")) {
+			((EditText) findViewById(R.id.editViewRank3)).setText(mSP.getFacilities_text());
+		}
+		//toiletsDescription
+		if (!mSP.getToilets_text().equals("")) {
+			((EditText) findViewById(R.id.editViewRank4)).setText(mSP.getToilets_text());
+		}
+		//elevatorDescription
+		if (!mSP.getElevator_text().equals("")) {
+			((EditText) findViewById(R.id.editViewRank5)).setText(mSP.getElevator_text());
+		}
+
+
 		parking.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
