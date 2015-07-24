@@ -5,7 +5,7 @@ import java.util.List;
 public class ServiceProvider {
 
 	private String id;
-	private ServiceProviderCategory category;
+	private String category;
 
 	private String sp_name;
 	private boolean is_verified;
@@ -61,11 +61,11 @@ public class ServiceProvider {
 	}
 
 	/**
-	 * Constructor
+	 * Constructors
 	 */
-	public ServiceProvider(String id, ServiceProviderCategory category, String sp_name, boolean is_verified, float avg_rank, boolean toilets, String toilets_text, boolean parking, String parking_text, boolean elevator, String elevator_text, boolean entrance, String entrance_text, boolean facilities, String facilities_text, String address, double latitude, double longitude, String phone, int discount, String website, Review[] reviews) {
+	public ServiceProvider(String id, String category, String sp_name, boolean is_verified, float avg_rank, boolean toilets, String toilets_text, boolean parking, String parking_text, boolean elevator, String elevator_text, boolean entrance, String entrance_text, boolean facilities, String facilities_text, String address, double latitude, double longitude, String phone, int discount, String website, Review[] reviews) {
 		this.id = id;
-		this.category = category;
+		this.category =
 		this.sp_name = sp_name;
 		this.is_verified = is_verified;
 		this.avg_rank = avg_rank;
@@ -88,6 +88,10 @@ public class ServiceProvider {
 		this.reviews = reviews;
 	}
 
+	public ServiceProvider(String id, ServiceProviderCategory category, String sp_name, boolean is_verified, float avg_rank, boolean toilets, String toilets_text, boolean parking, String parking_text, boolean elevator, String elevator_text, boolean entrance, String entrance_text, boolean facilities, String facilities_text, String address, double latitude, double longitude, String phone, int discount, String website, Review[] reviews) {
+		this(id, ServiceProviderCategory.enumToString(category),sp_name, is_verified, avg_rank, toilets, toilets_text, parking, parking_text, elevator, elevator_text, entrance, entrance_text, facilities, facilities_text, address, latitude, longitude, phone,  discount, website, reviews);
+	}
+
 
 	/*
 	 * Setter and Getters
@@ -101,11 +105,15 @@ public class ServiceProvider {
 	}
 
 	public ServiceProviderCategory getCategory() {
-		return category;
+		return ServiceProviderCategory.stringToEnum(category);
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public void setCategory(ServiceProviderCategory category) {
-		this.category = category;
+		this.category = ServiceProviderCategory.enumToString(category);
 	}
 
 	public String getSp_name() {
