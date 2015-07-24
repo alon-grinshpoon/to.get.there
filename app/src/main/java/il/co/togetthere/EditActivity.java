@@ -230,15 +230,15 @@ public class EditActivity extends Activity implements AsyncResponse {
 					return;
 				}
 
-				// Website
-				if (!website.equals("")) {
+				// Website (Can edit with no website)
+				/* if (!website.equals("")) {
 					mSP.setWebsite(website);
 				} else {
 					Toast.makeText(getApplicationContext(),
 							"Location website is missing",
 							Toast.LENGTH_SHORT).show();
 					return;
-				}
+				}*/
 
 				// Discount
 				if (discountNum != -1) {
