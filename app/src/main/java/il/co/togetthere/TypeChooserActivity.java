@@ -69,7 +69,8 @@ public class TypeChooserActivity extends Activity {
 		 */
 		ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
 		searchBtn.setOnClickListener(new MainSearchClickListener());
-
+		EditText searchEditText = (EditText) findViewById(R.id.searchText);
+		searchEditText.setHint("Search...");
 		/**
 		 * Layout Initialization
 		 */
@@ -167,10 +168,10 @@ public class TypeChooserActivity extends Activity {
 			String q = ((EditText) findViewById(R.id.searchText)).getText().toString();
 
 			if (q.equals("")) {
-				Log.i("Search", "No query found, not searching");
+				Log.i("Type Chooser Search", "No query found, not searching");
 				return;
 			} else {
-				Log.i("Search", "Initiating search query: " + q);
+				Log.i("Type Chooser Search", "Initiating search query: " + q);
 				mainIntent.putExtra("TYPE_EXTRA", "search");
 				mainIntent.putExtra("SEARCH_QUERY", q);
 				startActivity(mainIntent);

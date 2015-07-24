@@ -20,6 +20,9 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
@@ -94,18 +97,33 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		Intent inIntent = getIntent();
 		setServiceProviderCategory(inIntent.getStringExtra("TYPE_EXTRA"));
 
+
+
 		if (getServiceProviderCategory() != null
 				&& getServiceProviderCategory().equals("help")) {
 			//mThread.execute(DynamoDBManagerType.GET_TASKS.toString());
 		} else if (getServiceProviderCategory().equals("search")) {
+			// show content
 			AsyncRequest asyncRequest = new AsyncRequest(ScreenSlideActivity.this);
 			String query = inIntent.getStringExtra("SEARCH_QUERY");
 			asyncRequest.execute(Server.SERVER_ACTION_SEARCH_BY_STRING, query);
 		} else {
+			// show content
+			ServiceProviderCategory category = ServiceProviderCategory.stringToEnum(getServiceProviderCategory());
 			AsyncRequest asyncRequest = new AsyncRequest(ScreenSlideActivity.this);
-			ServiceProviderCategory category = ServiceProviderCategory.stringToEnum(serviceProviderCategory);
 			asyncRequest.execute(Server.SERVER_ACTION_GET_SPS_OF_CATEGORY, category);
 		}
+
+		/**
+		 * Search bar Initialization
+		 */
+		ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
+		EditText searchEditText = (EditText) findViewById(R.id.searchText);
+		if (getServiceProviderCategory().equals("search")) {
+			searchEditText.setHint("Search...");
+		}
+		searchBtn.setOnClickListener(
+				new CategorySearchClickListener(getServiceProviderCategory()));
 
 		/**
 		 * Set Upper Bar Functions
@@ -193,6 +211,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 	public void showPager() {
 		((ProgressBar) findViewById(R.id.progress)).setVisibility(View.GONE);
 		mPager = (ViewPager) findViewById(R.id.pager);
+		mPager.setVisibility(View.VISIBLE);
 
 		if (getServiceProviderCategory().equals("help")) {
 			NUM_PAGES = taskList.size();
@@ -307,7 +326,6 @@ public class ScreenSlideActivity extends FragmentActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
 		if (requestCode == 1) {
 			if(resultCode == RESULT_OK){
 				String result = data.getStringExtra("result");
@@ -320,6 +338,48 @@ public class ScreenSlideActivity extends FragmentActivity implements
 			if (resultCode == RESULT_CANCELED) {
 
 			}
+		}
+	}
+
+	private class CategorySearchClickListener implements View.OnClickListener {
+		String category;
+
+		public CategorySearchClickListener(String category) {
+			this.category = category;
+		}
+		@Override
+		public void onClick(View view) {
+			String query = ((EditText) findViewById(R.id.searchText)).getText().toString();
+			if (query.equals("")) {
+				Log.i("Pager Search", "No query found, not searching");
+				return;
+			} else {
+				hideKeyboard();
+				mPager.setVisibility(View.GONE);
+				((ProgressBar) findViewById(R.id.progress)).setVisibility(View.VISIBLE);
+				AsyncRequest asyncRequest = new AsyncRequest(ScreenSlideActivity.this);
+				if (category.equals("search")) {
+					// new regular search
+					Log.i("Pager Search", "Initiating search query: " + query);
+					asyncRequest.execute(Server.SERVER_ACTION_SEARCH_BY_STRING, query);
+				} else {
+					// search within category
+					Log.i("Pager Search", "Initiating search within category " +
+							category + ", query: " + query);
+					asyncRequest.execute(
+							Server.SERVER_ACTION_SEARCH_CATEGORY_BY_STRING,
+							ServiceProviderCategory.stringToEnum(category), query);
+				}
+			}
+		}
+	}
+
+	private void hideKeyboard() {
+		// Check if no view has focus:
+		View view = this.getCurrentFocus();
+		if (view != null) {
+			InputMethodManager inputManager = (InputMethodManager) this.getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+			inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		}
 	}
 }

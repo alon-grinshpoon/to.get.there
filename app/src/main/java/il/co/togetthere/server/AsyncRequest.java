@@ -33,13 +33,15 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
         int userID;
         Review review;
         ServiceProvider serviceProvider;
+        String query;
+        ServiceProviderCategory category;
 
         // Perform server action
         switch (serverAction){
 
             case Server.SERVER_ACTION_GET_SPS_OF_CATEGORY:
                 // Parse parameter
-                ServiceProviderCategory category = (ServiceProviderCategory) objects[1];
+                category = (ServiceProviderCategory) objects[1];
                 // Run server action
                 List<ServiceProvider> serviceProviderList = null;
                 try {
@@ -124,10 +126,25 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                 break;
             case Server.SERVER_ACTION_SEARCH_BY_STRING:
                 // Parse parameter
-                String query = (String) objects[1];
+                query = (String) objects[1];
                 // Run server action
                 try {
                     serviceProviderList = Server.searchByString(query);
+                    // Configure result
+                    result.setServiceProviderList(serviceProviderList);
+                } catch (IOException e) {
+                    // Configure result as error
+                    result.catchException(e);
+                }
+                break;
+            case Server.SERVER_ACTION_SEARCH_CATEGORY_BY_STRING:
+                // Parse parameter
+                category = (ServiceProviderCategory) objects[1];
+                query = (String) objects[2];
+
+                // Run server action
+                try {
+                    serviceProviderList = Server.searchCategoryByString(category, query);
                     // Configure result
                     result.setServiceProviderList(serviceProviderList);
                 } catch (IOException e) {
