@@ -27,6 +27,7 @@ import com.facebook.widget.ProfilePictureView;
 
 public class EditActivity extends Activity implements AsyncResponse {
 	private ServiceProvider mSP;
+	private int pageNumber;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 		});
 
 		Intent inIntent = getIntent();
-		int pageNumber = inIntent.getIntExtra("SP_NUMBER", 1);
+		pageNumber = inIntent.getIntExtra("SP_NUMBER", 1);
 		Log.i("Position", "Position is" + pageNumber);
 		mSP = ScreenSlideActivity.getServiceProvider(pageNumber);
 
@@ -342,8 +343,12 @@ public class EditActivity extends Activity implements AsyncResponse {
 		} else {
 			Toast.makeText(getApplicationContext(), "Great! The entry was edited. ",
 					Toast.LENGTH_SHORT).show();
+			// Update SP on screen when editing is finished
+			Intent returnIntent = new Intent();
+			returnIntent.putExtra("result", String.valueOf(pageNumber));
+			setResult(RESULT_OK, returnIntent);
 			// Close Activity
-			EditActivity.this.finish();
+			finish();
 		}
 	}
 }

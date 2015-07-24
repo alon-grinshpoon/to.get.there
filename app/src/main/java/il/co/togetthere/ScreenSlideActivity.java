@@ -169,13 +169,10 @@ public class ScreenSlideActivity extends FragmentActivity implements
 					editIntent = new Intent(ScreenSlideActivity.this,
 							EditActivity.class);
 					editIntent.putExtra("SP_NUMBER", currentIndex);
-					ScreenSlideActivity.this.startActivity(editIntent);
-
-					// TODO - update SP when editing is finished
+					ScreenSlideActivity.this.startActivityForResult(editIntent, 1);
 				}
 			});
 		}
-
 		
 		// Titles
 		TextView titleRank = ((TextView) findViewById(R.id.button_rank_title));
@@ -306,5 +303,23 @@ public class ScreenSlideActivity extends FragmentActivity implements
 
 	public static void setServiceProviderCategory(String serviceProviderCategory) {
 		ScreenSlideActivity.serviceProviderCategory = serviceProviderCategory;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == 1) {
+			if(resultCode == RESULT_OK){
+				String result = data.getStringExtra("result");
+				int index = Integer.parseInt(result);
+				ServiceProvider sp = getServiceProvider(index);
+				// Redraw
+				mPager.setAdapter(mPagerAdapter);
+				mPager.setCurrentItem(index);
+			}
+			if (resultCode == RESULT_CANCELED) {
+
+			}
+		}
 	}
 }
