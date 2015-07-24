@@ -341,7 +341,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 			Toast.makeText(getApplicationContext(), "Oops! Unable to edit a new entry.",
 					Toast.LENGTH_SHORT).show();
 		} else {
-			Toast.makeText(getApplicationContext(), "Great! The entry was edited. ",
+			Toast.makeText(getApplicationContext(), "Great! " + mSP.getSp_name() + " was updated.",
 					Toast.LENGTH_SHORT).show();
 			// Update SP on screen when editing is finished
 			Intent returnIntent = new Intent();
