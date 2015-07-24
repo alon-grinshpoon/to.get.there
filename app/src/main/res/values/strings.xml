@@ -6,7 +6,7 @@
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_screen_slide">Screen Slide</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="search_hint">Search...</string>
+    <string name="search_hint">Search in this category...</string>
     <string name="title_activity_categories">CategoriesActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_login">LoginActivity</string>

@@ -2,8 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menuitem_settings"
+        android:id="@+id/menuitem_version"
         android:title="Version Info"
         android:visible="true"/>
 
-</menu><!-- From: file:/C:/Users/Rony/Documents/GitHub/to.get.there/app/src/main/res/menu/settings_menu.xml -->
+    <item
+        android:id="@+id/menuitem_logout"
+        android:title="Log Out"
+        android:visible="true"/>
+
+</menu><!-- From: file:/C:/Users/Alon/StudioProjects/to.get.there/app/src/main/res/menu/settings_menu.xml -->
