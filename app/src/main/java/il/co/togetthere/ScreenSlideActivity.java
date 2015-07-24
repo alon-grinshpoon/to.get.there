@@ -204,6 +204,12 @@ public class ScreenSlideActivity extends FragmentActivity implements
 			mPagerAdapter = new ScreenSlidePagerAdapterSP(getFragmentManager());
 		}
 
+		if (NUM_PAGES == 0){
+			Toast.makeText(getApplicationContext(), "Sorry, No results to show.",
+					Toast.LENGTH_LONG).show();
+			finish();
+		}
+
 		mPager.setAdapter(mPagerAdapter);
 
 		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
