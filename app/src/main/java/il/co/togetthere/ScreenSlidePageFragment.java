@@ -170,6 +170,21 @@ public class ScreenSlidePageFragment extends Fragment implements
 		titleBusinessButton1.setTypeface(fontBold);
 		titleBusinessButton2.setTypeface(font);
 
+		// Define Verified Button
+		((LinearLayout) rootView.findViewById(R.id.button_get_verified)).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				String uriText =
+						"mailto:" + getString(R.string.app_email) +
+								"?subject=" + Uri.encode("to.get.there - I want to get verified!") +
+								"&body=" + Uri.encode("Please supply details here.");
+				Uri uri = Uri.parse(uriText);
+				Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+				emailIntent.setData(uri);
+				startActivity(emailIntent);
+			}
+		});
+
 		return rootView;
 
 	}

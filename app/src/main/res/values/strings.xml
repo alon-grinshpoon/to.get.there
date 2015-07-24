@@ -2,6 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">ToGetThere</string>
+    <string name="app_email">to.get.there.project@gmail.com</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_screen_slide">Screen Slide</string>
@@ -35,7 +36,7 @@
     <string name="rank_location">Rank</string>
     <string name="title_template_category">Category<xliff:g id="step_number">%1$d</xliff:g>: Lorem Ipsum</string>
     <string name="get_verified_1">Is this your business?</string>
-    <string name="get_verified_2">Call us to get verified!</string>
+    <string name="get_verified_2">Contact us to get verified!</string>
     <string name="volunteer">I volunteer!</string>
     <string name="title_activity_user_info">UserInfoActivity</string>
     <string name="editProfile">Edit Profile</string>
