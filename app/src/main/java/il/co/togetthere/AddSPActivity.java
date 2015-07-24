@@ -2,6 +2,10 @@ package il.co.togetthere;
 
 import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderCategory;
+import il.co.togetthere.server.AsyncRequest;
+import il.co.togetthere.server.AsyncResponse;
+import il.co.togetthere.server.AsyncResult;
+import il.co.togetthere.server.Server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,12 +29,13 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AddSPActivity extends Activity {
+public class AddSPActivity extends Activity implements AsyncResponse {
 	private Spinner mTypeList;
 	private ArrayAdapter<String> mListAdapter;
 	private ServiceProvider mSP;
@@ -152,16 +157,61 @@ public class AddSPActivity extends Activity {
 					int position, long id) {
 				String[] types = getResources().getStringArray(R.array.types);
 				if (position != 0) {
-					if (position == 3) {
-						mSP.setCategory(ServiceProviderCategory.PublicServices);
-					} else {
-						mSP.setCategory(ServiceProviderCategory.stringToEnum(types[position - 1]));
-					}
+					mSP.setCategory(ServiceProviderCategory.stringToEnum(types[position - 1]));
 				} else {
-					mSP.setCategory(ServiceProviderCategory.None);
+					mSP.setCategory(ServiceProviderCategory.none);
 				}
 			}
 
+		});
+
+		/**
+		 * Accessibility Parameters
+		 */
+		final ImageButton parking = (ImageButton) findViewById(R.id.NewRankImageParking);
+		final ImageButton entrance = (ImageButton) findViewById(R.id.NewRankImageEntrance);
+		final ImageButton facilities = (ImageButton) findViewById(R.id.NewRankImageFurniture);
+		final ImageButton toilets = (ImageButton) findViewById(R.id.NewRankImageToilets);
+		final ImageButton elevator = (ImageButton) findViewById(R.id.NewRankImageElevator);
+
+		parking.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mSP.setParking(!mSP.isParking());
+				rankClicked(view);
+			}
+		});
+
+		entrance.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mSP.setEntrance(!mSP.isEntrance());
+				rankClicked(view);
+			}
+		});
+
+		facilities.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mSP.setFacilities(!mSP.isFacilities());
+				rankClicked(view);
+			}
+		});
+
+		toilets.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mSP.setToilets(!mSP.isToilets());
+				rankClicked(view);
+			}
+		});
+
+		elevator.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mSP.setElevator(!mSP.isElevator());
+				rankClicked(view);
+			}
 		});
 
 		/**
@@ -180,6 +230,8 @@ public class AddSPActivity extends Activity {
 				String address = ((EditText) findViewById(R.id.addNewSPSPAddress))
 						.getText().toString();
 				String phone = ((EditText) findViewById(R.id.addNewSPSPPhone))
+						.getText().toString();
+				String website = ((EditText) findViewById(R.id.addNewSPSPWebsite))
 						.getText().toString();
 				String description = ((EditText) findViewById(R.id.addNewSPDescription))
 						.getText().toString();
@@ -202,7 +254,7 @@ public class AddSPActivity extends Activity {
 					return;
 				}
 
-				// Adress
+				// Address
 				if (!address.equals("")) {
 					mSP.setAddress(address);
 				} else {
@@ -222,6 +274,16 @@ public class AddSPActivity extends Activity {
 					return;
 				}
 
+				// Website
+				if (!website.equals("")) {
+					mSP.setWebsite(website);
+				} else {
+					Toast.makeText(getApplicationContext(),
+							"Location website is missing",
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+
 				// Description
 				if (!description.equals("")) {
 					// mSP.setDescription(phone);
@@ -237,10 +299,8 @@ public class AddSPActivity extends Activity {
 					return;
 				}
 
-				// Type
-				if (mSP.getCategory()
-
-						.equals("")) {
+				// Category
+				if (mSP.getCategory() == ServiceProviderCategory.none) {
 					Toast.makeText(getApplicationContext(),
 							"You must select location type",
 							Toast.LENGTH_SHORT).show();
@@ -255,16 +315,9 @@ public class AddSPActivity extends Activity {
 						switch (which) {
 							case DialogInterface.BUTTON_POSITIVE:
 
-								// OK message
-								Toast.makeText(getApplicationContext(),
-										"Thank You!", Toast.LENGTH_SHORT)
-										.show();
-
 								// send mSP to DB and finish;
-								// TODO
-
-								// Close Activity
-								AddSPActivity.this.finish();
+								AsyncRequest asyncRequest = new AsyncRequest(AddSPActivity.this);
+								asyncRequest.execute(Server.SERVER_ACTION_ADD_SP, mSP);
 								break;
 
 							case DialogInterface.BUTTON_NEGATIVE:
@@ -344,5 +397,19 @@ public class AddSPActivity extends Activity {
 			view.setTypeface(font);
 			return view;
 		}
+	}
+
+	@Override
+	public void handleResult(AsyncResult result) {
+		if (result.errored()){
+			Toast.makeText(getApplicationContext(), "Oops! Unable to add a new entry.",
+					Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(getApplicationContext(), "Great! Your new entry was added. ",
+					Toast.LENGTH_SHORT).show();
+			// Close Activity
+			AddSPActivity.this.finish();
+		}
+
 	}
 }

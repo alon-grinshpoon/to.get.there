@@ -55,13 +55,7 @@ public class RankingListener implements PopupMenu.OnMenuItemClickListener, Async
     @Override
     public void handleResult(AsyncResult result) {
         if (result.errored()){
-            String message;
-            if (result.getStatusCode() == 400){
-                message = "Uh-oh! You already ranked this placed.";
-            } else {
-                message = "Oops! Your rank failed to process.";
-            }
-            Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.context, "Oops! Your rank failed to process.", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this.context, "Great! You gave a " + rank + "-star ranking to " + serviceProvidersList.get(ScreenSlideActivity.currentIndex).getSp_name(), Toast.LENGTH_LONG).show();
         }

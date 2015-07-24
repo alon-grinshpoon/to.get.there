@@ -154,7 +154,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 					.position(currentUserPosition));
 
 		} else {
-			// TODO Help map
+			// TODO help map
 		}
 		
 		// Titles

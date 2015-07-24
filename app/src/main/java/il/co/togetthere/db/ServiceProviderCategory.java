@@ -1,47 +1,33 @@
 package il.co.togetthere.db;
 
 public enum ServiceProviderCategory {
-	Medical, Restaurants, Shopping, Help, Transport, PublicServices, None;
+	medical, restaurants, shopping, help, transport, public_services, none;
 
 	public static final ServiceProviderCategory stringToEnum(String category) {
 		if (category.equalsIgnoreCase("medical")) {
-			return ServiceProviderCategory.Medical;
+			return ServiceProviderCategory.medical;
 		}
 		if (category.equalsIgnoreCase("restaurants")) {
-			return ServiceProviderCategory.Restaurants;
+			return ServiceProviderCategory.restaurants;
 		}
 		if (category.equalsIgnoreCase("help")) {
-			return ServiceProviderCategory.Help;
+			return ServiceProviderCategory.help;
 		}
-		if (category.equalsIgnoreCase("public_services") || category.equalsIgnoreCase("publicservices")) {
-			return ServiceProviderCategory.PublicServices;
+		if (category.equalsIgnoreCase("public_services") || category.equalsIgnoreCase("publicservices") || category.equalsIgnoreCase("public services")) {
+			return ServiceProviderCategory.public_services;
 		}
 		if (category.equalsIgnoreCase("shopping")) {
-			return ServiceProviderCategory.Shopping;
+			return ServiceProviderCategory.shopping;
 		}
-		if (category.equals("transport")) {
-			return ServiceProviderCategory.Transport;
+		if (category.toLowerCase().contains("transport")) {
+			return ServiceProviderCategory.transport;
 		} else {
-			return ServiceProviderCategory.None;
+			return ServiceProviderCategory.none;
 		}
 	}
 
 	public static final String enumToString(ServiceProviderCategory category) {
-		switch (category) {
-			case Medical:
-				return "medical";
-			case Restaurants:
-				return "restaurants";
-			case Shopping:
-				return "shopping";
-			case Help:
-				return "help";
-			case Transport:
-				return "transport";
-			case PublicServices:
-				return "publicservices";
-		}
-		return "none";
+		return category.toString();
 	}
-	}
+}
 

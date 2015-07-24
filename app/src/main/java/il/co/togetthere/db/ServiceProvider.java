@@ -37,7 +37,7 @@ public class ServiceProvider {
 	public ServiceProvider() {
 
 		this.setId("");
-		this.setCategory(ServiceProviderCategory.None);
+		this.setCategory(ServiceProviderCategory.none);
 		this.setSp_name("");
 		this.setIs_verified(false);
 		this.setAverageRank(0);

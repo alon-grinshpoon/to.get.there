@@ -102,6 +102,17 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                     result.catchException(e);
                 }
                 break;
+            case Server.SERVER_ACTION_ADD_SP:
+                // Parse parameter
+                serviceProvider = (ServiceProvider) objects[1];
+                // Run server action
+                try {
+                    Server.addSP(serviceProvider);
+                } catch (IOException e) {
+                    // Configure result as error
+                    result.catchException(e);
+                }
+                break;
             default:
                 break;
 

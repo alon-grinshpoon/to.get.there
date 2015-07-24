@@ -20,9 +20,11 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import il.co.togetthere.db.ServiceProviderCategory;
+
 public class TypeChooserActivity extends Activity {
-	List<String> mServiceProviderType = new ArrayList<String>();
-	List<Button> mButtonsArr = new ArrayList<Button>();
+	List<String> mServiceProviderCategory = new ArrayList<>();
+	List<Button> mButtonsArr = new ArrayList<>();
 
 	@SuppressLint("InlinedApi")
 	@Override
@@ -51,14 +53,18 @@ public class TypeChooserActivity extends Activity {
 		/**
 		 * Types Initialization
 		 */
-		mServiceProviderType.addAll(Arrays.asList("medical", "shopping",
-				"help", "transport", "restaurants", "public_services"));
+		mServiceProviderCategory.addAll(Arrays.asList(ServiceProviderCategory.enumToString(ServiceProviderCategory.medical),
+				ServiceProviderCategory.enumToString(ServiceProviderCategory.shopping),
+				ServiceProviderCategory.enumToString(ServiceProviderCategory.help),
+				ServiceProviderCategory.enumToString(ServiceProviderCategory.transport),
+				ServiceProviderCategory.enumToString(ServiceProviderCategory.restaurants),
+				ServiceProviderCategory.enumToString(ServiceProviderCategory.public_services)));
 
 		/**
 		 * Layout Initialization
 		 */
-		for (int i = 0; i < mServiceProviderType.size(); i++) {
-			final String type = mServiceProviderType.get(i);
+		for (int i = 0; i < mServiceProviderCategory.size(); i++) {
+			final String type = mServiceProviderCategory.get(i);
 			int btnID = getResources().getIdentifier("id_button_" + type, "id",
 					getPackageName());
 			Button btn = (Button) findViewById(btnID);

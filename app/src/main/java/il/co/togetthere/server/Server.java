@@ -282,7 +282,7 @@ public class Server {
         return newSP;
     }
 
-    // Edit a curtain review
+    // Edit a certain review
     public static final int SERVER_ACTION_EDIT_REVIEW_BY_ID = 13;
     protected static final ServiceProvider ediReviewByID(Review review, int reviewID) throws IOException {
         /* POST request with a JSON body, the body is key-value of the fields to change:
