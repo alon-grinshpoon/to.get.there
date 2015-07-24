@@ -57,7 +57,7 @@ public class Server {
 
     // Add a new SP
     public static final int SERVER_ACTION_ADD_SP = 4;
-    protected static final boolean addSP(ServiceProvider sp) throws IOException {
+    protected static final boolean addServiceProvider(ServiceProvider sp) throws IOException {
         /**
          POST request with a JSON body
          The body should have the following json format (order doesn't matter):
@@ -251,8 +251,8 @@ public class Server {
     }
 
     // Edit the details of a certain SP
-    public static final int SERVER_ACTION_EDIT_SP_BY_ID = 12;
-    protected static final ServiceProvider editServiceProviderByID(ServiceProvider sp, int spID) throws IOException {
+    public static final int SERVER_ACTION_EDIT_SP = 12;
+    protected static final ServiceProvider editServiceProvider(ServiceProvider sp) throws IOException {
         /* POST request with a JSON body, the body is key-value of the fields to change:
         * {"name" : "new name"}
         * possible fields are:
@@ -277,7 +277,7 @@ public class Server {
         * Example: /ToGetThere/android/sp/1/edit/
         * will return the new sp in Json */
         String json = new Gson().toJson(sp);
-        String jsonResponse = HTTPHandler.postRequest(server + "/sp/" + spID + "/edit/", json);
+        String jsonResponse = HTTPHandler.postRequest(server + "/sp/" + sp.getId() + "/edit/", json);
         ServiceProvider newSP = new Gson().fromJson(jsonResponse, ServiceProvider.class);
         return newSP;
     }

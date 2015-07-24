@@ -1,8 +1,6 @@
 package il.co.togetthere.server;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
@@ -107,7 +105,18 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                 serviceProvider = (ServiceProvider) objects[1];
                 // Run server action
                 try {
-                    Server.addSP(serviceProvider);
+                    Server.addServiceProvider(serviceProvider);
+                } catch (IOException e) {
+                    // Configure result as error
+                    result.catchException(e);
+                }
+                break;
+            case Server.SERVER_ACTION_EDIT_SP:
+                // Parse parameter
+                serviceProvider = (ServiceProvider) objects[1];
+                // Run server action
+                try {
+                    Server.editServiceProvider(serviceProvider);
                 } catch (IOException e) {
                     // Configure result as error
                     result.catchException(e);

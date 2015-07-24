@@ -110,9 +110,6 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 		TextView title_addNewSPSpinner = (TextView) findViewById(R.id.title_addNewSPSpinner);
 		title_addNewSPSpinner.setTypeface(font);
 
-		EditText addNewSPDescription = (EditText) findViewById(R.id.addNewSPDescription);
-		addNewSPDescription.setTypeface(font);
-
 		EditText addNewSPDiscount = (EditText) findViewById(R.id.addNewSPDiscount);
 		addNewSPDiscount.setTypeface(font);
 
@@ -178,7 +175,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 			@Override
 			public void onClick(View view) {
 				mSP.setParking(!mSP.isParking());
-				rankClicked(view);
+				rankToggle(view);
 			}
 		});
 
@@ -186,7 +183,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 			@Override
 			public void onClick(View view) {
 				mSP.setEntrance(!mSP.isEntrance());
-				rankClicked(view);
+				rankToggle(view);
 			}
 		});
 
@@ -194,7 +191,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 			@Override
 			public void onClick(View view) {
 				mSP.setFacilities(!mSP.isFacilities());
-				rankClicked(view);
+				rankToggle(view);
 			}
 		});
 
@@ -202,7 +199,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 			@Override
 			public void onClick(View view) {
 				mSP.setToilets(!mSP.isToilets());
-				rankClicked(view);
+				rankToggle(view);
 			}
 		});
 
@@ -210,7 +207,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 			@Override
 			public void onClick(View view) {
 				mSP.setElevator(!mSP.isElevator());
-				rankClicked(view);
+				rankToggle(view);
 			}
 		});
 
@@ -232,8 +229,6 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 				String phone = ((EditText) findViewById(R.id.addNewSPSPPhone))
 						.getText().toString();
 				String website = ((EditText) findViewById(R.id.addNewSPSPWebsite))
-						.getText().toString();
-				String description = ((EditText) findViewById(R.id.addNewSPDescription))
 						.getText().toString();
 				String discount = ((EditText) findViewById(R.id.addNewSPDiscount))
 						.getText().toString();
@@ -282,11 +277,6 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 							"Location website is missing",
 							Toast.LENGTH_SHORT).show();
 					return;
-				}
-
-				// Description
-				if (!description.equals("")) {
-					// mSP.setDescription(phone);
 				}
 
 				// Discount
@@ -355,19 +345,12 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 		return (id == R.id.action_settings) ? true : super.onOptionsItemSelected(item);
 	}
 
-	public void rankClicked(View v) {
-		String rankType = v.getTag().toString();
+	public void rankToggle(View v) {
 		if (v.getAlpha() == 0.25) {
 			v.setAlpha(1);
-			updateServiceProviderRank(rankType, true);
 		} else {
 			v.setAlpha((float) 0.25);
-			updateServiceProviderRank(rankType, false);
 		}
-	}
-
-	private void updateServiceProviderRank(String rankType, boolean b) {
-		// TODO Auto-generated method stub
 	}
 
 	private static class SpinnerAdapter extends ArrayAdapter<String> {

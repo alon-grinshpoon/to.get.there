@@ -123,14 +123,6 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/addNewSPDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/addNewSPDescription"
-                android:inputType="textMultiLine" />
-
-            <EditText
                 android:id="@+id/addNewSPDiscount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,7 +153,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:alpha="0.25"
-                        android:onClick="rankClicked"
+                        android:onClick="rankToggle"
                         android:src="@drawable/ic_parking"
                         android:tag="parking" />
 
@@ -185,7 +177,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:alpha="0.25"
-                        android:onClick="rankClicked"
+                        android:onClick="rankToggle"
                         android:src="@drawable/ic_entrance"
                         android:tag="entrance" />
 
@@ -208,7 +200,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:alpha="0.25"
-                        android:onClick="rankClicked"
+                        android:onClick="rankToggle"
                         android:src="@drawable/ic_furniture"
                         android:tag="furniture" />
 
@@ -231,7 +223,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:alpha="0.25"
-                        android:onClick="rankClicked"
+                        android:onClick="rankToggle"
                         android:src="@drawable/ic_toilets"
                         android:tag="toilets" />
 
@@ -254,7 +246,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:alpha="0.25"
-                        android:onClick="rankClicked"
+                        android:onClick="rankToggle"
                         android:src="@drawable/ic_elevator"
                         android:tag="elevator" />
 

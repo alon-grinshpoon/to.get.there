@@ -1,6 +1,11 @@
 package il.co.togetthere;
 
 import il.co.togetthere.db.ServiceProvider;
+import il.co.togetthere.server.AsyncRequest;
+import il.co.togetthere.server.AsyncResponse;
+import il.co.togetthere.server.AsyncResult;
+import il.co.togetthere.server.Server;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,13 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.widget.ProfilePictureView;
 
-public class EditActivity extends Activity {
+public class EditActivity extends Activity implements AsyncResponse {
 	private ServiceProvider mSP;
 
 	@Override
@@ -80,9 +86,6 @@ public class EditActivity extends Activity {
 		TextView title = ((TextView) findViewById(R.id.title_activity_edit_sp));
 		title.setTypeface(font);
 
-		/**
-		 * Submit Button- Validation
-		 **/
 		TextView titleName = ((TextView) findViewById(R.id.title_editSPName));
 		titleName.setTypeface(font);
 		EditText name = ((EditText) findViewById(R.id.editSPName));
@@ -107,18 +110,70 @@ public class EditActivity extends Activity {
 		website.setTypeface(font);
 		website.setText(mSP.getWebsite());
 
-		TextView titleDescription = ((TextView) findViewById(R.id.title_editSPDescription));
-		titleDescription.setTypeface(font);
-		EditText description = ((EditText) findViewById(R.id.editSPDescription));
-		// TODO description.setText(mSP.getDescription());
-		description.setTypeface(font);
-
 		TextView titleDiscount = ((TextView) findViewById(R.id.title_editSPDiscount));
-		titleDescription.setTypeface(font);
+		titleDiscount.setTypeface(font);
 		EditText discount = ((EditText) findViewById(R.id.editSPDiscount));
 		discount.setText("" + mSP.getDiscount());
 		discount.setTypeface(font);
 
+		/**
+		 * Accessibility Parameters
+		 */
+		final ImageButton parking = (ImageButton) findViewById(R.id.NewRankImageParking);
+		final ImageButton entrance = (ImageButton) findViewById(R.id.NewRankImageEntrance);
+		final ImageButton facilities = (ImageButton) findViewById(R.id.NewRankImageFurniture);
+		final ImageButton toilets = (ImageButton) findViewById(R.id.NewRankImageToilets);
+		final ImageButton elevator = (ImageButton) findViewById(R.id.NewRankImageElevator);
+
+		if(mSP.isParking()) rankToggle(parking);
+		if(mSP.isEntrance()) rankToggle(entrance);
+		if(mSP.isFacilities()) rankToggle(facilities);
+		if(mSP.isToilets()) rankToggle(toilets);
+		if(mSP.isElevator()) rankToggle(elevator);
+
+		parking.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mSP.setParking(!mSP.isParking());
+				rankToggle(view);
+			}
+		});
+
+		entrance.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mSP.setEntrance(!mSP.isEntrance());
+				rankToggle(view);
+			}
+		});
+
+		facilities.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mSP.setFacilities(!mSP.isFacilities());
+				rankToggle(view);
+			}
+		});
+
+		toilets.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mSP.setToilets(!mSP.isToilets());
+				rankToggle(view);
+			}
+		});
+
+		elevator.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mSP.setElevator(!mSP.isElevator());
+				rankToggle(view);
+			}
+		});
+
+		/**
+		 * Submit Button- Validation
+		 **/
 		Button submit =  (Button) findViewById(R.id.editSPSubmit);
 		submit.setTypeface(font);
 		submit.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +188,7 @@ public class EditActivity extends Activity {
 						.getText().toString();
 				String phone = ((EditText) findViewById(R.id.editSPPhone))
 						.getText().toString();
-				String description = ((EditText) findViewById(R.id.editSPDescription))
+				String website = ((EditText) findViewById(R.id.editSPWebsite))
 						.getText().toString();
 				String discount = ((EditText) findViewById(R.id.editSPDiscount))
 						.getText().toString();
@@ -174,10 +229,15 @@ public class EditActivity extends Activity {
 					return;
 				}
 
-				// Description
-				// if (!description.equals("")) {
-				// mSP.setDescription(phone);
-				// }
+				// Website
+				if (!website.equals("")) {
+					mSP.setWebsite(website);
+				} else {
+					Toast.makeText(getApplicationContext(),
+							"Location website is missing",
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				// Discount
 				if (discountNum != -1) {
@@ -189,6 +249,35 @@ public class EditActivity extends Activity {
 					return;
 				}
 
+				// Parameters Descriptions
+				String parkingDescription = ((EditText) findViewById(R.id.editViewRank1))
+						.getText().toString();
+				String entranceDescription = ((EditText) findViewById(R.id.editViewRank2))
+						.getText().toString();
+				String furnitureDescription = ((EditText) findViewById(R.id.editViewRank3))
+						.getText().toString();
+				String toiletsDescription = ((EditText) findViewById(R.id.editViewRank4))
+						.getText().toString();
+				String elevatorDescription = ((EditText) findViewById(R.id.editViewRank5))
+						.getText().toString();
+
+				if(!parkingDescription.equals("")){
+					mSP.setParking_text(mSP.getParking_text() + "." + parkingDescription);
+				}
+				if(!entranceDescription.equals("")){
+					mSP.setParking_text(mSP.getEntrance_text() + "." + entranceDescription);
+				}
+				if(!furnitureDescription.equals("")){
+					mSP.setParking_text(mSP.getFacilities_text() + "." + furnitureDescription);
+				}
+				if(!toiletsDescription.equals("")){
+					mSP.setParking_text(mSP.getToilets_text() + "." + toiletsDescription);
+				}
+				if(!elevatorDescription.equals("")){
+					mSP.setParking_text(mSP.getElevator_text() + "." + elevatorDescription);
+				}
+
+
 				// Re-Validate User (Are You Sure?)
 				DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 					@Override
@@ -197,16 +286,9 @@ public class EditActivity extends Activity {
 						switch (which) {
 							case DialogInterface.BUTTON_POSITIVE:
 
-								// OK message
-								Toast.makeText(getApplicationContext(),
-										"Thank You!", Toast.LENGTH_SHORT)
-										.show();
-
 								// update mSP in DB and finish;
-								// TODO
-
-								// Close Activity
-								EditActivity.this.finish();
+								AsyncRequest asyncRequest = new AsyncRequest(EditActivity.this);
+								asyncRequest.execute(Server.SERVER_ACTION_EDIT_SP, mSP);
 								break;
 
 							case DialogInterface.BUTTON_NEGATIVE:
@@ -218,7 +300,7 @@ public class EditActivity extends Activity {
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						EditActivity.this);
 				builder.setMessage(
-						"Are you sure you want to add " + name + "?")
+						"Are you sure you want to edit " + name + "?")
 						.setPositiveButton("Yes", dialogClickListener)
 						.setNegativeButton("No", dialogClickListener)
 						.show();
@@ -244,4 +326,24 @@ public class EditActivity extends Activity {
 		return (id == R.id.action_settings) ? true : super.onOptionsItemSelected(item);
 	}
 
+	public void rankToggle(View v) {
+		if (v.getAlpha() == 0.25) {
+			v.setAlpha(1);
+		} else {
+			v.setAlpha((float) 0.25);
+		}
+	}
+
+	@Override
+	public void handleResult(AsyncResult result) {
+		if (result.errored()){
+			Toast.makeText(getApplicationContext(), "Oops! Unable to edit a new entry.",
+					Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(getApplicationContext(), "Great! The entry was edited. ",
+					Toast.LENGTH_SHORT).show();
+			// Close Activity
+			EditActivity.this.finish();
+		}
+	}
 }
