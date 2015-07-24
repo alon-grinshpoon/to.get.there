@@ -97,6 +97,10 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		if (getServiceProviderCategory() != null
 				&& getServiceProviderCategory().equals("help")) {
 			//mThread.execute(DynamoDBManagerType.GET_TASKS.toString());
+		} else if (getServiceProviderCategory().equals("search")) {
+			AsyncRequest asyncRequest = new AsyncRequest(ScreenSlideActivity.this);
+			String query = inIntent.getStringExtra("SEARCH_QUERY");
+			asyncRequest.execute(Server.SERVER_ACTION_SEARCH_BY_STRING, query);
 		} else {
 			AsyncRequest asyncRequest = new AsyncRequest(ScreenSlideActivity.this);
 			ServiceProviderCategory category = ServiceProviderCategory.stringToEnum(serviceProviderCategory);
@@ -220,7 +224,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 	@Override
 	public void handleResult(AsyncResult result) {
 		if (result.errored()){
-			Toast.makeText(getApplicationContext(), "Oops! Failed to load all " + serviceProviderCategory + "...",
+			Toast.makeText(getApplicationContext(), "Oops! Failed to load " + serviceProviderCategory + "...",
 					Toast.LENGTH_SHORT).show();
 			finish();
 		} else {

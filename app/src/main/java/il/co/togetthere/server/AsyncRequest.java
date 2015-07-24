@@ -113,9 +113,21 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                     result.catchException(e);
                 }
                 break;
+            case Server.SERVER_ACTION_SEARCH_BY_STRING:
+                // Parse parameter
+                String query = (String) objects[1];
+                // Run server action
+                try {
+                    serviceProviderList = Server.searchByString(query);
+                    // Configure result
+                    result.setServiceProviderList(serviceProviderList);
+                } catch (IOException e) {
+                    // Configure result as error
+                    result.catchException(e);
+                }
+                break;
             default:
                 break;
-
         }
 
         return result;

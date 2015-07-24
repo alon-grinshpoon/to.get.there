@@ -118,8 +118,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		} else {
 			rootView = (ViewGroup) inflater.inflate(
 					R.layout.fragment_screen_slide_sp, container, false);
-			setSPView(rootView, mServiceProviderType);
-
+			setSPView(rootView, mSP.getCategory().toString());
 		}
 
 		// Map

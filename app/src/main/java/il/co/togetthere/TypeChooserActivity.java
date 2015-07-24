@@ -14,9 +14,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -59,6 +62,13 @@ public class TypeChooserActivity extends Activity {
 				ServiceProviderCategory.enumToString(ServiceProviderCategory.transport),
 				ServiceProviderCategory.enumToString(ServiceProviderCategory.restaurants),
 				ServiceProviderCategory.enumToString(ServiceProviderCategory.public_services)));
+
+
+		/**
+		 * Search bar Initialization
+		 */
+		ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
+		searchBtn.setOnClickListener(new MainSearchClickListener());
 
 		/**
 		 * Layout Initialization
@@ -148,4 +158,25 @@ public class TypeChooserActivity extends Activity {
         builder.setMessage("Will you be willing to volunteer?").setPositiveButton("Yes", dialogClickListener)
             .setNegativeButton("No", dialogClickListener).show();
     }
+
+	private class MainSearchClickListener implements OnClickListener {
+		@Override
+		public void onClick(View view) {
+			Intent mainIntent = new Intent(TypeChooserActivity.this,
+					ScreenSlideActivity.class);
+			String q = ((EditText) findViewById(R.id.searchText)).getText().toString();
+
+			if (q.equals("")) {
+				Log.i("Search", "No query found, not searching");
+				return;
+			} else {
+				Log.i("Search", "Initiating search query: " + q);
+				mainIntent.putExtra("TYPE_EXTRA", "search");
+				mainIntent.putExtra("SEARCH_QUERY", q);
+				startActivity(mainIntent);
+			}
+		}
+
+	}
+
 }
