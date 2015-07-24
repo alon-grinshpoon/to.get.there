@@ -371,4 +371,5 @@ public class Server {
     private static final boolean checkJSONError(String json){
         return (json == null || json.equalsIgnoreCase("{}"));
     }
+
 }
