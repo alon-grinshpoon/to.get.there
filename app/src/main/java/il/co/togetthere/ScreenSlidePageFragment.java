@@ -310,7 +310,7 @@ public class ScreenSlidePageFragment extends Fragment implements
         tv.setVisibility(View.GONE);
 
         if (mSP.isElevator()) {
-            accessibleView = (ImageView) v.findViewById(R.id.image_check_toilet);
+            accessibleView = (ImageView) v.findViewById(R.id.image_check_elevator);
             accessibleView.setVisibility(View.VISIBLE);}
 		if (mSP.isEntrance()) {
             accessibleView = (ImageView) v.findViewById(R.id.image_check_entrance);
