@@ -1,11 +1,4 @@
 
-# show all SP's of curtain category
-[medical|restaurants|shopping|public_services|transportation|help]
-example:
-http://django-togetthereserver.rhcloud.com/ToGetThere/android/category/restaurants/
-
-
-
 # show sp by ID (show its details, reviews list, ranks list)
 example:
 http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/
@@ -169,12 +162,24 @@ possible fields are:
 #  ex: /ToGetThere/android/editReview/2
 will return an http response of the sp which had the review
 
+#### SEARCH & GET #####
 
-# search by string
-ex: /ToGetThere/android/search?q=serach-text
+# get all SPs in category
+# ex: /ToGetThere/android/category/restaurants/
 
-# search by cateogry and vicinity of 5 KM n/s e/w
+# search by string and sort by rank (no vicinity)
+# ex: /ToGetThere/android/search?q=serach-text
+
+# search by string and sort by vicinity and rank
+# ex: /ToGetThere/android/lng/34.3/lat/23.3/search?q=search-text
+
+# Get all SP's within category and sort by vicinity
 # ex: /ToGetThere/android/lng/34.3/lat/23.3/category/medical/
 
-# search by string and within cateogry
-ex: /ToGetThere/android/[medical|restaurants|shopping|public_services|transportation|help]/search?q=serach-text
+# Search by string within category, (no vicinity)
+# ex: /ToGetThere/android/[medical|restaurants|shopping|public_services|transportat|help]/search?q=string
+
+
+# search results by string, category and sort by vicinity and rank
+# ex: /ToGetThere/android/lng/34.3/lat/23.3/category/medical/search?q=search-text
+
