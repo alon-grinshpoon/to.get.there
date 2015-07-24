@@ -12,7 +12,10 @@ import org.apache.http.protocol.HTTP;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class HTTPHandler {
     // http://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/
@@ -24,6 +27,9 @@ public class HTTPHandler {
 
         // Create HTTP client
         HttpClient httpClient = new DefaultHttpClient();
+
+        // Encode URL
+        url = encodeURL(url);
 
         // Create POST request
         HttpPost request = new HttpPost(url);
@@ -72,6 +78,9 @@ public class HTTPHandler {
         // Create HTTP client
         HttpClient httpClient = new DefaultHttpClient();
 
+        // Encode URL
+        url = encodeURL(url);
+
         // Create GET request
         HttpGet request = new HttpGet(url);
         request.addHeader("User-Agent", USER_AGENT);
@@ -107,5 +116,19 @@ public class HTTPHandler {
 
         // Return JSON
         return json;
+    }
+
+    private static String encodeURL(String urlStr) {
+        try {
+            URL url = new URL(urlStr);
+            URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+            url = uri.toURL();
+            urlStr = url.toString();
+        } catch (MalformedURLException e) {
+            // Bad URL Encoding, return original string
+        } catch (URISyntaxException e) {
+            // Bad URI Encoding, return original string
+        }
+        return urlStr;
     }
 }
