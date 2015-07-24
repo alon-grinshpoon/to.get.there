@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class HTTPHandler {
         HttpPost request = new HttpPost(url);
         request.setHeader("User-Agent", USER_AGENT);
         request.addHeader("content-type", "application/json");
-        StringEntity params = new StringEntity(jsonRequest);
+        StringEntity params = new StringEntity(jsonRequest, HTTP.UTF_8);
         request.setEntity(params);
 
         // Execute request

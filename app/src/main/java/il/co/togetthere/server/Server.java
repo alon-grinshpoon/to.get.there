@@ -276,7 +276,21 @@ public class Server {
         * facilities_text
         * Example: /ToGetThere/android/sp/1/edit/
         * will return the new sp in Json */
-        String json = new Gson().toJson(sp);
+        Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
+            @Override
+            public boolean shouldSkipField(FieldAttributes f) {
+                return (f.getDeclaringClass() == ServiceProvider.class) &&
+                        (f.getName().equals("avg_rank")
+                                || f.getName().equals("reviews")
+                                || f.getName().equals("id"));
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        }).create();
+        String json = gson.toJson(sp);
         String jsonResponse = HTTPHandler.postRequest(server + "/sp/" + sp.getId() + "/edit/", json);
         ServiceProvider newSP = new Gson().fromJson(jsonResponse, ServiceProvider.class);
         return newSP;
