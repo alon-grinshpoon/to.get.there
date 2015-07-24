@@ -336,7 +336,7 @@ public class Server {
         return Arrays.asList(sps);
     }
 
-    //  Search by string within category, (no vicinity)
+    //  Search by string within category (may use vicinity)
     public static final int SERVER_ACTION_SEARCH_CATEGORY_BY_STRING = 16;
     protected static final List<ServiceProvider> searchCategoryByString(ServiceProviderCategory category, String text) throws IOException {
         if (LoginActivity.user.hasLatLng()){
