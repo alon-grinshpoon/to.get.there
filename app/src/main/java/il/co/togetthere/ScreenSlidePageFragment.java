@@ -260,7 +260,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		// Set Verified
 		if (!mSP.is_verified()) {
 			((ImageView) v.findViewById(R.id.img_is_verified))
-					.setVisibility(View.INVISIBLE);
+					.setVisibility(View.GONE);
 		}
 		
 		// Set Phone
