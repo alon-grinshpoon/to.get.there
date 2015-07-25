@@ -142,7 +142,6 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                 // Parse parameter
                 category = (ServiceProviderCategory) objects[1];
                 query = (String) objects[2];
-
                 // Run server action
                 try {
                     serviceProviderList = Server.searchCategoryByString(category, query);
@@ -162,6 +161,18 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                     serviceProvider = Server.getSPByID(spID);
                     // Configure result
                     result.setServiceProvider(serviceProvider);
+                } catch (IOException e) {
+                    // Configure result as error
+                    result.catchException(e);
+                }
+                break;
+            case Server.SERVER_ACTION_ADD_REVIEW_TO_SP:
+                // Parse parameter
+                serviceProvider = (ServiceProvider) objects[1];
+                review = (Review) objects[2];
+                // Run server action
+                try {
+                    Server.addReviewToSP(serviceProvider, review);
                 } catch (IOException e) {
                     // Configure result as error
                     result.catchException(e);

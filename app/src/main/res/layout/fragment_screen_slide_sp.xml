@@ -489,7 +489,7 @@
                     android:id="@+id/review_item_body0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="fldkgfjfdlkfjldkfjdlfkjldkjfldkjfldkjfladkja;kljda"
+                    android:text="Review Body"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
                 <!-- Review rank bar -->
 
@@ -554,7 +554,7 @@
                     android:id="@+id/review_item_body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="fldkgfjfdlkfjldkfjdlfkjldkjfldkjfldkjfladkja;kljda"
+                    android:text="Review Body"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
                 <!-- Review rank bar -->
 
@@ -619,7 +619,7 @@
                     android:id="@+id/review_item_body2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="fldkgfjfdlkfjldkfjdlfkjldkjfldkjfldkjfladkja;kljda"
+                    android:text="Review Body"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
                 <!-- Review rank bar -->
 
@@ -640,7 +640,68 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </RelativeLayout>
 
-        <!-- Like -->
+        <RelativeLayout
+            android:id="@+id/review_yours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10" >
+
+            <!-- User Photo -->
+
+            <com.facebook.widget.ProfilePictureView
+                android:id="@+id/img_review_yours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:padding="5dp"
+                facebook:preset_size="small" />
+
+            <!-- Review Title and Content -->
+
+            <LinearLayout
+                android:id="@+id/review_text_layout_yours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/post_your_review_button"
+                android:layout_toRightOf="@id/img_review_yours"
+                android:orientation="vertical" >
+
+                <!-- Review Title -->
+
+                <TextView
+                    android:id="@+id/review_item_title_yours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User Name"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold" />
+
+                <!-- Review Body -->
+
+                <EditText
+                    android:id="@+id/review_item_body_yours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter your review here..."
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </LinearLayout>
+
+            <!-- Like -->
+
+            <Button
+                android:id="@+id/post_your_review_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:paddingRight="5dp"
+                android:text="Post"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </RelativeLayout>
+
 
         <Button
             android:id="@+id/button_read_more_reviews"

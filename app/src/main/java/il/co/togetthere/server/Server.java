@@ -1,5 +1,7 @@
 package il.co.togetthere.server;
 
+import android.util.Log;
+
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -131,8 +133,21 @@ public class Server {
          */
         boolean success = true;
         // Create needed JSON
-        String json = new Gson().toJson(review, Review.class);
-        json = "{\"sp\": \"" + sp.getId() + "\", " + json.substring(1);
+        Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() { // Create JSON from User but exclude user object and likes
+            @Override
+            public boolean shouldSkipField(FieldAttributes f) {
+                return (f.getDeclaringClass() == Review.class) &&
+                        (f.getName().equals("user") || f.getName().equals("likes"));
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        }).create();
+        String json = gson.toJson(review, Review.class);
+        // Add sp and user to the json
+        json = "{\"sp\": \"" + sp.getId() + "\", \"user\": " + LoginActivity.user.getID() + ", " + json.substring(1);
         // Post request
         String jsonResponse = HTTPHandler.postRequest(server + "/addreview/", json);
         if (checkJSONError(jsonResponse)){
