@@ -242,7 +242,7 @@ public class UserInfoActivity extends Activity implements AsyncResponse {
 	public void handleResult(AsyncResult result) {
 		if (result.errored()){
 			// Show message
-			Toast.makeText(getApplicationContext(), "Oops! Unable to update your user.",
+			Toast.makeText(getApplicationContext(), "Oops! Unable to update your profile.",
 					Toast.LENGTH_SHORT).show();
 		} else {
 			// Save user as a shared preference

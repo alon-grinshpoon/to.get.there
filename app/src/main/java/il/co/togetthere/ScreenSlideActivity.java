@@ -36,9 +36,12 @@ import com.facebook.widget.ProfilePictureView;
  */
 public class ScreenSlideActivity extends FragmentActivity implements
 		AsyncResponse {
+
 	private static int NUM_PAGES = 1;
+
 	// current service provider type
 	private static String serviceProviderCategory;
+
 	public static int currentIndex;
 	public static List<ServiceProvider> serviceProviderList;
 	public static List<Task> taskList;

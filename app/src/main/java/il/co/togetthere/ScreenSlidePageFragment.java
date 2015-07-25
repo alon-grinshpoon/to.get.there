@@ -11,12 +11,14 @@ import il.co.togetthere.server.Server;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -319,14 +321,23 @@ public class ScreenSlidePageFragment extends Fragment implements
 				.findViewById(R.id.button_read_more_reviews);
 		readMore.setTypeface(font);
 		if (mReviewsList.size() > 3) {
-			readMore.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					// TODO Open an activity with list view of reviews;
-				}
-			});
+			readMore.setOnClickListener(new MoreReviewsListener(mSP.getId()));
 		} else {
 			readMore.setVisibility(View.GONE);
+		}
+	}
+
+	public class MoreReviewsListener implements OnClickListener {
+		String spID;
+
+		public MoreReviewsListener(String spID) {
+			this.spID = spID;
+		}
+		@Override
+		public void onClick(View view) {
+			Intent mainIntent = new Intent(ScreenSlidePageFragment.this.getActivity() ,ReviewsListActivity.class);
+			mainIntent.putExtra("SP_ID", spID);
+			startActivity(mainIntent);
 		}
 	}
 
@@ -458,6 +469,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void setReview(View v, int color, int num) {
 		int reviewerTextID = getResources().getIdentifier(
 				"review_item_title" + num, "id",
@@ -470,9 +482,9 @@ public class ScreenSlidePageFragment extends Fragment implements
 		int userImageID = getResources().getIdentifier("img_review_user" + num,
 				"id", v.getContext().getPackageName());
 
-		Log.i("review", "ic_thumb_" + mServiceProviderType);
+		Log.i("review", "ic_thumb_" + mSP.getCategory());
 		int likesDrawable = getResources().getIdentifier(
-				"ic_thumb_" + mServiceProviderType, "drawable",
+				"ic_thumb_" + mSP.getCategory(), "drawable",
 				v.getContext().getPackageName());
 
 		// get the reviews view's
@@ -500,9 +512,6 @@ public class ScreenSlidePageFragment extends Fragment implements
 		likes.setTextColor(color);
 		likes.setBackground(getResources().getDrawable(likesDrawable));
 		likes.setOnClickListener(new LikeListener(num));
-		
-		// TODO id of user that wrote review
-		// profilePictureView.setProfileId(mReviewsList.get(position).g);
 	}
 
     class LikeListener implements OnClickListener, AsyncResponse{
@@ -516,7 +525,6 @@ public class ScreenSlidePageFragment extends Fragment implements
         @Override
         public void onClick(View v) {
             this.v =(TextView) v;
-            TextView likes  = (TextView) v;
             // Register Like
             AsyncRequest asyncRequest = new AsyncRequest(LikeListener.this);
             asyncRequest.execute(Server.SERVER_ACTION_ADD_LIKE_TO_REVIEW, LoginActivity.user, mReviewsList.get(mReviewPos));
@@ -545,6 +553,8 @@ public class ScreenSlidePageFragment extends Fragment implements
 	public void onWazeClick() {
 		onMarkerClick(null);
 	}
+
+
 
 	public class mListAdapter extends BaseAdapter {
 		private List<Review> reviewsList;
@@ -579,9 +589,9 @@ public class ScreenSlidePageFragment extends Fragment implements
 						R.layout.location_review_list_item, null);
 				holder = new ViewHolder();
 				holder.title = (TextView) convertView
-						.findViewById(R.id.review_item_title);
+						.findViewById(R.id.text_review_list_item_title);
 				holder.body = (TextView) convertView
-						.findViewById(R.id.review_item_body);
+						.findViewById(R.id.text_review_list_item_body);
 				
 				convertView.setTag(holder);
 			} else {

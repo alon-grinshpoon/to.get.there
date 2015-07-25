@@ -31,6 +31,7 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
         // Define parameters
         User user;
         int userID;
+        String spID;
         Review review;
         ServiceProvider serviceProvider;
         String query;
@@ -147,6 +148,20 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                     serviceProviderList = Server.searchCategoryByString(category, query);
                     // Configure result
                     result.setServiceProviderList(serviceProviderList);
+                } catch (IOException e) {
+                    // Configure result as error
+                    result.catchException(e);
+                }
+                break;
+            case Server.SERVER_ACTION_GET_SP_BY_ID:
+                // Parse parameter
+                spID = (String) objects[1];
+
+                // Run server action
+                try {
+                    serviceProvider = Server.getSPByID(spID);
+                    // Configure result
+                    result.setServiceProvider(serviceProvider);
                 } catch (IOException e) {
                     // Configure result as error
                     result.catchException(e);
