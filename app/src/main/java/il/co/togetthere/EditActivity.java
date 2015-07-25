@@ -285,19 +285,19 @@ public class EditActivity extends Activity implements AsyncResponse {
 						.getText().toString();
 
 				if(!parkingDescription.equals("")){
-					mSP.setParking_text(mSP.getParking_text() + "." + parkingDescription);
+					mSP.setParking_text(parkingDescription);
 				}
 				if(!entranceDescription.equals("")){
-					mSP.setParking_text(mSP.getEntrance_text() + "." + entranceDescription);
+					mSP.setEntrance_text(entranceDescription);
 				}
 				if(!furnitureDescription.equals("")){
-					mSP.setParking_text(mSP.getFacilities_text() + "." + furnitureDescription);
+					mSP.setFacilities_text(furnitureDescription);
 				}
 				if(!toiletsDescription.equals("")){
-					mSP.setParking_text(mSP.getToilets_text() + "." + toiletsDescription);
+					mSP.setToilets_text(toiletsDescription);
 				}
 				if(!elevatorDescription.equals("")){
-					mSP.setParking_text(mSP.getElevator_text() + "." + elevatorDescription);
+					mSP.setElevator_text(elevatorDescription);
 				}
 
 
