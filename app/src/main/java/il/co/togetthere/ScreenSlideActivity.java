@@ -355,6 +355,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View view) {
 			String query = ((EditText) findViewById(R.id.searchText)).getText().toString();
+			query.trim();
 			if (query.equals("")) {
 				Log.i("Pager Search", "No query found, not searching");
 				return;

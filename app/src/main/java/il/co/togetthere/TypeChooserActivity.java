@@ -166,7 +166,7 @@ public class TypeChooserActivity extends Activity {
 			Intent mainIntent = new Intent(TypeChooserActivity.this,
 					ScreenSlideActivity.class);
 			String q = ((EditText) findViewById(R.id.searchText)).getText().toString();
-
+			q= q.trim();
 			if (q.equals("")) {
 				Log.i("Type Chooser Search", "No query found, not searching");
 				return;
