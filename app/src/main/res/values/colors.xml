@@ -2,6 +2,7 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="slide_screen_bg">#f3f5f3</color>
+    <color name="review_bg">#F5F7F5</color>
 
     <!-- medical Category -->
     <color name="medical_bg_color">#F888D0</color>
