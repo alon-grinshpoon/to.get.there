@@ -2,6 +2,7 @@ package il.co.togetthere;
 
 import il.co.togetthere.db.Review;
 import il.co.togetthere.db.ServiceProvider;
+import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.db.Task;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
@@ -58,7 +59,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 	 * #ARG_PAGE}.
 	 */
 	public ViewGroup rootView;
-	public String mServiceProviderType = null;
+	public String mServiceProviderCategory = null;
 	private int mPageNumber;
 	private ServiceProvider mSP;
 	private Task mTask;
@@ -87,12 +88,12 @@ public class ScreenSlidePageFragment extends Fragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPageNumber = getArguments().getInt(ARG_PAGE);
-		mServiceProviderType = getArguments().getString(ARG_TYPE);
+		mServiceProviderCategory = getArguments().getString(ARG_TYPE);
 
 		/**
 		 * Get information from DB
 		 **/
-		if (mServiceProviderType.equals("help")) {
+		if (mServiceProviderCategory.equals("help")) {
 			mTask = getCurrTask(mPageNumber);
 		} else {
 			mSP = getCurrSP(mPageNumber);
@@ -112,10 +113,10 @@ public class ScreenSlidePageFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		
 		// Inflate the layout containing a title and body text.
-		if (mServiceProviderType.equals("help")) {
+		if (mServiceProviderCategory.equals("help")) {
 			rootView = (ViewGroup) inflater.inflate(
 					R.layout.fragment_screen_slide_help, container, false);
-			setHelpView(rootView, mServiceProviderType);
+			setHelpView(rootView, mServiceProviderCategory);
 
 		} else {
 			rootView = (ViewGroup) inflater.inflate(
@@ -124,7 +125,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		}
 
 		// Map
-		if (!mServiceProviderType.equals("help")) {
+		if (!mServiceProviderCategory.equals("help")) {
 			mMapView = (MapView) rootView.findViewById(R.id.mapView);
 			mMapView.onCreate(savedInstanceState);
 			mMapView.onResume();// needed to get the map to display immediately
@@ -553,8 +554,6 @@ public class ScreenSlidePageFragment extends Fragment implements
 	public void onWazeClick() {
 		onMarkerClick(null);
 	}
-
-
 
 	public class mListAdapter extends BaseAdapter {
 		private List<Review> reviewsList;
