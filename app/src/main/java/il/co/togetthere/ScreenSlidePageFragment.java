@@ -26,6 +26,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -426,6 +427,8 @@ public class ScreenSlidePageFragment extends Fragment implements
 		TextView noReviews = (TextView) v
 				.findViewById(R.id.text_be_first_reviewer);
 		noReviews.setTypeface(font);
+
+		// Set reviews
 		RelativeLayout review1 = (RelativeLayout) v.findViewById(R.id.review0);
 		RelativeLayout review2 = (RelativeLayout) v.findViewById(R.id.review1);
 		RelativeLayout review3 = (RelativeLayout) v.findViewById(R.id.review2);
@@ -457,6 +460,8 @@ public class ScreenSlidePageFragment extends Fragment implements
 			break;
 		}
 
+		// Set the user review
+		setUserReview(v, color);
 	}
 
 	private void setReview(View v, int color, int num) {
@@ -506,6 +511,78 @@ public class ScreenSlidePageFragment extends Fragment implements
 		// profilePictureView.setProfileId(mReviewsList.get(position).g);
 	}
 
+	private void setUserReview(View v, int color) {
+		int reviewerTextID = getResources().getIdentifier(
+				"review_item_title_yours", "id",
+				v.getContext().getPackageName());
+		int reviewTextID = getResources()
+				.getIdentifier("review_item_body_yours", "id",
+						v.getContext().getPackageName());
+		int userImageID = getResources().getIdentifier("img_review_yours",
+				"id", v.getContext().getPackageName());
+		int buttonID = getResources().getIdentifier("post_your_review_button",
+				"id", v.getContext().getPackageName());
+
+		// get the reviews view's
+		TextView reviewer = (TextView) v.findViewById(reviewerTextID);
+		final EditText review = (EditText) v.findViewById(reviewTextID);
+		ProfilePictureView profilePictureView = (ProfilePictureView) v
+				.findViewById(userImageID);
+		Button submitButton = (Button) v.findViewById(buttonID);
+
+		// Define Font
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+		// set font
+		reviewer.setTypeface(font);
+		review.setTypeface(font);
+		submitButton.setTypeface(font);
+
+		// set review details
+		reviewer.setText(LoginActivity.user.getFullName());
+		profilePictureView.setProfileId(LoginActivity.user.getFacebook_id());
+		submitButton.setTextColor(color);
+		submitButton.setOnClickListener(new SumbitReviewListener(mSP, review));
+	}
+
+	class SumbitReviewListener implements OnClickListener, AsyncResponse{
+
+		Button v;
+		ServiceProvider sp;
+		EditText review;
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+
+		public SumbitReviewListener(ServiceProvider sp, EditText review) {
+			this.sp = sp;
+			this.review = review;
+		}
+		@Override
+		public void onClick(View v) {
+			String reviewBody = review.getText().toString();
+			if (!reviewBody.trim().equals("")) {
+				this.v = (Button) v;
+				// Create Review
+				Review review = new Review("0", LoginActivity.user, reviewBody, 0);
+				// Add Review
+				AsyncRequest asyncRequest = new AsyncRequest(SumbitReviewListener.this);
+				asyncRequest.execute(Server.SERVER_ACTION_ADD_REVIEW_TO_SP, this.sp, review);
+			} else {
+				Toast.makeText(v.getContext().getApplicationContext(), "Oops! Review text cannot be empty.",
+						Toast.LENGTH_SHORT).show();
+			}
+		}
+
+		@Override
+		public void handleResult(AsyncResult result) {
+			if (result.errored()) {
+				Toast.makeText(v.getContext().getApplicationContext(), "Oops! Unable to add your review.",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(v.getContext().getApplicationContext(), "Excellent! Your review was added.",
+						Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
     class LikeListener implements OnClickListener, AsyncResponse{
         int mReviewPos;
         TextView v;
@@ -517,7 +594,6 @@ public class ScreenSlidePageFragment extends Fragment implements
         @Override
         public void onClick(View v) {
             this.v =(TextView) v;
-            TextView likes  = (TextView) v;
             // Register Like
             AsyncRequest asyncRequest = new AsyncRequest(LikeListener.this);
             asyncRequest.execute(Server.SERVER_ACTION_ADD_LIKE_TO_REVIEW, LoginActivity.user, mReviewsList.get(mReviewPos));
