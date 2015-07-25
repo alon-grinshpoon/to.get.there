@@ -122,7 +122,7 @@ public class Server {
 
     // Add a review to a certain SP from certain user
     public static final int SERVER_ACTION_ADD_REVIEW_TO_SP = 6;
-    protected static final boolean addReviewToSP(ServiceProvider sp, Review review) throws IOException {
+    protected static final ServiceProvider addReviewToSP(ServiceProvider sp, Review review) throws IOException {
         /**
          * example: /ToGetThere/android/addreview/
          * **POST** request with a JSON body:
@@ -150,10 +150,11 @@ public class Server {
         json = "{\"sp\": \"" + sp.getId() + "\", \"user\": " + LoginActivity.user.getID() + ", " + json.substring(1);
         // Post request
         String jsonResponse = HTTPHandler.postRequest(server + "/addreview/", json);
+        ServiceProvider updateServiceProvider = new Gson().fromJson(jsonResponse, ServiceProvider.class);
         if (checkJSONError(jsonResponse)){
             success = false;
         }
-        return success;
+        return updateServiceProvider;
     }
 
     // Register a new user

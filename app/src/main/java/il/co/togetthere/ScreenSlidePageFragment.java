@@ -10,6 +10,8 @@ import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
 import il.co.togetthere.util.LikeListener;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -55,6 +57,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 	/* The argument key for the page number this fragment represents. */
 	public static final String ARG_PAGE = "page";
 	public static final String ARG_TYPE = "Type";
+	private int color;
 
 	/*
 	 * The fragment's page number, which is set to the argument value for {@link
@@ -214,14 +217,14 @@ public class ScreenSlidePageFragment extends Fragment implements
 		Button volunteerButton = (Button) v.findViewById(R.id.button_volunteer);
 		volunteerButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                mTask.addVolunteer(LoginActivity.user);
-                mTask.addTaskToDB();
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "Great! You're Amazing!", Toast.LENGTH_SHORT).show();
-            }
-        });
+			@Override
+			public void onClick(View v) {
+				mTask.addVolunteer(LoginActivity.user);
+				mTask.addTaskToDB();
+				Toast.makeText(getActivity().getApplicationContext(),
+						"Great! You're Amazing!", Toast.LENGTH_SHORT).show();
+			}
+		});
 
 		// TODO Set Verified
 
@@ -239,7 +242,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 		int colorID = getResources().getIdentifier(Type + "_bg_color", "color",
 				"il.co.togetthere");
-		int color = getResources().getColor(colorID);
+		color = getResources().getColor(colorID);
 
 		SetViewColors(v, color);
 		
@@ -572,17 +575,17 @@ public class ScreenSlidePageFragment extends Fragment implements
 		reviewer.setText(LoginActivity.user.getFullName());
 		profilePictureView.setProfileId(LoginActivity.user.getFacebook_id());
 		submitButton.setTextColor(color);
-		submitButton.setOnClickListener(new SumbitReviewListener(mSP, review));
+		submitButton.setOnClickListener(new SubmitReviewListener(mSP, review));
 	}
 
-	class SumbitReviewListener implements OnClickListener, AsyncResponse{
+	class SubmitReviewListener implements OnClickListener, AsyncResponse{
 
 		Button v;
 		ServiceProvider sp;
 		EditText review;
 		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
 
-		public SumbitReviewListener(ServiceProvider sp, EditText review) {
+		public SubmitReviewListener(ServiceProvider sp, EditText review) {
 			this.sp = sp;
 			this.review = review;
 		}
@@ -594,7 +597,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 				// Create Review
 				Review review = new Review("0", LoginActivity.user, reviewBody, 0);
 				// Add Review
-				AsyncRequest asyncRequest = new AsyncRequest(SumbitReviewListener.this);
+				AsyncRequest asyncRequest = new AsyncRequest(SubmitReviewListener.this);
 				asyncRequest.execute(Server.SERVER_ACTION_ADD_REVIEW_TO_SP, this.sp, review);
 			} else {
 				Toast.makeText(v.getContext().getApplicationContext(), "Oops! Review text cannot be empty.",
@@ -610,8 +613,58 @@ public class ScreenSlidePageFragment extends Fragment implements
 			} else {
 				Toast.makeText(v.getContext().getApplicationContext(), "Excellent! Your review was added.",
 						Toast.LENGTH_SHORT).show();
+				// Redraw
+				((EditText) rootView.findViewById(R.id.review_item_body_yours)).setText("");
+				mSP = result.getServiceProvider();
+				getReviews();
+				updateReviewsView();
 			}
 		}
+	}
+
+	private void updateReviewsView() {
+
+		// Define Font
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+
+		TextView noReviews = (TextView) rootView
+				.findViewById(R.id.text_be_first_reviewer);
+		noReviews.setTypeface(font);
+
+		// Set reviews
+		RelativeLayout review1 = (RelativeLayout) rootView.findViewById(R.id.review0);
+		RelativeLayout review2 = (RelativeLayout) rootView.findViewById(R.id.review1);
+		RelativeLayout review3 = (RelativeLayout) rootView.findViewById(R.id.review2);
+
+		switch (mReviewsList.size()) {
+			case 0: // no reviews
+				noReviews.setTextColor(color);
+				review1.setVisibility(View.GONE);
+				review2.setVisibility(View.GONE);
+				review3.setVisibility(View.GONE);
+				break;
+			case 1: // one review
+				noReviews.setVisibility(View.GONE);
+				setReview(rootView, color, 0);
+				review2.setVisibility(View.GONE);
+				review3.setVisibility(View.GONE);
+				break;
+			case 2: // two reviews
+				noReviews.setVisibility(View.GONE);
+				setReview(rootView, color, 0);
+				setReview(rootView, color, 1);
+				review3.setVisibility(View.GONE);
+				break;
+			default: // 3 or more
+				noReviews.setVisibility(View.GONE);
+				setReview(rootView, color, 0);
+				setReview(rootView, color, 1);
+				setReview(rootView, color, 2);
+				break;
+		}
+
+		// Set the option for the user to add a review
+		setUserReview(rootView, color);
 	}
 
 
@@ -680,30 +733,23 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 	public List<Review> getReviews() {
 
+		// Update Reviews
 		mReviewsList = mSP.getReviewsAsList();
-/* 		These are Mock reviews for testing
- *
-		ReviewObj review1 = new ReviewObj();
-		review1.setTitle("TitleA1");
-		review1.setReview("Great Place, Very Accecible");
-		review1.setReviewer("Rony Jacobson");
-		review1.setPoints(1);
-		mReviewsList.add(review1);
-
-		ReviewObj review2 = new ReviewObj();
-		review2.setTitle("TitleA2");
-		review2.setReview("I couldent find a close parking spot");
-		review2.setReviewer("John Doh");
-		review2.setPoints(10);
-		mReviewsList.add(review2);
-
-		ReviewObj review3 = new ReviewObj();
-		review3.setTitle("TitleA3");
-		review3.setReview("Good Atmospheir and great Service");
-		review3.setReviewer("Jane Doh");
-		review3.setPoints(0);
-		mReviewsList.add(review3);
-		*/
+		// Sort so the user's review will ve first
+		Collections.sort(mReviewsList, new Comparator<Review>() {
+			@Override
+			public int compare(Review r1, Review r2) {
+				if (r1.getUser().getID() == LoginActivity.user.getID() &&
+					r1.getUser().getID() == LoginActivity.user.getID()) {
+					return 0;
+				} else if (r1.getUser().getID() == LoginActivity.user.getID() &&
+				r1.getUser().getID() != LoginActivity.user.getID()){
+					return 1;
+				}
+				return -1;
+			}
+		});
+		// Return
 		return mReviewsList;
 	}
 

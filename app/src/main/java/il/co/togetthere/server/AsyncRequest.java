@@ -172,7 +172,9 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                 review = (Review) objects[2];
                 // Run server action
                 try {
-                    Server.addReviewToSP(serviceProvider, review);
+                    serviceProvider = Server.addReviewToSP(serviceProvider, review);
+                    // Configure result
+                    result.setServiceProvider(serviceProvider);
                 } catch (IOException e) {
                     // Configure result as error
                     result.catchException(e);
