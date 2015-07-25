@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -599,6 +600,10 @@ public class ScreenSlidePageFragment extends Fragment implements
 				// Add Review
 				AsyncRequest asyncRequest = new AsyncRequest(SubmitReviewListener.this);
 				asyncRequest.execute(Server.SERVER_ACTION_ADD_REVIEW_TO_SP, this.sp, review);
+
+                // Check if no view has focus:
+                ScreenSlideActivity.hideKeyboard(getActivity());
+
 			} else {
 				Toast.makeText(v.getContext().getApplicationContext(), "Oops! Review text cannot be empty.",
 						Toast.LENGTH_SHORT).show();

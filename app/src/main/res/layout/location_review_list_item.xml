@@ -6,9 +6,12 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center"
+    android:background="@color/slide_screen_bg"
     android:weightSum="10" >
 
     <RelativeLayout
+        android:layout_margin="5dp"
+        android:background="@color/review_bg"
         android:id="@+id/review_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

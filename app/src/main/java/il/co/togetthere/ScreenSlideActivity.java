@@ -9,6 +9,8 @@ import il.co.togetthere.server.Server;
 
 import android.annotation.SuppressLint;
 import java.util.List;
+
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -357,7 +359,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 				Log.i("Pager Search", "No query found, not searching");
 				return;
 			} else {
-				hideKeyboard();
+				hideKeyboard(ScreenSlideActivity.this);
 				mPager.setVisibility(View.GONE);
 				((ProgressBar) findViewById(R.id.progress)).setVisibility(View.VISIBLE);
 				AsyncRequest asyncRequest = new AsyncRequest(ScreenSlideActivity.this);
@@ -377,12 +379,14 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		}
 	}
 
-	private void hideKeyboard() {
-		// Check if no view has focus:
-		View view = this.getCurrentFocus();
-		if (view != null) {
-			InputMethodManager inputManager = (InputMethodManager) this.getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
-			inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+	public static void hideKeyboard(Activity activity) {
+		InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+		//Find the currently focused view, so we can grab the correct window token from it.
+		View view = activity.getCurrentFocus();
+		//If no view currently has focus, create a new one, just so we can grab a window token from it
+		if(view == null) {
+			view = new View(activity);
 		}
+		inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 	}
 }

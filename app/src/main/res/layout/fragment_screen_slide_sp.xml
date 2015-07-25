@@ -452,6 +452,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_margin="5dp"
+            android:background="@color/review_bg"
             android:weightSum="10" >
 
             <!-- User Photo -->
@@ -473,6 +475,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/text_review_likes_0"
                 android:layout_toRightOf="@id/img_review_user0"
+                android:padding="5dp"
                 android:orientation="vertical" >
 
                 <!-- Review Title -->
@@ -517,6 +520,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_margin="5dp"
+            android:background="@color/review_bg"
             android:weightSum="10" >
 
             <!-- User Photo -->
@@ -538,6 +543,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/text_review_likes_1"
                 android:layout_toRightOf="@id/img_review_user1"
+                android:padding="5dp"
                 android:orientation="vertical" >
 
                 <!-- Review Title -->
@@ -582,6 +588,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_margin="5dp"
+            android:background="@color/review_bg"
             android:weightSum="10" >
 
             <!-- User Photo -->
@@ -603,6 +611,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/text_review_likes_2"
                 android:layout_toRightOf="@id/img_review_user2"
+                android:padding="5dp"
                 android:orientation="vertical" >
 
                 <!-- Review Title -->
