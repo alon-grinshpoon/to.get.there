@@ -39,6 +39,10 @@ public class ReviewsListActivity extends Activity implements AsyncResponse {
 
     ServiceProvider mSP;
 
+    int colorID = 0;
+    int likesDrawable = 0;
+    int color = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +100,6 @@ public class ReviewsListActivity extends Activity implements AsyncResponse {
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
-            int likesDrawable = 0;
-            int color = 0;
             Typeface font = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.TTF");
             Typeface fontBold = Typeface.createFromAsset(getAssets(), "fonts/GOTHICB.TTF");
 
@@ -121,7 +123,7 @@ public class ReviewsListActivity extends Activity implements AsyncResponse {
                 holder.likes.setTypeface(font);
 
                 //Set Colors
-                int colorID = getResources().getIdentifier(mSP.getCategory() + "_bg_color", "color",
+                colorID = getResources().getIdentifier(mSP.getCategory() + "_bg_color", "color",
                         "il.co.togetthere");
                 color = getResources().getColor(colorID);
                 likesDrawable = getResources().getIdentifier(
