@@ -214,14 +214,14 @@ public class ScreenSlidePageFragment extends Fragment implements
 		Button volunteerButton = (Button) v.findViewById(R.id.button_volunteer);
 		volunteerButton.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				mTask.addVolunteer(LoginActivity.user);
-				mTask.addTaskToDB();
-				Toast.makeText(getActivity().getApplicationContext(),
-						"Great! You're Amazing!", Toast.LENGTH_SHORT).show();
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                mTask.addVolunteer(LoginActivity.user);
+                mTask.addTaskToDB();
+                Toast.makeText(getActivity().getApplicationContext(),
+                        "Great! You're Amazing!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 		// TODO Set Verified
 
@@ -289,10 +289,8 @@ public class ScreenSlidePageFragment extends Fragment implements
 		locationDiscount.setText("%" + mSP.getDiscount());
 		locationDiscount.setTypeface(font);
 
-		// Set Website
-		TextView locationWebsite = ((TextView) v.findViewById(R.id.text_location_website));
-		locationWebsite.setText(mSP.getWebsite() != null ? mSP.getWebsite() : "N/A");
-		locationWebsite.setTypeface(font);
+        // Set Website
+        setWebsiteView(v, font);
 
 		// set accessibility percentage
 		setAccecibility(v);
@@ -330,7 +328,30 @@ public class ScreenSlidePageFragment extends Fragment implements
 		}
 	}
 
-	public class MoreReviewsListener implements OnClickListener {
+    private void setWebsiteView(View v, Typeface font) {
+        LinearLayout websiteLayout = (LinearLayout) v.findViewById(R.id.website_layout);
+        TextView locationWebsite = ((TextView) v.findViewById(R.id.text_location_website));
+        String url = mSP.getWebsite();
+        if (url != null && !url.equals("")) {
+            locationWebsite.setText(url);
+            websiteLayout.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView locationWebsite = ((TextView) view.findViewById(R.id.text_location_website));
+                    String url = locationWebsite.getText().toString();
+                    if (!url.startsWith("http://") && !url.startsWith("https://"))
+                        url = "http://" + url;
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(browserIntent);
+                }
+            });
+        } else {
+            locationWebsite.setText("No website information");
+        }
+        locationWebsite.setTypeface(font);
+    }
+
+    private class MoreReviewsListener implements OnClickListener {
 		String spID;
 
 		public MoreReviewsListener(String spID) {
@@ -382,7 +403,7 @@ public class ScreenSlidePageFragment extends Fragment implements
         accessibilityImage.setOnClickListener(new AccessibilityListener(mSP.getEntrance_text()));
 	}
 
-    class AccessibilityListener implements OnClickListener{
+    private class AccessibilityListener implements OnClickListener{
         String accecibilityText;
 
         public AccessibilityListener(String accecibilityText) {
@@ -472,7 +493,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 			break;
 		}
 
-		// Set the user review
+		// Set the option for the user to add a review
 		setUserReview(v, color);
 	}
 
