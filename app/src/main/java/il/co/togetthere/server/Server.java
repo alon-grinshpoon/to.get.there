@@ -34,7 +34,7 @@ public class Server {
 
     // Get SP by ID (show its details, reviews list, ranks list)
     public static final int SERVER_ACTION_GET_SP_BY_ID = 1;
-    protected static final ServiceProvider getSPByID(int id) throws IOException {
+    protected static final ServiceProvider getSPByID(String id) throws IOException {
         /* example: http://django-togetthereserver.rhcloud.com/ToGetThere/android/sp/1/ */
         String json = HTTPHandler.getRequest(server + "/sp/" + id + "/");
         ServiceProvider sp = new Gson().fromJson(json, ServiceProvider.class);
