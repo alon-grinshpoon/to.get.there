@@ -33,6 +33,7 @@ import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
+import il.co.togetthere.util.LikeListener;
 
 public class ReviewsListActivity extends Activity implements AsyncResponse {
 
@@ -97,6 +98,8 @@ public class ReviewsListActivity extends Activity implements AsyncResponse {
             ViewHolder holder;
             int likesDrawable = 0;
             int color = 0;
+            Typeface font = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.TTF");
+            Typeface fontBold = Typeface.createFromAsset(getAssets(), "fonts/GOTHICB.TTF");
 
             if (convertView == null) {
                 holder = new ViewHolder();
@@ -113,8 +116,6 @@ public class ReviewsListActivity extends Activity implements AsyncResponse {
 
 
                 // Set Font
-                Typeface font = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.TTF");
-                Typeface fontBold = Typeface.createFromAsset(getAssets(), "fonts/GOTHICB.TTF");
                 holder.userName.setTypeface(fontBold);
                 holder.content.setTypeface(font);
                 holder.likes.setTypeface(font);
@@ -140,6 +141,7 @@ public class ReviewsListActivity extends Activity implements AsyncResponse {
             holder.likes.setText(review.getLikes() + "   ");
             holder.likes.setTextColor(color);
             holder.likes.setBackground(getResources().getDrawable(likesDrawable));
+            holder.likes.setOnClickListener(new LikeListener(review, font));
             return convertView;
         }
 

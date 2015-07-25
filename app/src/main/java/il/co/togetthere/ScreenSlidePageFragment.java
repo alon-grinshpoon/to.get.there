@@ -8,6 +8,7 @@ import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
+import il.co.togetthere.util.LikeListener;
 
 import java.util.List;
 
@@ -517,7 +518,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		likes.setText(reviewObj.getLikes() + "   ");
 		likes.setTextColor(color);
 		likes.setBackground(getResources().getDrawable(likesDrawable));
-		likes.setOnClickListener(new LikeListener(num));
+		likes.setOnClickListener(new LikeListener(reviewObj , font));
 	}
 
 	private void setUserReview(View v, int color) {
@@ -592,41 +593,6 @@ public class ScreenSlidePageFragment extends Fragment implements
 		}
 	}
 
-    class LikeListener implements OnClickListener, AsyncResponse{
-        int mReviewPos;
-        TextView v;
-        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
-
-        public LikeListener(int reviewPos) {
-            this.mReviewPos = reviewPos;
-        }
-        @Override
-        public void onClick(View v) {
-            this.v =(TextView) v;
-            // Register Like
-            AsyncRequest asyncRequest = new AsyncRequest(LikeListener.this);
-            asyncRequest.execute(Server.SERVER_ACTION_ADD_LIKE_TO_REVIEW, LoginActivity.user, mReviewsList.get(mReviewPos));
-        }
-
-        @Override
-        public void handleResult(AsyncResult result) {
-            if (result.errored()) {
-				String message;
-				if (result.getStatusCode() == 400){
-					message = "Uh-oh! You already liked this review.";
-				} else {
-					message = "Oops! Unable to add your like.";
-				}
-                Toast.makeText(v.getContext().getApplicationContext(), message,
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Inc Likes
-                int numLikes = 1 + Integer.parseInt(((String) v.getText()).trim());
-                v.setText(numLikes + "   ");
-                v.setTypeface(font);
-            }
-        }
-    }
 
 	public void onWazeClick() {
 		onMarkerClick(null);
