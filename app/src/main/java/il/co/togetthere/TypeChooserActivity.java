@@ -94,6 +94,19 @@ public class TypeChooserActivity extends Activity {
 
 			mButtonsArr.add(i, btn);
 		}
+		// Disable help
+		int btnID = getResources().getIdentifier("id_button_" + ServiceProviderCategory.enumToString(ServiceProviderCategory.help), "id",
+				getPackageName());
+		Button btn = (Button) findViewById(btnID);
+		btn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), "Searching for help is coming soon!",
+						Toast.LENGTH_LONG).show();
+			}
+
+		});
 		
         // Ask To Volunteer
 		if (!LoginActivity.user.wasAskedToVolunteer()) {
