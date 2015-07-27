@@ -313,12 +313,6 @@ public class ScreenSlidePageFragment extends Fragment implements
 			}
 		});
 
-		// TODO set List of reviews
-		// ListView listView = (ListView)
-		// rootView.findViewById(R.id.list_reviews);
-		// listView.setAdapter(new mListAdapter(getActivity(), getReviews()));
-		// listView.setOnTouchListener(new View.OnTouchListener() {
-
 		// Reviews		
 		getReviews();
 		setReviewsView(v, color);
@@ -574,6 +568,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 		// set review details
 		reviewer.setText(LoginActivity.user.getFullName());
+		review.setText("");
 		profilePictureView.setProfileId(LoginActivity.user.getFacebook_id());
 		submitButton.setTextColor(color);
 		submitButton.setOnClickListener(new SubmitReviewListener(mSP, review));
@@ -651,6 +646,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 			case 1: // one review
 				noReviews.setVisibility(View.GONE);
 				setReview(rootView, color, 0);
+				review1.setVisibility(View.VISIBLE);
 				review2.setVisibility(View.GONE);
 				review3.setVisibility(View.GONE);
 				break;
@@ -658,6 +654,8 @@ public class ScreenSlidePageFragment extends Fragment implements
 				noReviews.setVisibility(View.GONE);
 				setReview(rootView, color, 0);
 				setReview(rootView, color, 1);
+				review1.setVisibility(View.VISIBLE);
+				review2.setVisibility(View.VISIBLE);
 				review3.setVisibility(View.GONE);
 				break;
 			default: // 3 or more
@@ -665,6 +663,9 @@ public class ScreenSlidePageFragment extends Fragment implements
 				setReview(rootView, color, 0);
 				setReview(rootView, color, 1);
 				setReview(rootView, color, 2);
+				review1.setVisibility(View.VISIBLE);
+				review2.setVisibility(View.VISIBLE);
+				review3.setVisibility(View.VISIBLE);
 				break;
 		}
 
