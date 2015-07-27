@@ -7,10 +7,13 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -467,7 +470,11 @@ public class LoginActivity extends FragmentActivity implements AsyncResponse {
             Toast.makeText(getApplicationContext(), "Oops! Unable to register your user.",
                     Toast.LENGTH_SHORT).show();
         } else {
-
+            // Get location
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            LocationListener locationListener = new SplashActivity.UserLocationListener();
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300000, 100, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300000, 100, locationListener);
             // Save user as a shared preference
             SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor prefsEditor = mPrefs.edit();

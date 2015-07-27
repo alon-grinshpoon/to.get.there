@@ -93,7 +93,7 @@ public class SplashActivity extends Activity {
         }, SPLASH_DISPLAY_LENGTH);
     }
 
-    private class UserLocationListener implements LocationListener {
+    public static class UserLocationListener implements LocationListener {
 
         @Override
         public void onLocationChanged(Location loc) {
