@@ -102,15 +102,10 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		Intent inIntent = getIntent();
 		setServiceProviderCategory(inIntent.getStringExtra("TYPE_EXTRA"));
 
-
-
 		if (getServiceProviderCategory() != null
 				&& getServiceProviderCategory().equals("help")) {
 			//mThread.execute(DynamoDBManagerType.GET_TASKS.toString());
 		} else if (getServiceProviderCategory().equals("search")) {
-			// Disable search while searching
-			ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
-			searchBtn.setEnabled(false);
 			// show content
 			AsyncRequest asyncRequest = new AsyncRequest(ScreenSlideActivity.this);
 			String query = inIntent.getStringExtra("SEARCH_QUERY");
@@ -126,6 +121,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		 * Search bar Initialization
 		 */
 		ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
+		searchBtn.setEnabled(false); // Disable search until loading is finished
 		EditText searchEditText = (EditText) findViewById(R.id.searchText);
 		if (getServiceProviderCategory().equals("search")) {
 			searchEditText.setHint("Search...");
@@ -253,6 +249,11 @@ public class ScreenSlideActivity extends FragmentActivity implements
 
 	@Override
 	public void handleResult(AsyncResult result) {
+
+		// Enable search
+		ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
+		searchBtn.setEnabled(true);
+
 		if (result.errored()){
 			Toast.makeText(getApplicationContext(), "Oops! Failed to load " + serviceProviderCategory + "...",
 					Toast.LENGTH_SHORT).show();
@@ -262,11 +263,6 @@ public class ScreenSlideActivity extends FragmentActivity implements
 					&& getServiceProviderCategory().equals("help")) {
 				taskList = result.getTaskList();
 			} else {
-				if (getServiceProviderCategory().equals("search")){
-					// Enable search
-					ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
-					searchBtn.setEnabled(true);
-				}
 				serviceProviderList = result.getServiceProviderList();
 			}
 			showPager();
