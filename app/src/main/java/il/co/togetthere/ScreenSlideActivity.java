@@ -108,6 +108,9 @@ public class ScreenSlideActivity extends FragmentActivity implements
 				&& getServiceProviderCategory().equals("help")) {
 			//mThread.execute(DynamoDBManagerType.GET_TASKS.toString());
 		} else if (getServiceProviderCategory().equals("search")) {
+			// Disable search while searching
+			ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
+			searchBtn.setEnabled(false);
 			// show content
 			AsyncRequest asyncRequest = new AsyncRequest(ScreenSlideActivity.this);
 			String query = inIntent.getStringExtra("SEARCH_QUERY");
@@ -259,6 +262,11 @@ public class ScreenSlideActivity extends FragmentActivity implements
 					&& getServiceProviderCategory().equals("help")) {
 				taskList = result.getTaskList();
 			} else {
+				if (getServiceProviderCategory().equals("search")){
+					// Enable search
+					ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
+					searchBtn.setEnabled(true);
+				}
 				serviceProviderList = result.getServiceProviderList();
 			}
 			showPager();
