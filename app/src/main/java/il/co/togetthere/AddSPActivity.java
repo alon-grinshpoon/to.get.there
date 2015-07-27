@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,6 +76,9 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 
 			}
 		});
+
+		// Hide progress bar
+		((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.GONE);
 
 		// Configure Settings Button
 		findViewById(R.id.button_settings).setOnClickListener(new View.OnClickListener() {
@@ -283,7 +287,8 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 										int which) {
 						switch (which) {
 							case DialogInterface.BUTTON_POSITIVE:
-
+								// Show progress bar
+								((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.VISIBLE);
 								// send mSP to DB and finish;
 								AsyncRequest asyncRequest = new AsyncRequest(AddSPActivity.this);
 								asyncRequest.execute(Server.SERVER_ACTION_ADD_SP, mSP);
@@ -363,6 +368,8 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 
 	@Override
 	public void handleResult(AsyncResult result) {
+		// Hide progress bar
+		((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.GONE);
 		if (result.errored()){
 			Toast.makeText(getApplicationContext(), "Oops! Unable to add a new entry.",
 					Toast.LENGTH_SHORT).show();

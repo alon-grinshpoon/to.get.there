@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +62,9 @@ public class EditActivity extends Activity implements AsyncResponse {
 
 			}
 		});
+
+		// Hide progress bar
+		((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.GONE);
 
 		// Configure Settings Button
 		findViewById(R.id.button_settings).setOnClickListener(new View.OnClickListener() {
@@ -215,7 +219,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 						.getText().toString();
 				String discount = ((EditText) findViewById(R.id.editSPDiscount))
 						.getText().toString();
-				int discountNum = (discount.equals("") ? -1 : Integer
+				int discountNum = (discount.equals("") ? 0 : Integer
 						.parseInt(discount));
 
 				/**
@@ -243,34 +247,13 @@ public class EditActivity extends Activity implements AsyncResponse {
 				}
 
 				// Phone
-				if (!phone.equals("")) {
-					mSP.setPhone(phone);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Location phone is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
+				mSP.setPhone(phone);
 
-				// Website (Can edit with no website)
-				/* if (!website.equals("")) {
-					mSP.setWebsite(website);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Location website is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}*/
+				// Website
+				mSP.setWebsite(website);
 
 				// Discount
-				if (discountNum != -1) {
-					mSP.setDiscount(discountNum);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Discount amount is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
+				mSP.setDiscount(discountNum);
 
 				// Parameters Descriptions
 				String parkingDescription = ((EditText) findViewById(R.id.editViewRank1))
@@ -308,7 +291,8 @@ public class EditActivity extends Activity implements AsyncResponse {
 										int which) {
 						switch (which) {
 							case DialogInterface.BUTTON_POSITIVE:
-
+								// Show progress bar
+								((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.VISIBLE);
 								// update mSP in DB and finish;
 								AsyncRequest asyncRequest = new AsyncRequest(EditActivity.this);
 								asyncRequest.execute(Server.SERVER_ACTION_EDIT_SP, mSP);
@@ -359,6 +343,8 @@ public class EditActivity extends Activity implements AsyncResponse {
 
 	@Override
 	public void handleResult(AsyncResult result) {
+		// Hide progress bar
+		((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.GONE);
 		if (result.errored()){
 			Toast.makeText(getApplicationContext(), "Oops! Unable to edit a new entry.",
 					Toast.LENGTH_SHORT).show();
