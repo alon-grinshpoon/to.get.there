@@ -364,6 +364,8 @@ public class ScreenSlideActivity extends FragmentActivity implements
 				Log.i("Pager Search", "No query found, not searching");
 				return;
 			} else {
+				ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
+				searchBtn.setEnabled(false); // Disable search until loading is finished
 				hideKeyboard(ScreenSlideActivity.this);
 				mPager.setVisibility(View.GONE);
 				((ProgressBar) findViewById(R.id.progress)).setVisibility(View.VISIBLE);
