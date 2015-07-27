@@ -2,7 +2,6 @@ package il.co.togetthere;
 
 import il.co.togetthere.db.Review;
 import il.co.togetthere.db.ServiceProvider;
-import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.db.Task;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
@@ -10,17 +9,25 @@ import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
 import il.co.togetthere.util.LikeListener;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +36,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,11 +61,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * A fragment representing a single page.
  */
 public class ScreenSlidePageFragment extends Fragment implements
-		OnMarkerClickListener {
+		OnMarkerClickListener, AsyncResponse {
 	/* The argument key for the page number this fragment represents. */
 	public static final String ARG_PAGE = "page";
 	public static final String ARG_TYPE = "Type";
 	private int color;
+	private View photosView;
 
 	/*
 	 * The fragment's page number, which is set to the argument value for {@link
@@ -239,9 +247,9 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 	}
 
-	private void setSPView(View v, String Type) {
+	private void setSPView(View v, String type) {
 
-		int colorID = getResources().getIdentifier(Type + "_bg_color", "color",
+		int colorID = getResources().getIdentifier(type + "_bg_color", "color",
 				"il.co.togetthere");
 		color = getResources().getColor(colorID);
 
@@ -313,6 +321,9 @@ public class ScreenSlidePageFragment extends Fragment implements
 			}
 		});
 
+		// Photos
+		setPhotos(v);
+
 		// Reviews		
 		getReviews();
 		setReviewsView(v, color);
@@ -324,6 +335,14 @@ public class ScreenSlidePageFragment extends Fragment implements
 		} else {
 			readMore.setVisibility(View.GONE);
 		}
+	}
+
+	private void setPhotos(View v){
+		// Store view
+		photosView = v;
+		// Get Images From Server
+		AsyncRequest asyncRequest = new AsyncRequest(ScreenSlidePageFragment.this);
+		asyncRequest.execute(Server.SERVER_ACTION_SEARCH_IMAGES_BY_STRING, "thumbnail");
 	}
 
     private void setWebsiteView(View v, Typeface font) {
@@ -349,7 +368,7 @@ public class ScreenSlidePageFragment extends Fragment implements
         locationWebsite.setTypeface(font);
     }
 
-    private class MoreReviewsListener implements OnClickListener {
+	private class MoreReviewsListener implements OnClickListener {
 		String spID;
 
 		public MoreReviewsListener(String spID) {
@@ -798,4 +817,57 @@ public class ScreenSlidePageFragment extends Fragment implements
 		return false;
 	}
 
+	@Override
+	public void handleResult(AsyncResult result) {
+		// Get ImageViews
+		List<ImageView> imageViews = Arrays.asList(((ImageView) photosView.findViewById(R.id.location_img1)),
+				((ImageView) photosView.findViewById(R.id.location_img2)),
+				((ImageView) photosView.findViewById(R.id.location_img3)),
+				((ImageView) photosView.findViewById(R.id.location_img4)));
+
+		// Get Images
+		List<String> imagesURLs = result.getImagesURLs();
+
+		// Set Images
+		int index = 0;
+		for (String imageURL : imagesURLs) {
+			try {
+				URL url = new URL(imageURL);
+				final Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+				if (index < imageViews.size()) {
+					ImageView imageView = imageViews.get(index);
+					++index;
+					imageView.setImageBitmap(bmp);
+					imageView.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							// Set Preview Dialog
+							final Dialog nagDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+							nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+							nagDialog.setCancelable(true);
+							nagDialog.setContentView(R.layout.preview_image);
+							Button btnClose = (Button) nagDialog.findViewById(R.id.btnIvClose);
+							ImageView ivPreview = (ImageView) nagDialog.findViewById(R.id.iv_preview_image);
+							ivPreview.setBackgroundDrawable(new BitmapDrawable(getResources(), bmp));
+
+							OnClickListener closeListener = new OnClickListener() {
+								@Override
+								public void onClick(View arg0) {
+
+									nagDialog.dismiss();
+								}
+							};
+							btnClose.setOnClickListener(closeListener);
+							ivPreview.setOnClickListener(closeListener);
+							nagDialog.show();
+						}
+					});
+				}
+			} catch (MalformedURLException e) {
+
+			} catch (IOException e) {
+
+			}
+		}
+	}
 }

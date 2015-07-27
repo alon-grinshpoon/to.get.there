@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import il.co.togetthere.LoginActivity;
+import il.co.togetthere.db.Images;
 import il.co.togetthere.db.Review;
 import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderCategory;
@@ -390,6 +391,15 @@ public class Server {
     // Check JSON validity
     private static final boolean checkJSONError(String json){
         return (json == null || json.equalsIgnoreCase("{}"));
+    }
+
+    // Search images by string
+    public static final int SERVER_ACTION_SEARCH_IMAGES_BY_STRING = 19;
+    protected static final List<String> searchImagesByString(String search) throws IOException {
+        String google = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=";
+        String json = HTTPHandler.getRequest(google + search);
+        Images images = new Gson().fromJson(json, Images.class);
+        return images.getURLs();
     }
 
 }

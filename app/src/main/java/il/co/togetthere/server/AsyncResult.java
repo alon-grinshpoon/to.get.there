@@ -15,6 +15,7 @@ public class AsyncResult {
     private List<Review> reviewsList;
     private ServiceProvider serviceProvider;
     private List<Task> taskList;
+    List<String> imagesURLs;
 
     private boolean error = false;
     private String message = "";
@@ -80,6 +81,14 @@ public class AsyncResult {
 
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public List<String> getImagesURLs() {
+        return imagesURLs;
+    }
+
+    public void setImagesURLs(List<String> imagesURLs) {
+        this.imagesURLs = imagesURLs;
     }
 
     public void catchException(IOException e){

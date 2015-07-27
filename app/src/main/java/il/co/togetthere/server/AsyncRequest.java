@@ -36,6 +36,7 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
         ServiceProvider serviceProvider;
         String query;
         ServiceProviderCategory category;
+        List<String> imagesURLs;
 
         // Perform server action
         switch (serverAction){
@@ -175,6 +176,19 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                     serviceProvider = Server.addReviewToSP(serviceProvider, review);
                     // Configure result
                     result.setServiceProvider(serviceProvider);
+                } catch (IOException e) {
+                    // Configure result as error
+                    result.catchException(e);
+                }
+                break;
+            case Server.SERVER_ACTION_SEARCH_IMAGES_BY_STRING:
+                // Parse parameter
+                query = (String) objects[1];
+                // Run server action
+                try {
+                    imagesURLs = Server.searchImagesByString(query);
+                    // Configure result
+                    result.setImagesURLs(imagesURLs);
                 } catch (IOException e) {
                     // Configure result as error
                     result.catchException(e);
