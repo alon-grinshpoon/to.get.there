@@ -232,7 +232,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 						.getText().toString();
 				String discount = ((EditText) findViewById(R.id.addNewSPDiscount))
 						.getText().toString();
-				int discountNum = (discount.equals("") ? -1 : Integer
+				int discountNum = (discount.equals("") ? 0 : Integer
 						.parseInt(discount));
 
 				/**
@@ -260,34 +260,13 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 				}
 
 				// Phone
-				if (!phone.equals("")) {
-					mSP.setPhone(phone);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Location phone is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
+				mSP.setPhone(phone);
 
 				// Website
-				if (!website.equals("")) {
-					mSP.setWebsite(website);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Location website is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
+				mSP.setWebsite(website);
 
 				// Discount
-				if (discountNum != -1) {
-					mSP.setDiscount(discountNum);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Discount amount is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
+				mSP.setDiscount(discountNum);
 
 				// Category
 				if (mSP.getCategory() == ServiceProviderCategory.none) {
