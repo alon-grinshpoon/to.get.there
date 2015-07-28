@@ -342,7 +342,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		photosView = v;
 		// Get Images From Server
 		AsyncRequest asyncRequest = new AsyncRequest(ScreenSlidePageFragment.this);
-		asyncRequest.execute(Server.SERVER_ACTION_SEARCH_IMAGES_BY_STRING, "thumbnail");
+		asyncRequest.execute(Server.SERVER_ACTION_SEARCH_IMAGES_BY_STRING, mSP.getSp_name());
 	}
 
     private void setWebsiteView(View v, Typeface font) {
@@ -826,47 +826,39 @@ public class ScreenSlidePageFragment extends Fragment implements
 				((ImageView) photosView.findViewById(R.id.location_img4)));
 
 		// Get Images
-		List<String> imagesURLs = result.getImagesURLs();
+		List<Bitmap> imagesBitmaps = result.getImagesBitmaps();
 
 		// Set Images
 		int index = 0;
-		for (String imageURL : imagesURLs) {
-			try {
-				URL url = new URL(imageURL);
-				final Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-				if (index < imageViews.size()) {
-					ImageView imageView = imageViews.get(index);
-					++index;
-					imageView.setImageBitmap(bmp);
-					imageView.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							// Set Preview Dialog
-							final Dialog nagDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
-							nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-							nagDialog.setCancelable(true);
-							nagDialog.setContentView(R.layout.preview_image);
-							Button btnClose = (Button) nagDialog.findViewById(R.id.btnIvClose);
-							ImageView ivPreview = (ImageView) nagDialog.findViewById(R.id.iv_preview_image);
-							ivPreview.setBackgroundDrawable(new BitmapDrawable(getResources(), bmp));
+		for (final Bitmap bmp : imagesBitmaps) {
+			if (index < imageViews.size()) {
+				ImageView imageView = imageViews.get(index);
+				++index;
+				imageView.setImageBitmap(bmp);
+				imageView.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						// Set Preview Dialog
+						final Dialog nagDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+						nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+						nagDialog.setCancelable(true);
+						nagDialog.setContentView(R.layout.preview_image);
+						Button btnClose = (Button) nagDialog.findViewById(R.id.btnIvClose);
+						ImageView ivPreview = (ImageView) nagDialog.findViewById(R.id.iv_preview_image);
+						ivPreview.setBackgroundDrawable(new BitmapDrawable(getResources(), bmp));
 
-							OnClickListener closeListener = new OnClickListener() {
-								@Override
-								public void onClick(View arg0) {
+						OnClickListener closeListener = new OnClickListener() {
+							@Override
+							public void onClick(View arg0) {
 
-									nagDialog.dismiss();
-								}
-							};
-							btnClose.setOnClickListener(closeListener);
-							ivPreview.setOnClickListener(closeListener);
-							nagDialog.show();
-						}
-					});
-				}
-			} catch (MalformedURLException e) {
-
-			} catch (IOException e) {
-
+								nagDialog.dismiss();
+							}
+						};
+						btnClose.setOnClickListener(closeListener);
+						ivPreview.setOnClickListener(closeListener);
+						nagDialog.show();
+					}
+				});
 			}
 		}
 	}

@@ -1,5 +1,11 @@
 package il.co.togetthere.db;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,4 +40,22 @@ public class Images {
         public String toString() { return "Result[url:" + url +",title:" + title + "]"; }
     }
 
+    public static List<Bitmap> urlsToBitmaps(List<String> imagesURLs){
+        List<Bitmap> imagesBitmaps = new ArrayList<>();
+        for (String imageURL : imagesURLs){
+            URL url = null;
+            try {
+                url = new URL(imageURL);
+                final Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                imagesBitmaps.add(bmp);
+            } catch (MalformedURLException e) {
+                // TODO
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO
+                e.printStackTrace();
+            }
+        }
+        return imagesBitmaps;
+    }
 }

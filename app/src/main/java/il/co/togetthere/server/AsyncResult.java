@@ -1,5 +1,7 @@
 package il.co.togetthere.server;
 
+import android.graphics.Bitmap;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class AsyncResult {
     private ServiceProvider serviceProvider;
     private List<Task> taskList;
     List<String> imagesURLs;
+    List<Bitmap> imagesBitmaps;
 
     private boolean error = false;
     private String message = "";
@@ -89,6 +92,14 @@ public class AsyncResult {
 
     public void setImagesURLs(List<String> imagesURLs) {
         this.imagesURLs = imagesURLs;
+    }
+
+    public List<Bitmap> getImagesBitmaps() {
+        return imagesBitmaps;
+    }
+
+    public void setImagesBitmaps(List<Bitmap> imagesBitmaps) {
+        this.imagesBitmaps = imagesBitmaps;
     }
 
     public void catchException(IOException e){

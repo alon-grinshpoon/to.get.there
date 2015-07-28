@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import java.io.IOException;
 import java.util.List;
 
+import il.co.togetthere.db.Images;
 import il.co.togetthere.db.Review;
 import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderCategory;
@@ -189,6 +190,7 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                     imagesURLs = Server.searchImagesByString(query);
                     // Configure result
                     result.setImagesURLs(imagesURLs);
+                    result.setImagesBitmaps(Images.urlsToBitmaps(imagesURLs));
                 } catch (IOException e) {
                     // Configure result as error
                     result.catchException(e);
