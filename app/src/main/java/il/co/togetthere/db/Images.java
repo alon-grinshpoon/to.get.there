@@ -44,7 +44,7 @@ public class Images {
         public String toString() { return "Result[url:" + url +",title:" + title + "]"; }
     }
 
-    public static Map<Bitmap, Bitmap> urlsToThumbnailsAndBitmaps(List<String> imagesURLs){
+    public static Map<Bitmap, Bitmap> urlsToThumbnailsAndBitmaps(List<String> imagesURLs) throws IOException {
         Map<Bitmap, Bitmap> imagesThumbnailsAndBitmaps = new HashMap<>();
         for (String imageURL : imagesURLs){
             URL url = null;
@@ -67,11 +67,9 @@ public class Images {
                 // Store
                 imagesThumbnailsAndBitmaps.put(thumb, bmp);
             } catch (MalformedURLException e) {
-                // TODO
-                e.printStackTrace();
+                throw new IOException(e.getMessage());
             } catch (IOException e) {
-                // TODO
-                e.printStackTrace();
+                throw e;
             }
         }
         return imagesThumbnailsAndBitmaps;

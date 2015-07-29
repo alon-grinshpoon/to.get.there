@@ -819,50 +819,61 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 	@Override
 	public void handleResult(AsyncResult result) {
-		// Get ImageViews
-		List<ImageView> imageViews = Arrays.asList(((ImageView) photosView.findViewById(R.id.location_img1)),
-				((ImageView) photosView.findViewById(R.id.location_img2)),
-				((ImageView) photosView.findViewById(R.id.location_img3)),
-				((ImageView) photosView.findViewById(R.id.location_img4)));
-
-		// Get Images
-		final Map<Bitmap, Bitmap> imagesBitmapsAndThumbnails = result.getImagesThumbnailsAndBitmaps();
-
-		// Set Images
-		int index = 0;
-		for (final Bitmap thumb : imagesBitmapsAndThumbnails.keySet()) {
-			if (index < imageViews.size()) {
-				ImageView imageView = imageViews.get(index);
-				++index;
-				imageView.setImageBitmap(thumb);
-				imageView.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						// Set Preview Dialog
-						final Dialog nagDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
-						nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-						nagDialog.setCancelable(true);
-						nagDialog.setContentView(R.layout.preview_image);
-						Button btnClose = (Button) nagDialog.findViewById(R.id.btnIvClose);
-						ImageView ivPreview = (ImageView) nagDialog.findViewById(R.id.iv_preview_image);
-						ivPreview.setBackgroundDrawable(new BitmapDrawable(getResources(), imagesBitmapsAndThumbnails.get(thumb)));
-
-						OnClickListener closeListener = new OnClickListener() {
-							@Override
-							public void onClick(View arg0) {
-
-								nagDialog.dismiss();
-							}
-						};
-						btnClose.setOnClickListener(closeListener);
-						ivPreview.setOnClickListener(closeListener);
-						nagDialog.show();
-					}
-				});
+		if (result.errored()) {
+			Toast.makeText(photosView.getContext().getApplicationContext(), "Sorry! Failed to load photos.",
+					Toast.LENGTH_SHORT).show();
+		} else {
+			// Get ImageViews
+			List<ImageView> imageViews = Arrays.asList(((ImageView) photosView.findViewById(R.id.location_img1)),
+					((ImageView) photosView.findViewById(R.id.location_img2)),
+					((ImageView) photosView.findViewById(R.id.location_img3)),
+					((ImageView) photosView.findViewById(R.id.location_img4)));
+			for (ImageView imageView : imageViews) {
+				imageView.setVisibility(View.GONE);
 			}
-		}
 
-		// Handle Switcher
-		mPhotosSwitcher.showNext();
+			// Get Images
+			final Map<Bitmap, Bitmap> imagesBitmapsAndThumbnails = result.getImagesThumbnailsAndBitmaps();
+
+			// Set Images
+			int index = 0;
+			for (final Bitmap thumb : imagesBitmapsAndThumbnails.keySet()) {
+				if (index < imageViews.size()) {
+					ImageView imageView = imageViews.get(index);
+					imageView.setVisibility(View.VISIBLE);
+					++index;
+					imageView.setImageBitmap(thumb);
+					imageView.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							// Set Preview Dialog
+							final Dialog nagDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+							nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+							nagDialog.setCancelable(true);
+							nagDialog.setContentView(R.layout.preview_image);
+							Button btnClose = (Button) nagDialog.findViewById(R.id.btnIvClose);
+							ImageView ivPreview = (ImageView) nagDialog.findViewById(R.id.iv_preview_image);
+							ivPreview.setBackgroundDrawable(new BitmapDrawable(getResources(), imagesBitmapsAndThumbnails.get(thumb)));
+
+							OnClickListener closeListener = new OnClickListener() {
+								@Override
+								public void onClick(View arg0) {
+
+									nagDialog.dismiss();
+								}
+							};
+							btnClose.setOnClickListener(closeListener);
+							ivPreview.setOnClickListener(closeListener);
+							nagDialog.show();
+						}
+					});
+				} else {
+					break;
+				}
+			}
+
+			// Handle Switcher
+			mPhotosSwitcher.showNext();
+		}
 	}
 }
