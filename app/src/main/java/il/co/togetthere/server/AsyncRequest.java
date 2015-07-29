@@ -190,7 +190,7 @@ public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
                     imagesURLs = Server.searchImagesByString(query);
                     // Configure result
                     result.setImagesURLs(imagesURLs);
-                    result.setImagesBitmaps(Images.urlsToBitmaps(imagesURLs));
+                    result.setImagesThumbnailsAndBitmaps(Images.urlsToThumbnailsAndBitmaps(imagesURLs));
                 } catch (IOException e) {
                     // Configure result as error
                     result.catchException(e);

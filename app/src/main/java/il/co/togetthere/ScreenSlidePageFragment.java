@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -826,15 +827,15 @@ public class ScreenSlidePageFragment extends Fragment implements
 				((ImageView) photosView.findViewById(R.id.location_img4)));
 
 		// Get Images
-		List<Bitmap> imagesBitmaps = result.getImagesBitmaps();
+		final Map<Bitmap, Bitmap> imagesBitmapsAndThumbnails = result.getImagesThumbnailsAndBitmaps();
 
 		// Set Images
 		int index = 0;
-		for (final Bitmap bmp : imagesBitmaps) {
+		for (final Bitmap thumb : imagesBitmapsAndThumbnails.keySet()) {
 			if (index < imageViews.size()) {
 				ImageView imageView = imageViews.get(index);
 				++index;
-				imageView.setImageBitmap(bmp);
+				imageView.setImageBitmap(thumb);
 				imageView.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View view) {
@@ -845,7 +846,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 						nagDialog.setContentView(R.layout.preview_image);
 						Button btnClose = (Button) nagDialog.findViewById(R.id.btnIvClose);
 						ImageView ivPreview = (ImageView) nagDialog.findViewById(R.id.iv_preview_image);
-						ivPreview.setBackgroundDrawable(new BitmapDrawable(getResources(), bmp));
+						ivPreview.setBackgroundDrawable(new BitmapDrawable(getResources(), imagesBitmapsAndThumbnails.get(thumb)));
 
 						OnClickListener closeListener = new OnClickListener() {
 							@Override

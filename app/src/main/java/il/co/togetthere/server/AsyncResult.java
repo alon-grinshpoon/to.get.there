@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import il.co.togetthere.db.Review;
 import il.co.togetthere.db.ServiceProvider;
@@ -18,7 +19,7 @@ public class AsyncResult {
     private ServiceProvider serviceProvider;
     private List<Task> taskList;
     List<String> imagesURLs;
-    List<Bitmap> imagesBitmaps;
+    Map<Bitmap, Bitmap> imagesThumbnailsAndBitmaps;
 
     private boolean error = false;
     private String message = "";
@@ -94,12 +95,12 @@ public class AsyncResult {
         this.imagesURLs = imagesURLs;
     }
 
-    public List<Bitmap> getImagesBitmaps() {
-        return imagesBitmaps;
+    public Map<Bitmap, Bitmap> getImagesThumbnailsAndBitmaps() {
+        return imagesThumbnailsAndBitmaps;
     }
 
-    public void setImagesBitmaps(List<Bitmap> imagesBitmaps) {
-        this.imagesBitmaps = imagesBitmaps;
+    public void setImagesThumbnailsAndBitmaps(Map<Bitmap, Bitmap> imagesThumbnailsAndBitmaps) {
+        this.imagesThumbnailsAndBitmaps = imagesThumbnailsAndBitmaps;
     }
 
     public void catchException(IOException e){
