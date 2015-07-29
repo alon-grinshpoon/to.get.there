@@ -9,9 +9,6 @@ import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
 import il.co.togetthere.util.LikeListener;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,7 +23,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -46,6 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.facebook.widget.ProfilePictureView;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -78,9 +75,9 @@ public class ScreenSlidePageFragment extends Fragment implements
 	private int mPageNumber;
 	private ServiceProvider mSP;
 	private Task mTask;
+	private ViewSwitcher mPhotosSwitcher;
 	private List<Review> mReviewsList;
-
-	MapView mMapView;
+	private MapView mMapView;
 	private GoogleMap googleMap;
 
 	/*
@@ -305,7 +302,7 @@ public class ScreenSlidePageFragment extends Fragment implements
         // Set Website
         setWebsiteView(v, font);
 
-		// set accessibility percentage
+		// set Accessibility Percentage
 		setAccecibility(v);
 
 		// set Stars rank
@@ -341,6 +338,8 @@ public class ScreenSlidePageFragment extends Fragment implements
 	private void setPhotos(View v){
 		// Store view
 		photosView = v;
+		// Handler Switcher
+		mPhotosSwitcher = (ViewSwitcher) v.findViewById(R.id.photos_switcher);
 		// Get Images From Server
 		AsyncRequest asyncRequest = new AsyncRequest(ScreenSlidePageFragment.this);
 		asyncRequest.execute(Server.SERVER_ACTION_SEARCH_IMAGES_BY_STRING, mSP.getSp_name());
@@ -862,5 +861,8 @@ public class ScreenSlidePageFragment extends Fragment implements
 				});
 			}
 		}
+
+		// Handle Switcher
+		mPhotosSwitcher.showNext();
 	}
 }
