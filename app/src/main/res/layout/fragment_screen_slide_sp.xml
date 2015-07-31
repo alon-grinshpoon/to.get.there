@@ -271,7 +271,6 @@
                 android:layout_gravity="center"
                 android:paddingLeft="11dp"
                 android:src="@drawable/ic_waze" />
-            <!-- TODO - WAZE -->
 
             <TextView
                 android:id="@+id/text_location_address"
