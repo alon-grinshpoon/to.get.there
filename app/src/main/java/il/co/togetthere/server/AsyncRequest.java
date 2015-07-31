@@ -11,8 +11,12 @@ import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.db.User;
 
+/**
+ * An implementation of an asynchronous operation used to create server calls.
+ */
 public class AsyncRequest extends AsyncTask<Object, Void, AsyncResult> {
 
+    /* The calling class object for this asynchronous request */
     AsyncResponse sendResponseTo;
 
     /* Constructor */

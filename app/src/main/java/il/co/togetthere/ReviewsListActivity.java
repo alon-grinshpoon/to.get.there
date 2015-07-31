@@ -1,11 +1,7 @@
 package il.co.togetthere;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -13,14 +9,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,13 +21,15 @@ import com.facebook.widget.ProfilePictureView;
 
 import il.co.togetthere.db.Review;
 import il.co.togetthere.db.ServiceProvider;
-import il.co.togetthere.db.User;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
-import il.co.togetthere.util.LikeListener;
+import il.co.togetthere.listeners.LikeListener;
 
+/**
+ * Activity to view reviews.
+ */
 public class ReviewsListActivity extends Activity implements AsyncResponse {
 
     ServiceProvider mSP;
@@ -49,6 +44,7 @@ public class ReviewsListActivity extends Activity implements AsyncResponse {
         setContentView(R.layout.activity_reviews_list);
 
         AsyncRequest asyncRequest = new AsyncRequest(ReviewsListActivity.this);
+
         Intent inIntent = getIntent();
         String sp_id = inIntent.getStringExtra("SP_ID");
         asyncRequest.execute(Server.SERVER_ACTION_GET_SP_BY_ID, sp_id);
@@ -152,5 +148,4 @@ public class ReviewsListActivity extends Activity implements AsyncResponse {
             private ProfilePictureView userImage;
         }
     }
-
 }

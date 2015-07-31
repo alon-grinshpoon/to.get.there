@@ -1,6 +1,5 @@
-package il.co.togetthere;
+package il.co.togetthere.listeners;
 
-import android.app.Activity;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -8,19 +7,25 @@ import android.content.Context;
 
 import java.util.List;
 
+import il.co.togetthere.LoginActivity;
+import il.co.togetthere.R;
+import il.co.togetthere.ScreenSlideActivity;
 import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
 
+/**
+ * Listener for a ranking action.
+ */
 public class RankingListener implements PopupMenu.OnMenuItemClickListener, AsyncResponse {
 
     private Context context;
     private List<ServiceProvider> serviceProvidersList;
     int rank = 0;
 
-    RankingListener(Context context, List<ServiceProvider> serviceProvidersList){
+    public RankingListener(Context context, List<ServiceProvider> serviceProvidersList){
         this.context = context;
         this.serviceProvidersList = serviceProvidersList;
     }

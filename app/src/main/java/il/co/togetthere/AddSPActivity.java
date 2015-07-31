@@ -2,6 +2,7 @@ package il.co.togetthere;
 
 import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderCategory;
+import il.co.togetthere.listeners.SettingListener;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
@@ -36,6 +37,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Activity to add a service provider to the system.
+ */
 public class AddSPActivity extends Activity implements AsyncResponse {
 	private Spinner mTypeList;
 	private ArrayAdapter<String> mListAdapter;
@@ -46,24 +50,10 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_sp);
 
-		/**
-		 * Full Screen Set UP
-		 **/
-		// Hide the status bar.
-		//View decorView = getWindow().getDecorView();
-		//int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		//decorView.setSystemUiVisibility(uiOptions);
-		// Remember that you should never show the action bar if the
-		// status bar is hidden, so hide that too if necessary.
-		//android.app.ActionBar actionBar = getActionBar();
-		//actionBar.hide();
-
 		// Define Font
 		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.TTF");
 
-		/**
-		 * Upper Bar
-		 **/
+		// Upper Bar
 		ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.button_show_user_details_addNewSP);
 		profilePictureView.setProfileId(LoginActivity.user.getFacebook_id());
 		profilePictureView.setOnClickListener(new View.OnClickListener() {
@@ -91,11 +81,10 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 			}
 		});
 
+		// Create a new service provider
 		mSP = new ServiceProvider();
 
-		/**
-		 * Titles
-		 */
+		// Titles
 		TextView title = (TextView) findViewById(R.id.title_activity_add_sp);
 		title.setTypeface(font);
 
@@ -135,9 +124,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 		TextView textViewRank5 = (TextView) findViewById(R.id.textViewRank5);
 		textViewRank5.setTypeface(font);
 
-		/**
-		 * Type List Chooser
-		 **/
+		// Type List Chooser
 		mTypeList = (Spinner) findViewById(R.id.addNewSPSpinner);
 		String[] types = getResources().getStringArray(R.array.types);
 		ArrayList<String> typesList = new ArrayList<>();
@@ -146,7 +133,6 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 		mListAdapter = new SpinnerAdapter(this, R.layout.type_list_item,
 				typesList);
 		mTypeList.setAdapter(mListAdapter);
-
 		mTypeList.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -166,9 +152,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 
 		});
 
-		/**
-		 * Accessibility Parameters
-		 */
+		// Accessibility Parameters
 		final ImageButton parking = (ImageButton) findViewById(R.id.NewRankImageParking);
 		final ImageButton entrance = (ImageButton) findViewById(R.id.NewRankImageEntrance);
 		final ImageButton facilities = (ImageButton) findViewById(R.id.NewRankImageFurniture);
@@ -215,9 +199,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 			}
 		});
 
-		/**
-		 * Submit Button- Validation
-		 **/
+		// Submit Button Validation
 		Button submit = (Button) findViewById(R.id.addNewSPSubmit);
 		submit.setTypeface(font);
 		submit.setOnClickListener(new View.OnClickListener() {

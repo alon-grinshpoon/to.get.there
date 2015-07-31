@@ -6,6 +6,9 @@ import com.facebook.model.GraphUser;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/**
+ * Class representation of a system user stored in the server and this application.
+ */
 public class User {
 
 	private transient GraphUser facebookUser;
@@ -14,7 +17,7 @@ public class User {
 	private String id;
 	private String first_name;
 	private String last_name;
-	private String birthday;	// Format: YYYY-MM-DD
+	private String birthday;				// Format: YYYY-MM-DD
 	private String location;
 	private int points = 0;
 	private int level = 1;
@@ -22,15 +25,13 @@ public class User {
 	private String phone;
 	private boolean isVolunteering = true;
 	private boolean wasAskedToVolunteer;
-	private transient double latitude;
-	private transient double longitude;
+	private transient double latitude;		// transient: will be ignored by Gson
+	private transient double longitude;		// transient: will be ignored by Gson
 
 	/*
 	 * Empty Constructor
 	 */
-	public User(){
-
-	}
+	public User(){}
 
 	/*
 	 * Constructor
@@ -46,7 +47,10 @@ public class User {
 		this.location = location;
 	}
 
-	// Initialize user from Facebook
+	/**
+	 * Initialize this user from Facebook
+	 * @param facebookUser A Facebook user object
+	 */
 	public void init(GraphUser facebookUser) {
 		// Set facebook user
 		this.facebookUser = facebookUser;
@@ -78,7 +82,9 @@ public class User {
 		}
 
 	}
-	
+
+	/* Setters and Getters  */
+
 	public GraphUser getFacebookUser() { return facebookUser; }
 
 	public String getFacebook_id() {
@@ -164,6 +170,7 @@ public class User {
 	public double getLatitude() {
 		return latitude;
 	}
+
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
@@ -209,8 +216,13 @@ public class User {
 	public boolean isLoggedIn() { return (this.facebook_id != null); }
 
 	public boolean wasAskedToVolunteer() { return wasAskedToVolunteer; }
+
 	public void setWasAskedToVolunteer(boolean wasAskedToVolunteer) {  this.wasAskedToVolunteer = wasAskedToVolunteer; }
 
+	/**
+	 * Join a given user with this user by combining their attributes.
+	 * @param user
+	 */
 	public void join(User user){
 		if (this.facebookUser == null) { this.facebookUser = user.getFacebookUser(); }
 		if (this.facebook_id == null || this.facebook_id.equalsIgnoreCase("")) { this.facebook_id = user.getFacebook_id(); }

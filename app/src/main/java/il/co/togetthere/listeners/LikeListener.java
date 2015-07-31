@@ -1,4 +1,4 @@
-package il.co.togetthere.util;
+package il.co.togetthere.listeners;
 
 import android.graphics.Typeface;
 import android.view.View;
@@ -6,7 +6,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import il.co.togetthere.LoginActivity;
-import il.co.togetthere.UserInfoActivity;
 import il.co.togetthere.db.Review;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
@@ -14,7 +13,7 @@ import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
 
 /**
- * Created by Rony on 25/07/2015.
+ * Listener for a like action.
  */
 public class LikeListener implements View.OnClickListener, AsyncResponse {
     Review review;

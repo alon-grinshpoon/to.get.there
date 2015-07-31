@@ -24,7 +24,11 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import il.co.togetthere.db.ServiceProviderCategory;
+import il.co.togetthere.listeners.SettingListener;
 
+/**
+ * Activity of the main screen choose a category.
+ */
 public class TypeChooserActivity extends Activity {
 	List<String> mServiceProviderCategory = new ArrayList<>();
 	List<Button> mButtonsArr = new ArrayList<>();

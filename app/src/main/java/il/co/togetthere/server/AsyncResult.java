@@ -11,6 +11,9 @@ import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.db.Task;
 
+/**
+ * An implementation of an result of a asynchronous operation used to parse server responses.
+ */
 public class AsyncResult {
 
     private ServiceProviderCategory resultCategory;
@@ -24,6 +27,8 @@ public class AsyncResult {
     private boolean error = false;
     private String message = "";
     private int statusCode = 200;
+
+    /* Setters and Getters  */
 
     public ServiceProviderCategory getResultCategory() {
         return resultCategory;
@@ -103,6 +108,10 @@ public class AsyncResult {
         this.imagesThumbnailsAndBitmaps = imagesThumbnailsAndBitmaps;
     }
 
+    /**
+     * Parses a caught exception into this result.
+     * @param e A caught IO exception
+     */
     public void catchException(IOException e){
         this.setError(true);
         this.setMessage(e.getMessage().substring(e.getMessage().indexOf(")") + 1));

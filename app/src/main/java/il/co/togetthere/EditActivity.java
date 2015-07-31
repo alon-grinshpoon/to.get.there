@@ -1,6 +1,7 @@
 package il.co.togetthere;
 
 import il.co.togetthere.db.ServiceProvider;
+import il.co.togetthere.listeners.SettingListener;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
@@ -26,6 +27,9 @@ import android.widget.Toast;
 
 import com.facebook.widget.ProfilePictureView;
 
+/**
+ * Activity to edit a service provider to the system.
+ */
 public class EditActivity extends Activity implements AsyncResponse {
 	private ServiceProvider mSP;
 	private int pageNumber;
@@ -35,21 +39,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit);
 
-		/**
-		 * Full Screen Set UP
-		 **/
-		// Hide the status bar.
-		// View decorView = getWindow().getDecorView();
-		// int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		// decorView.setSystemUiVisibility(uiOptions);
-		// Remember that you should never show the action bar if the
-		// status bar is hidden, so hide that too if necessary.
-		//android.app.ActionBar actionBar = getActionBar();
-		//actionBar.hide();
-
-		/**
-		 * Upper Bar
-		 **/
+		// Upper Bar
 		ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.button_show_user_details_editSP);
 		profilePictureView.setProfileId(LoginActivity.user.getFacebook_id());
 		profilePictureView.setOnClickListener(new View.OnClickListener() {
@@ -85,9 +75,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 		// Define Font
 		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.TTF");
 
-		/**
-		 * Title
-		 */
+		// Title
 		TextView title = ((TextView) findViewById(R.id.title_activity_edit_sp));
 		title.setTypeface(font);
 
@@ -121,9 +109,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 		discount.setText("" + mSP.getDiscount());
 		discount.setTypeface(font);
 
-		/**
-		 * Accessibility Parameters
-		 */
+		// Accessibility Parameters
 		final ImageButton parking = (ImageButton) findViewById(R.id.NewRankImageParking);
 		final ImageButton entrance = (ImageButton) findViewById(R.id.NewRankImageEntrance);
 		final ImageButton facilities = (ImageButton) findViewById(R.id.NewRankImageFurniture);
@@ -136,27 +122,26 @@ public class EditActivity extends Activity implements AsyncResponse {
 		if(mSP.isToilets()) rankToggle(toilets);
 		if(mSP.isElevator()) rankToggle(elevator);
 
-		//parking Description
+		// Parking Description
 		if (!mSP.getParking_text().equals("")) {
 			((EditText) findViewById(R.id.editViewRank1)).setText(mSP.getParking_text());
 		}
-		//entranceDescription
+		// Entrance Description
 		if (!mSP.getEntrance_text().equals("")) {
 			((EditText) findViewById(R.id.editViewRank2)).setText(mSP.getEntrance_text());
 		}
-		//furniture Description
+		// Furniture Description
 		if (!mSP.getFacilities_text().equals("")) {
 			((EditText) findViewById(R.id.editViewRank3)).setText(mSP.getFacilities_text());
 		}
-		//toiletsDescription
+		// Toilets Description
 		if (!mSP.getToilets_text().equals("")) {
 			((EditText) findViewById(R.id.editViewRank4)).setText(mSP.getToilets_text());
 		}
-		//elevatorDescription
+		// Elevator Description
 		if (!mSP.getElevator_text().equals("")) {
 			((EditText) findViewById(R.id.editViewRank5)).setText(mSP.getElevator_text());
 		}
-
 
 		parking.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -198,9 +183,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 			}
 		});
 
-		/**
-		 * Submit Button- Validation
-		 **/
+		// Submit Button Validation
 		Button submit =  (Button) findViewById(R.id.editSPSubmit);
 		submit.setTypeface(font);
 		submit.setOnClickListener(new View.OnClickListener() {
@@ -282,7 +265,6 @@ public class EditActivity extends Activity implements AsyncResponse {
 				if(!elevatorDescription.equals("")){
 					mSP.setElevator_text(elevatorDescription);
 				}
-
 
 				// Re-Validate User (Are You Sure?)
 				DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {

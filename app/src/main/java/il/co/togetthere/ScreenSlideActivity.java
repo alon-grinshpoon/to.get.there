@@ -2,6 +2,8 @@ package il.co.togetthere;
 import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.db.Task;
+import il.co.togetthere.listeners.RankingListener;
+import il.co.togetthere.listeners.SettingListener;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;

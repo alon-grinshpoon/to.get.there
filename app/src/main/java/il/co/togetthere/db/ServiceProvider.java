@@ -2,6 +2,9 @@ package il.co.togetthere.db;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Class representation of a service provider stored in the server.
+ */
 public class ServiceProvider {
 
 	private String id;
@@ -65,7 +68,7 @@ public class ServiceProvider {
 	 */
 	public ServiceProvider(String id, String category, String sp_name, boolean is_verified, float avg_rank, boolean toilets, String toilets_text, boolean parking, String parking_text, boolean elevator, String elevator_text, boolean entrance, String entrance_text, boolean facilities, String facilities_text, String address, double latitude, double longitude, String phone, int discount, String website, Review[] reviews) {
 		this.id = id;
-		this.category =
+		this.category = category;
 		this.sp_name = sp_name;
 		this.is_verified = is_verified;
 		this.avg_rank = avg_rank;
@@ -279,6 +282,7 @@ public class ServiceProvider {
 	public void setReviews(Review[] reviews) {
 		this.reviews = reviews;
 	}
+
 	public void setReviewsFromList(List<Review> reviews) {
 		if (this.reviews == null && reviews != null){
 			this.reviews = new Review[reviews.size()];

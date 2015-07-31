@@ -1,25 +1,27 @@
-package il.co.togetthere;
+package il.co.togetthere.listeners;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 import android.content.Context;
 
 import com.facebook.Session;
-import com.google.gson.Gson;
 
-import il.co.togetthere.db.User;
+import il.co.togetthere.LoginActivity;
+import il.co.togetthere.R;
 
+/**
+ * Listener for setting menu action.
+ */
 public class SettingListener implements PopupMenu.OnMenuItemClickListener{
 
     private Context context;
 
-    SettingListener(Context context){
+    public SettingListener(Context context){
         this.context = context;
     }
 

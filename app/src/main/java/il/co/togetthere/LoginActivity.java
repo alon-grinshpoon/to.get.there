@@ -42,6 +42,7 @@ import com.facebook.model.GraphPlace;
 import com.facebook.model.GraphUser;
 
 import il.co.togetthere.db.User;
+import il.co.togetthere.listeners.SettingListener;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
@@ -54,12 +55,13 @@ import com.facebook.widget.PickerFragment;
 import com.facebook.widget.PlacePickerFragment;
 import com.google.gson.Gson;
 
-
+/**
+ * Activity to login to the system.
+ */
 public class LoginActivity extends FragmentActivity implements AsyncResponse {
 
     @SuppressWarnings("unused")
 	private static final String PERMISSION = "publish_actions";
-
     private final String PENDING_ACTION_BUNDLE_KEY = "com.facebook.samples.hellofacebook:PendingAction";
 
     private LoginButton buttonLoginFacebook;
@@ -103,12 +105,7 @@ public class LoginActivity extends FragmentActivity implements AsyncResponse {
 
     @SuppressLint("InlinedApi") @Override
     public void onCreate(Bundle savedInstanceState) {
-    	
-		// Hide the status bar.
-    	//View decorView = getWindow().getDecorView();
-		//int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		//decorView.setSystemUiVisibility(uiOptions); 
-    	
+
 		// Remember that you should never show the action bar if the
 		// status bar is hidden, so hide that too if necessary.
 		android.app.ActionBar actionBar = getActionBar();

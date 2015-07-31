@@ -17,12 +17,22 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+/**
+ * A class handling all HTTP requests and responses.
+ * Used by the server class.
+ * Based on: http://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/
+ */
 public class HTTPHandler {
-    // http://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/
 
     private static final String USER_AGENT = "Mozilla/5.0";
 
-    // HTTP POST request
+    /**
+     * Preform a HTTP POST request
+     * @param url The address to sent the request
+     * @param jsonRequest The request body
+     * @return The response to the request
+     * @throws IOException
+     */
     public static String postRequest(String url, String jsonRequest) throws IOException {
 
         // Create HTTP client
@@ -41,14 +51,8 @@ public class HTTPHandler {
         // Execute request
         HttpResponse response = httpClient.execute(request);
 
-        // Log
-        //System.out.println("\nSending 'POST' request to URL : " + url);
-        //System.out.println("Post parameters : " + request.getEntity());
-        //System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
         // Handle Response
         // Convert response to JSON
-        // String json = EntityUtils.toString(response.getEntity(), "UTF-8");
         BufferedReader rd = new BufferedReader(
                 new InputStreamReader(response.getEntity().getContent()));
         StringBuffer result = new StringBuffer();
@@ -72,7 +76,12 @@ public class HTTPHandler {
         return jsonRsponse;
     }
 
-    // HTTP GET request
+    /**
+     * Preform a HTTP GET request
+     * @param url The address to sent the request
+     * @return The response to the request
+     * @throws IOException
+     */
     public static String getRequest(String url) throws IOException {
 
         // Create HTTP client
@@ -88,13 +97,8 @@ public class HTTPHandler {
         // Execute request
         HttpResponse response = httpClient.execute(request);
 
-        // Log
-        // System.out.println("\nSending 'GET' request to URL : " + url);
-        // System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
         // Handle Response
         // Convert response to JSON
-        // String json = EntityUtils.toString(response.getEntity(), "UTF-8");
         BufferedReader rd = new BufferedReader(
                 new InputStreamReader(response.getEntity().getContent()));
         StringBuffer result = new StringBuffer();
@@ -118,6 +122,11 @@ public class HTTPHandler {
         return json;
     }
 
+    /**
+     * Encode a given string to a valid HTTP URL
+     * @param urlStr a string naming an address
+     * @return A valid HTTP URL representation
+     */
     private static String encodeURL(String urlStr) {
         try {
             URL url = new URL(urlStr);

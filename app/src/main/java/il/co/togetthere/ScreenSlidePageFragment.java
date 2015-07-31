@@ -8,7 +8,7 @@ import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
-import il.co.togetthere.util.LikeListener;
+import il.co.togetthere.listeners.LikeListener;
 
 import java.util.Arrays;
 import java.util.Collections;
