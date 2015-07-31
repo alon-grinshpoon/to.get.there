@@ -57,7 +57,7 @@ public class Images {
                 final int THUMBNAIL_SIZE = 256;
                 Bitmap thumb = ThumbnailUtils.extractThumbnail(bmp, THUMBNAIL_SIZE, THUMBNAIL_SIZE);
                 // Rotate Bitmap if needed
-                if (bmp.getWidth() > bmp.getHeight()){
+                if (bmp != null && bmp.getWidth() > bmp.getHeight()){
                     Matrix matrix = new Matrix();
                     matrix.postRotate(90);
                     bmp = Bitmap.createBitmap(bmp, 0, 0,

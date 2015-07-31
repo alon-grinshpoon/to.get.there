@@ -2,6 +2,7 @@ package il.co.togetthere;
 
 import il.co.togetthere.db.Review;
 import il.co.togetthere.db.ServiceProvider;
+import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.db.Task;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
@@ -342,7 +343,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		mPhotosSwitcher = (ViewSwitcher) v.findViewById(R.id.photos_switcher);
 		// Get Images From Server
 		AsyncRequest asyncRequest = new AsyncRequest(ScreenSlidePageFragment.this);
-		asyncRequest.execute(Server.SERVER_ACTION_SEARCH_IMAGES_BY_STRING, mSP.getSp_name());
+		asyncRequest.execute(Server.SERVER_ACTION_SEARCH_IMAGES_BY_STRING, mSP.getSp_name() + " " + ServiceProviderCategory.enumToString(mSP.getCategory()));
 	}
 
     private void setWebsiteView(View v, Typeface font) {
