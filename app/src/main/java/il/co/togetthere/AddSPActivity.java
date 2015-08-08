@@ -2,6 +2,7 @@ package il.co.togetthere;
 
 import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderCategory;
+import il.co.togetthere.listeners.SettingListener;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
@@ -31,10 +32,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Activity to add a service provider to the system.
+ */
 public class AddSPActivity extends Activity implements AsyncResponse {
 	private Spinner mTypeList;
 	private ArrayAdapter<String> mListAdapter;
@@ -45,24 +50,10 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_sp);
 
-		/**
-		 * Full Screen Set UP
-		 **/
-		// Hide the status bar.
-		//View decorView = getWindow().getDecorView();
-		//int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		//decorView.setSystemUiVisibility(uiOptions);
-		// Remember that you should never show the action bar if the
-		// status bar is hidden, so hide that too if necessary.
-		//android.app.ActionBar actionBar = getActionBar();
-		//actionBar.hide();
-
 		// Define Font
 		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.TTF");
 
-		/**
-		 * Upper Bar
-		 **/
+		// Upper Bar
 		ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.button_show_user_details_addNewSP);
 		profilePictureView.setProfileId(LoginActivity.user.getFacebook_id());
 		profilePictureView.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +67,9 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 			}
 		});
 
+		// Hide progress bar
+		((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.GONE);
+
 		// Configure Settings Button
 		findViewById(R.id.button_settings).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -87,11 +81,10 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 			}
 		});
 
+		// Create a new service provider
 		mSP = new ServiceProvider();
 
-		/**
-		 * Titles
-		 */
+		// Titles
 		TextView title = (TextView) findViewById(R.id.title_activity_add_sp);
 		title.setTypeface(font);
 
@@ -131,9 +124,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 		TextView textViewRank5 = (TextView) findViewById(R.id.textViewRank5);
 		textViewRank5.setTypeface(font);
 
-		/**
-		 * Type List Chooser
-		 **/
+		// Type List Chooser
 		mTypeList = (Spinner) findViewById(R.id.addNewSPSpinner);
 		String[] types = getResources().getStringArray(R.array.types);
 		ArrayList<String> typesList = new ArrayList<>();
@@ -142,7 +133,6 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 		mListAdapter = new SpinnerAdapter(this, R.layout.type_list_item,
 				typesList);
 		mTypeList.setAdapter(mListAdapter);
-
 		mTypeList.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -162,9 +152,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 
 		});
 
-		/**
-		 * Accessibility Parameters
-		 */
+		// Accessibility Parameters
 		final ImageButton parking = (ImageButton) findViewById(R.id.NewRankImageParking);
 		final ImageButton entrance = (ImageButton) findViewById(R.id.NewRankImageEntrance);
 		final ImageButton facilities = (ImageButton) findViewById(R.id.NewRankImageFurniture);
@@ -211,9 +199,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 			}
 		});
 
-		/**
-		 * Submit Button- Validation
-		 **/
+		// Submit Button Validation
 		Button submit = (Button) findViewById(R.id.addNewSPSubmit);
 		submit.setTypeface(font);
 		submit.setOnClickListener(new View.OnClickListener() {
@@ -232,7 +218,7 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 						.getText().toString();
 				String discount = ((EditText) findViewById(R.id.addNewSPDiscount))
 						.getText().toString();
-				int discountNum = (discount.equals("") ? -1 : Integer
+				int discountNum = (discount.equals("") ? 0 : Integer
 						.parseInt(discount));
 
 				/**
@@ -260,34 +246,13 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 				}
 
 				// Phone
-				if (!phone.equals("")) {
-					mSP.setPhone(phone);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Location phone is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
+				mSP.setPhone(phone);
 
 				// Website
-				if (!website.equals("")) {
-					mSP.setWebsite(website);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Location website is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
+				mSP.setWebsite(website);
 
 				// Discount
-				if (discountNum != -1) {
-					mSP.setDiscount(discountNum);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Discount amount is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
+				mSP.setDiscount(discountNum);
 
 				// Category
 				if (mSP.getCategory() == ServiceProviderCategory.none) {
@@ -304,7 +269,8 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 										int which) {
 						switch (which) {
 							case DialogInterface.BUTTON_POSITIVE:
-
+								// Show progress bar
+								((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.VISIBLE);
 								// send mSP to DB and finish;
 								AsyncRequest asyncRequest = new AsyncRequest(AddSPActivity.this);
 								asyncRequest.execute(Server.SERVER_ACTION_ADD_SP, mSP);
@@ -384,6 +350,8 @@ public class AddSPActivity extends Activity implements AsyncResponse {
 
 	@Override
 	public void handleResult(AsyncResult result) {
+		// Hide progress bar
+		((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.GONE);
 		if (result.errored()){
 			Toast.makeText(getApplicationContext(), "Oops! Unable to add a new entry.",
 					Toast.LENGTH_SHORT).show();

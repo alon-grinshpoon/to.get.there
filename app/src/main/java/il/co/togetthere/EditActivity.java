@@ -1,6 +1,7 @@
 package il.co.togetthere;
 
 import il.co.togetthere.db.ServiceProvider;
+import il.co.togetthere.listeners.SettingListener;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
@@ -20,11 +21,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.widget.ProfilePictureView;
 
+/**
+ * Activity to edit a service provider to the system.
+ */
 public class EditActivity extends Activity implements AsyncResponse {
 	private ServiceProvider mSP;
 	private int pageNumber;
@@ -34,21 +39,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit);
 
-		/**
-		 * Full Screen Set UP
-		 **/
-		// Hide the status bar.
-		// View decorView = getWindow().getDecorView();
-		// int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		// decorView.setSystemUiVisibility(uiOptions);
-		// Remember that you should never show the action bar if the
-		// status bar is hidden, so hide that too if necessary.
-		//android.app.ActionBar actionBar = getActionBar();
-		//actionBar.hide();
-
-		/**
-		 * Upper Bar
-		 **/
+		// Upper Bar
 		ProfilePictureView profilePictureView = (ProfilePictureView) findViewById(R.id.button_show_user_details_editSP);
 		profilePictureView.setProfileId(LoginActivity.user.getFacebook_id());
 		profilePictureView.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +52,9 @@ public class EditActivity extends Activity implements AsyncResponse {
 
 			}
 		});
+
+		// Hide progress bar
+		((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.GONE);
 
 		// Configure Settings Button
 		findViewById(R.id.button_settings).setOnClickListener(new View.OnClickListener() {
@@ -81,9 +75,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 		// Define Font
 		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/GOTHIC.TTF");
 
-		/**
-		 * Title
-		 */
+		// Title
 		TextView title = ((TextView) findViewById(R.id.title_activity_edit_sp));
 		title.setTypeface(font);
 
@@ -117,9 +109,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 		discount.setText("" + mSP.getDiscount());
 		discount.setTypeface(font);
 
-		/**
-		 * Accessibility Parameters
-		 */
+		// Accessibility Parameters
 		final ImageButton parking = (ImageButton) findViewById(R.id.NewRankImageParking);
 		final ImageButton entrance = (ImageButton) findViewById(R.id.NewRankImageEntrance);
 		final ImageButton facilities = (ImageButton) findViewById(R.id.NewRankImageFurniture);
@@ -131,6 +121,27 @@ public class EditActivity extends Activity implements AsyncResponse {
 		if(mSP.isFacilities()) rankToggle(facilities);
 		if(mSP.isToilets()) rankToggle(toilets);
 		if(mSP.isElevator()) rankToggle(elevator);
+
+		// Parking Description
+		if (!mSP.getParking_text().equals("")) {
+			((EditText) findViewById(R.id.editViewRank1)).setText(mSP.getParking_text());
+		}
+		// Entrance Description
+		if (!mSP.getEntrance_text().equals("")) {
+			((EditText) findViewById(R.id.editViewRank2)).setText(mSP.getEntrance_text());
+		}
+		// Furniture Description
+		if (!mSP.getFacilities_text().equals("")) {
+			((EditText) findViewById(R.id.editViewRank3)).setText(mSP.getFacilities_text());
+		}
+		// Toilets Description
+		if (!mSP.getToilets_text().equals("")) {
+			((EditText) findViewById(R.id.editViewRank4)).setText(mSP.getToilets_text());
+		}
+		// Elevator Description
+		if (!mSP.getElevator_text().equals("")) {
+			((EditText) findViewById(R.id.editViewRank5)).setText(mSP.getElevator_text());
+		}
 
 		parking.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -172,9 +183,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 			}
 		});
 
-		/**
-		 * Submit Button- Validation
-		 **/
+		// Submit Button Validation
 		Button submit =  (Button) findViewById(R.id.editSPSubmit);
 		submit.setTypeface(font);
 		submit.setOnClickListener(new View.OnClickListener() {
@@ -193,7 +202,7 @@ public class EditActivity extends Activity implements AsyncResponse {
 						.getText().toString();
 				String discount = ((EditText) findViewById(R.id.editSPDiscount))
 						.getText().toString();
-				int discountNum = (discount.equals("") ? -1 : Integer
+				int discountNum = (discount.equals("") ? 0 : Integer
 						.parseInt(discount));
 
 				/**
@@ -221,34 +230,13 @@ public class EditActivity extends Activity implements AsyncResponse {
 				}
 
 				// Phone
-				if (!phone.equals("")) {
-					mSP.setPhone(phone);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Location phone is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
+				mSP.setPhone(phone);
 
-				// Website (Can edit with no website)
-				/* if (!website.equals("")) {
-					mSP.setWebsite(website);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Location website is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}*/
+				// Website
+				mSP.setWebsite(website);
 
 				// Discount
-				if (discountNum != -1) {
-					mSP.setDiscount(discountNum);
-				} else {
-					Toast.makeText(getApplicationContext(),
-							"Discount amount is missing",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
+				mSP.setDiscount(discountNum);
 
 				// Parameters Descriptions
 				String parkingDescription = ((EditText) findViewById(R.id.editViewRank1))
@@ -263,21 +251,20 @@ public class EditActivity extends Activity implements AsyncResponse {
 						.getText().toString();
 
 				if(!parkingDescription.equals("")){
-					mSP.setParking_text(mSP.getParking_text() + "." + parkingDescription);
+					mSP.setParking_text(parkingDescription);
 				}
 				if(!entranceDescription.equals("")){
-					mSP.setParking_text(mSP.getEntrance_text() + "." + entranceDescription);
+					mSP.setEntrance_text(entranceDescription);
 				}
 				if(!furnitureDescription.equals("")){
-					mSP.setParking_text(mSP.getFacilities_text() + "." + furnitureDescription);
+					mSP.setFacilities_text(furnitureDescription);
 				}
 				if(!toiletsDescription.equals("")){
-					mSP.setParking_text(mSP.getToilets_text() + "." + toiletsDescription);
+					mSP.setToilets_text(toiletsDescription);
 				}
 				if(!elevatorDescription.equals("")){
-					mSP.setParking_text(mSP.getElevator_text() + "." + elevatorDescription);
+					mSP.setElevator_text(elevatorDescription);
 				}
-
 
 				// Re-Validate User (Are You Sure?)
 				DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -286,7 +273,8 @@ public class EditActivity extends Activity implements AsyncResponse {
 										int which) {
 						switch (which) {
 							case DialogInterface.BUTTON_POSITIVE:
-
+								// Show progress bar
+								((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.VISIBLE);
 								// update mSP in DB and finish;
 								AsyncRequest asyncRequest = new AsyncRequest(EditActivity.this);
 								asyncRequest.execute(Server.SERVER_ACTION_EDIT_SP, mSP);
@@ -337,6 +325,8 @@ public class EditActivity extends Activity implements AsyncResponse {
 
 	@Override
 	public void handleResult(AsyncResult result) {
+		// Hide progress bar
+		((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.GONE);
 		if (result.errored()){
 			Toast.makeText(getApplicationContext(), "Oops! Unable to edit a new entry.",
 					Toast.LENGTH_SHORT).show();

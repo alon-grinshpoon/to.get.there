@@ -23,6 +23,15 @@
             android:src="@drawable/logo_small" >
         </ImageView>
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/button_show_user_details_editSP"
+            android:layout_centerVertical="true"
+            android:background="@null" >
+        </ProgressBar>
+
         <com.facebook.widget.ProfilePictureView
             android:id="@+id/button_show_user_details_editSP"
             android:layout_width="wrap_content"
@@ -265,7 +274,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Does this place have accessible furniture?"
+                        android:text="Does this place have accessible facilities?"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
                     <EditText
@@ -273,7 +282,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:hint="Enter your thoughts about the furniture..."
+                        android:hint="Enter your thoughts about the facilities..."
                         android:textAppearance="?android:attr/textAppearanceSmall" />
                 </LinearLayout>
             </LinearLayout>

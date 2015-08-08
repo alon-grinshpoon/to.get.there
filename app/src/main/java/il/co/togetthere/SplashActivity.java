@@ -26,6 +26,9 @@ import java.util.Locale;
 import il.co.togetthere.db.User;
 import il.co.togetthere.server.Server;
 
+/**
+ * Activity of a splash screen.
+ */
 public class SplashActivity extends Activity {
 
 	private final int SPLASH_DISPLAY_LENGTH = 3000;
@@ -93,7 +96,7 @@ public class SplashActivity extends Activity {
         }, SPLASH_DISPLAY_LENGTH);
     }
 
-    private class UserLocationListener implements LocationListener {
+    public static class UserLocationListener implements LocationListener {
 
         @Override
         public void onLocationChanged(Location loc) {

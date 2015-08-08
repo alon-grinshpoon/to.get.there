@@ -7,10 +7,13 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -39,6 +42,7 @@ import com.facebook.model.GraphPlace;
 import com.facebook.model.GraphUser;
 
 import il.co.togetthere.db.User;
+import il.co.togetthere.listeners.SettingListener;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
@@ -51,12 +55,13 @@ import com.facebook.widget.PickerFragment;
 import com.facebook.widget.PlacePickerFragment;
 import com.google.gson.Gson;
 
-
+/**
+ * Activity to login to the system.
+ */
 public class LoginActivity extends FragmentActivity implements AsyncResponse {
 
     @SuppressWarnings("unused")
 	private static final String PERMISSION = "publish_actions";
-
     private final String PENDING_ACTION_BUNDLE_KEY = "com.facebook.samples.hellofacebook:PendingAction";
 
     private LoginButton buttonLoginFacebook;
@@ -100,12 +105,7 @@ public class LoginActivity extends FragmentActivity implements AsyncResponse {
 
     @SuppressLint("InlinedApi") @Override
     public void onCreate(Bundle savedInstanceState) {
-    	
-		// Hide the status bar.
-    	//View decorView = getWindow().getDecorView();
-		//int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		//decorView.setSystemUiVisibility(uiOptions); 
-    	
+
 		// Remember that you should never show the action bar if the
 		// status bar is hidden, so hide that too if necessary.
 		android.app.ActionBar actionBar = getActionBar();
@@ -467,7 +467,11 @@ public class LoginActivity extends FragmentActivity implements AsyncResponse {
             Toast.makeText(getApplicationContext(), "Oops! Unable to register your user.",
                     Toast.LENGTH_SHORT).show();
         } else {
-
+            // Get location
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            LocationListener locationListener = new SplashActivity.UserLocationListener();
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300000, 100, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300000, 100, locationListener);
             // Save user as a shared preference
             SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor prefsEditor = mPrefs.edit();

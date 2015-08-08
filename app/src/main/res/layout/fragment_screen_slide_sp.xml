@@ -271,7 +271,6 @@
                 android:layout_gravity="center"
                 android:paddingLeft="11dp"
                 android:src="@drawable/ic_waze" />
-            <!-- TODO - WAZE -->
 
             <TextView
                 android:id="@+id/text_location_address"
@@ -343,7 +342,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:id="@+id/website_layout">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -380,40 +381,59 @@
             android:gravity="center"
             android:orientation="horizontal" >
 
-            <ImageView
-                android:id="@+id/location_album_button"
-                android:layout_width="wrap_content"
+            <ViewSwitcher
+                android:id="@+id/photos_switcher"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_album" />
+                android:gravity="center" >
 
-            <ImageView
-                android:id="@+id/location_img1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:src="@drawable/ic_images11" />
+                <ProgressBar
+                    android:id="@+id/progress_bar_photos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@null" >
+                </ProgressBar>
 
-            <ImageView
-                android:id="@+id/location_img2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/location_img1"
-                android:src="@drawable/ic_images11" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/location_img3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/location_img2"
-                android:src="@drawable/ic_images11" />
+                    <ImageView
+                        android:id="@+id/location_img1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_images11" />
 
-            <ImageView
-                android:id="@+id/location_img4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/location_img3"
-                android:src="@drawable/ic_images11" />
+                    <ImageView
+                        android:id="@+id/location_img2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/location_img1"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_images11" />
+
+                    <ImageView
+                        android:id="@+id/location_img3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/location_img2"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_images11" />
+
+                    <ImageView
+                        android:id="@+id/location_img4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/location_img3"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_images11" />
+                </LinearLayout>
+            </ViewSwitcher>
         </RelativeLayout>
 
         <!-- Reviews -->
@@ -450,6 +470,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_margin="5dp"
+            android:background="@color/review_bg"
             android:weightSum="10" >
 
             <!-- User Photo -->
@@ -471,6 +493,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/text_review_likes_0"
                 android:layout_toRightOf="@id/img_review_user0"
+                android:padding="5dp"
                 android:orientation="vertical" >
 
                 <!-- Review Title -->
@@ -489,7 +512,7 @@
                     android:id="@+id/review_item_body0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="fldkgfjfdlkfjldkfjdlfkjldkjfldkjfldkjfladkja;kljda"
+                    android:text="Review Body"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
                 <!-- Review rank bar -->
 
@@ -515,6 +538,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_margin="5dp"
+            android:background="@color/review_bg"
             android:weightSum="10" >
 
             <!-- User Photo -->
@@ -536,6 +561,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/text_review_likes_1"
                 android:layout_toRightOf="@id/img_review_user1"
+                android:padding="5dp"
                 android:orientation="vertical" >
 
                 <!-- Review Title -->
@@ -554,7 +580,7 @@
                     android:id="@+id/review_item_body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="fldkgfjfdlkfjldkfjdlfkjldkjfldkjfldkjfladkja;kljda"
+                    android:text="Review Body"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
                 <!-- Review rank bar -->
 
@@ -580,6 +606,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_margin="5dp"
+            android:background="@color/review_bg"
             android:weightSum="10" >
 
             <!-- User Photo -->
@@ -601,6 +629,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/text_review_likes_2"
                 android:layout_toRightOf="@id/img_review_user2"
+                android:padding="5dp"
                 android:orientation="vertical" >
 
                 <!-- Review Title -->
@@ -619,7 +648,7 @@
                     android:id="@+id/review_item_body2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="fldkgfjfdlkfjldkfjdlfkjldkjfldkjfldkjfladkja;kljda"
+                    android:text="Review Body"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
                 <!-- Review rank bar -->
 
@@ -640,7 +669,68 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
         </RelativeLayout>
 
-        <!-- Like -->
+        <RelativeLayout
+            android:id="@+id/review_yours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10" >
+
+            <!-- User Photo -->
+
+            <com.facebook.widget.ProfilePictureView
+                android:id="@+id/img_review_yours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:padding="5dp"
+                facebook:preset_size="small" />
+
+            <!-- Review Title and Content -->
+
+            <LinearLayout
+                android:id="@+id/review_text_layout_yours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/post_your_review_button"
+                android:layout_toRightOf="@id/img_review_yours"
+                android:orientation="vertical" >
+
+                <!-- Review Title -->
+
+                <TextView
+                    android:id="@+id/review_item_title_yours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User Name"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold" />
+
+                <!-- Review Body -->
+
+                <EditText
+                    android:id="@+id/review_item_body_yours"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter your review here..."
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </LinearLayout>
+
+            <!-- Like -->
+
+            <Button
+                android:id="@+id/post_your_review_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:paddingRight="5dp"
+                android:text="Post"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </RelativeLayout>
+
 
         <Button
             android:id="@+id/button_read_more_reviews"

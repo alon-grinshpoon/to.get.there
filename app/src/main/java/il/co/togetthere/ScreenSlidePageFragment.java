@@ -2,34 +2,48 @@ package il.co.togetthere;
 
 import il.co.togetthere.db.Review;
 import il.co.togetthere.db.ServiceProvider;
+import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.db.Task;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
+import il.co.togetthere.listeners.LikeListener;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.facebook.widget.ProfilePictureView;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,23 +60,25 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * A fragment representing a single page.
  */
 public class ScreenSlidePageFragment extends Fragment implements
-		OnMarkerClickListener {
+		OnMarkerClickListener, AsyncResponse {
 	/* The argument key for the page number this fragment represents. */
 	public static final String ARG_PAGE = "page";
 	public static final String ARG_TYPE = "Type";
+	private int color;
+	private View photosView;
 
 	/*
 	 * The fragment's page number, which is set to the argument value for {@link
 	 * #ARG_PAGE}.
 	 */
 	public ViewGroup rootView;
-	public String mServiceProviderType = null;
+	public String mServiceProviderCategory = null;
 	private int mPageNumber;
 	private ServiceProvider mSP;
 	private Task mTask;
+	private ViewSwitcher mPhotosSwitcher;
 	private List<Review> mReviewsList;
-
-	MapView mMapView;
+	private MapView mMapView;
 	private GoogleMap googleMap;
 
 	/*
@@ -85,12 +101,12 @@ public class ScreenSlidePageFragment extends Fragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPageNumber = getArguments().getInt(ARG_PAGE);
-		mServiceProviderType = getArguments().getString(ARG_TYPE);
+		mServiceProviderCategory = getArguments().getString(ARG_TYPE);
 
 		/**
 		 * Get information from DB
 		 **/
-		if (mServiceProviderType.equals("help")) {
+		if (mServiceProviderCategory.equals("help")) {
 			mTask = getCurrTask(mPageNumber);
 		} else {
 			mSP = getCurrSP(mPageNumber);
@@ -110,10 +126,10 @@ public class ScreenSlidePageFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		
 		// Inflate the layout containing a title and body text.
-		if (mServiceProviderType.equals("help")) {
+		if (mServiceProviderCategory.equals("help")) {
 			rootView = (ViewGroup) inflater.inflate(
 					R.layout.fragment_screen_slide_help, container, false);
-			setHelpView(rootView, mServiceProviderType);
+			setHelpView(rootView, mServiceProviderCategory);
 
 		} else {
 			rootView = (ViewGroup) inflater.inflate(
@@ -122,7 +138,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		}
 
 		// Map
-		if (!mServiceProviderType.equals("help")) {
+		if (!mServiceProviderCategory.equals("help")) {
 			mMapView = (MapView) rootView.findViewById(R.id.mapView);
 			mMapView.onCreate(savedInstanceState);
 			mMapView.onResume();// needed to get the map to display immediately
@@ -230,11 +246,11 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 	}
 
-	private void setSPView(View v, String Type) {
+	private void setSPView(View v, String type) {
 
-		int colorID = getResources().getIdentifier(Type + "_bg_color", "color",
+		int colorID = getResources().getIdentifier(type + "_bg_color", "color",
 				"il.co.togetthere");
-		int color = getResources().getColor(colorID);
+		color = getResources().getColor(colorID);
 
 		SetViewColors(v, color);
 		
@@ -259,7 +275,7 @@ public class ScreenSlidePageFragment extends Fragment implements
 		// Set Verified
 		if (!mSP.is_verified()) {
 			((ImageView) v.findViewById(R.id.img_is_verified))
-					.setVisibility(View.INVISIBLE);
+					.setVisibility(View.GONE);
 		}
 		
 		// Set Phone
@@ -284,12 +300,10 @@ public class ScreenSlidePageFragment extends Fragment implements
 		locationDiscount.setText("%" + mSP.getDiscount());
 		locationDiscount.setTypeface(font);
 
-		// Set Website
-		TextView locationWebsite = ((TextView) v.findViewById(R.id.text_location_website));
-		locationWebsite.setText(mSP.getWebsite() != null ? mSP.getWebsite() : "N/A");
-		locationWebsite.setTypeface(font);
+        // Set Website
+        setWebsiteView(v, font);
 
-		// set accessibility percentage
+		// set Accessibility Percentage
 		setAccecibility(v);
 
 		// set Stars rank
@@ -306,11 +320,8 @@ public class ScreenSlidePageFragment extends Fragment implements
 			}
 		});
 
-		// TODO set List of reviews
-		// ListView listView = (ListView)
-		// rootView.findViewById(R.id.list_reviews);
-		// listView.setAdapter(new mListAdapter(getActivity(), getReviews()));
-		// listView.setOnTouchListener(new View.OnTouchListener() {
+		// Photos
+		setPhotos(v);
 
 		// Reviews		
 		getReviews();
@@ -319,14 +330,56 @@ public class ScreenSlidePageFragment extends Fragment implements
 				.findViewById(R.id.button_read_more_reviews);
 		readMore.setTypeface(font);
 		if (mReviewsList.size() > 3) {
-			readMore.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					// TODO Open an activity with list view of reviews;
-				}
-			});
+			readMore.setOnClickListener(new MoreReviewsListener(mSP.getId()));
 		} else {
 			readMore.setVisibility(View.GONE);
+		}
+	}
+
+	private void setPhotos(View v){
+		// Store view
+		photosView = v;
+		// Handler Switcher
+		mPhotosSwitcher = (ViewSwitcher) v.findViewById(R.id.photos_switcher);
+		// Get Images From Server
+		AsyncRequest asyncRequest = new AsyncRequest(ScreenSlidePageFragment.this);
+		asyncRequest.execute(Server.SERVER_ACTION_SEARCH_IMAGES_BY_STRING, mSP.getSp_name() + " " + ServiceProviderCategory.enumToString(mSP.getCategory()));
+	}
+
+    private void setWebsiteView(View v, Typeface font) {
+        LinearLayout websiteLayout = (LinearLayout) v.findViewById(R.id.website_layout);
+        TextView locationWebsite = ((TextView) v.findViewById(R.id.text_location_website));
+        String url = mSP.getWebsite();
+        if (url != null && !url.equals("")) {
+            locationWebsite.setText(url);
+            websiteLayout.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView locationWebsite = ((TextView) view.findViewById(R.id.text_location_website));
+                    String url = locationWebsite.getText().toString();
+                    if (!url.startsWith("http://") && !url.startsWith("https://"))
+                        url = "http://" + url;
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(browserIntent);
+                }
+            });
+        } else {
+            locationWebsite.setText("No website information");
+        }
+        locationWebsite.setTypeface(font);
+    }
+
+	private class MoreReviewsListener implements OnClickListener {
+		String spID;
+
+		public MoreReviewsListener(String spID) {
+			this.spID = spID;
+		}
+		@Override
+		public void onClick(View view) {
+			Intent mainIntent = new Intent(ScreenSlidePageFragment.this.getActivity() ,ReviewsListActivity.class);
+			mainIntent.putExtra("SP_ID", spID);
+			startActivity(mainIntent);
 		}
 	}
 
@@ -368,7 +421,7 @@ public class ScreenSlidePageFragment extends Fragment implements
         accessibilityImage.setOnClickListener(new AccessibilityListener(mSP.getEntrance_text()));
 	}
 
-    class AccessibilityListener implements OnClickListener{
+    private class AccessibilityListener implements OnClickListener{
         String accecibilityText;
 
         public AccessibilityListener(String accecibilityText) {
@@ -425,6 +478,8 @@ public class ScreenSlidePageFragment extends Fragment implements
 		TextView noReviews = (TextView) v
 				.findViewById(R.id.text_be_first_reviewer);
 		noReviews.setTypeface(font);
+
+		// Set reviews
 		RelativeLayout review1 = (RelativeLayout) v.findViewById(R.id.review0);
 		RelativeLayout review2 = (RelativeLayout) v.findViewById(R.id.review1);
 		RelativeLayout review3 = (RelativeLayout) v.findViewById(R.id.review2);
@@ -456,8 +511,11 @@ public class ScreenSlidePageFragment extends Fragment implements
 			break;
 		}
 
+		// Set the option for the user to add a review
+		setUserReview(v, color);
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void setReview(View v, int color, int num) {
 		int reviewerTextID = getResources().getIdentifier(
 				"review_item_title" + num, "id",
@@ -470,9 +528,9 @@ public class ScreenSlidePageFragment extends Fragment implements
 		int userImageID = getResources().getIdentifier("img_review_user" + num,
 				"id", v.getContext().getPackageName());
 
-		Log.i("review", "ic_thumb_" + mServiceProviderType);
+		Log.i("review", "ic_thumb_" + mSP.getCategory());
 		int likesDrawable = getResources().getIdentifier(
-				"ic_thumb_" + mServiceProviderType, "drawable",
+				"ic_thumb_" + mSP.getCategory(), "drawable",
 				v.getContext().getPackageName());
 
 		// get the reviews view's
@@ -499,48 +557,142 @@ public class ScreenSlidePageFragment extends Fragment implements
 		likes.setText(reviewObj.getLikes() + "   ");
 		likes.setTextColor(color);
 		likes.setBackground(getResources().getDrawable(likesDrawable));
-		likes.setOnClickListener(new LikeListener(num));
-		
-		// TODO id of user that wrote review
-		// profilePictureView.setProfileId(mReviewsList.get(position).g);
+		likes.setOnClickListener(new LikeListener(reviewObj , font));
 	}
 
-    class LikeListener implements OnClickListener, AsyncResponse{
-        int mReviewPos;
-        TextView v;
-        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+	private void setUserReview(View v, int color) {
+		int reviewerTextID = getResources().getIdentifier(
+				"review_item_title_yours", "id",
+				v.getContext().getPackageName());
+		int reviewTextID = getResources()
+				.getIdentifier("review_item_body_yours", "id",
+						v.getContext().getPackageName());
+		int userImageID = getResources().getIdentifier("img_review_yours",
+				"id", v.getContext().getPackageName());
+		int buttonID = getResources().getIdentifier("post_your_review_button",
+				"id", v.getContext().getPackageName());
 
-        public LikeListener(int reviewPos) {
-            this.mReviewPos = reviewPos;
-        }
-        @Override
-        public void onClick(View v) {
-            this.v =(TextView) v;
-            TextView likes  = (TextView) v;
-            // Register Like
-            AsyncRequest asyncRequest = new AsyncRequest(LikeListener.this);
-            asyncRequest.execute(Server.SERVER_ACTION_ADD_LIKE_TO_REVIEW, LoginActivity.user, mReviewsList.get(mReviewPos));
-        }
+		// get the reviews view's
+		TextView reviewer = (TextView) v.findViewById(reviewerTextID);
+		final EditText review = (EditText) v.findViewById(reviewTextID);
+		ProfilePictureView profilePictureView = (ProfilePictureView) v
+				.findViewById(userImageID);
+		Button submitButton = (Button) v.findViewById(buttonID);
 
-        @Override
-        public void handleResult(AsyncResult result) {
-            if (result.errored()) {
-				String message;
-				if (result.getStatusCode() == 400){
-					message = "Uh-oh! You already liked this review.";
-				} else {
-					message = "Oops! Unable to add your like.";
-				}
-                Toast.makeText(v.getContext().getApplicationContext(), message,
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Inc Likes
-                int numLikes = 1 + Integer.parseInt(((String) v.getText()).trim());
-                v.setText(numLikes + "   ");
-                v.setTypeface(font);
-            }
-        }
-    }
+		// Define Font
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+		// set font
+		reviewer.setTypeface(font);
+		review.setTypeface(font);
+		submitButton.setTypeface(font);
+
+		// set review details
+		reviewer.setText(LoginActivity.user.getFullName());
+		review.setText("");
+		profilePictureView.setProfileId(LoginActivity.user.getFacebook_id());
+		submitButton.setTextColor(color);
+		submitButton.setOnClickListener(new SubmitReviewListener(mSP, review));
+	}
+
+	class SubmitReviewListener implements OnClickListener, AsyncResponse{
+
+		Button v;
+		ServiceProvider sp;
+		EditText review;
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+
+		public SubmitReviewListener(ServiceProvider sp, EditText review) {
+			this.sp = sp;
+			this.review = review;
+		}
+		@Override
+		public void onClick(View v) {
+			String reviewBody = review.getText().toString();
+			if (!reviewBody.trim().equals("")) {
+				this.v = (Button) v;
+				// Create Review
+				Review review = new Review("0", LoginActivity.user, reviewBody, 0);
+				// Add Review
+				AsyncRequest asyncRequest = new AsyncRequest(SubmitReviewListener.this);
+				asyncRequest.execute(Server.SERVER_ACTION_ADD_REVIEW_TO_SP, this.sp, review);
+
+                // Check if no view has focus:
+                ScreenSlideActivity.hideKeyboard(getActivity());
+
+			} else {
+				Toast.makeText(v.getContext().getApplicationContext(), "Oops! Review text cannot be empty.",
+						Toast.LENGTH_SHORT).show();
+			}
+		}
+
+		@Override
+		public void handleResult(AsyncResult result) {
+			if (result.errored()) {
+				Toast.makeText(v.getContext().getApplicationContext(), "Oops! Unable to add your review.",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(v.getContext().getApplicationContext(), "Excellent! Your review was added.",
+						Toast.LENGTH_SHORT).show();
+				// Redraw
+				((EditText) rootView.findViewById(R.id.review_item_body_yours)).setText("");
+				mSP = result.getServiceProvider();
+				getReviews();
+				updateReviewsView();
+			}
+		}
+	}
+
+	private void updateReviewsView() {
+
+		// Define Font
+		Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/GOTHIC.TTF");
+
+		TextView noReviews = (TextView) rootView
+				.findViewById(R.id.text_be_first_reviewer);
+		noReviews.setTypeface(font);
+
+		// Set reviews
+		RelativeLayout review1 = (RelativeLayout) rootView.findViewById(R.id.review0);
+		RelativeLayout review2 = (RelativeLayout) rootView.findViewById(R.id.review1);
+		RelativeLayout review3 = (RelativeLayout) rootView.findViewById(R.id.review2);
+
+		switch (mReviewsList.size()) {
+			case 0: // no reviews
+				noReviews.setTextColor(color);
+				review1.setVisibility(View.GONE);
+				review2.setVisibility(View.GONE);
+				review3.setVisibility(View.GONE);
+				break;
+			case 1: // one review
+				noReviews.setVisibility(View.GONE);
+				setReview(rootView, color, 0);
+				review1.setVisibility(View.VISIBLE);
+				review2.setVisibility(View.GONE);
+				review3.setVisibility(View.GONE);
+				break;
+			case 2: // two reviews
+				noReviews.setVisibility(View.GONE);
+				setReview(rootView, color, 0);
+				setReview(rootView, color, 1);
+				review1.setVisibility(View.VISIBLE);
+				review2.setVisibility(View.VISIBLE);
+				review3.setVisibility(View.GONE);
+				break;
+			default: // 3 or more
+				noReviews.setVisibility(View.GONE);
+				setReview(rootView, color, 0);
+				setReview(rootView, color, 1);
+				setReview(rootView, color, 2);
+				review1.setVisibility(View.VISIBLE);
+				review2.setVisibility(View.VISIBLE);
+				review3.setVisibility(View.VISIBLE);
+				break;
+		}
+
+		// Set the option for the user to add a review
+		setUserReview(rootView, color);
+	}
+
 
 	public void onWazeClick() {
 		onMarkerClick(null);
@@ -579,9 +731,9 @@ public class ScreenSlidePageFragment extends Fragment implements
 						R.layout.location_review_list_item, null);
 				holder = new ViewHolder();
 				holder.title = (TextView) convertView
-						.findViewById(R.id.review_item_title);
+						.findViewById(R.id.text_review_list_item_title);
 				holder.body = (TextView) convertView
-						.findViewById(R.id.review_item_body);
+						.findViewById(R.id.text_review_list_item_body);
 				
 				convertView.setTag(holder);
 			} else {
@@ -607,30 +759,23 @@ public class ScreenSlidePageFragment extends Fragment implements
 
 	public List<Review> getReviews() {
 
+		// Update Reviews
 		mReviewsList = mSP.getReviewsAsList();
-/* 		These are Mock reviews for testing
- *
-		ReviewObj review1 = new ReviewObj();
-		review1.setTitle("TitleA1");
-		review1.setReview("Great Place, Very Accecible");
-		review1.setReviewer("Rony Jacobson");
-		review1.setPoints(1);
-		mReviewsList.add(review1);
-
-		ReviewObj review2 = new ReviewObj();
-		review2.setTitle("TitleA2");
-		review2.setReview("I couldent find a close parking spot");
-		review2.setReviewer("John Doh");
-		review2.setPoints(10);
-		mReviewsList.add(review2);
-
-		ReviewObj review3 = new ReviewObj();
-		review3.setTitle("TitleA3");
-		review3.setReview("Good Atmospheir and great Service");
-		review3.setReviewer("Jane Doh");
-		review3.setPoints(0);
-		mReviewsList.add(review3);
-		*/
+		// Sort so the user's review will ve first
+		Collections.sort(mReviewsList, new Comparator<Review>() {
+			@Override
+			public int compare(Review r1, Review r2) {
+				if (r1.getUser().getID() == LoginActivity.user.getID() &&
+					r1.getUser().getID() == LoginActivity.user.getID()) {
+					return 0;
+				} else if (r1.getUser().getID() == LoginActivity.user.getID() &&
+				r1.getUser().getID() != LoginActivity.user.getID()){
+					return 1;
+				}
+				return -1;
+			}
+		});
+		// Return
 		return mReviewsList;
 	}
 
@@ -673,4 +818,63 @@ public class ScreenSlidePageFragment extends Fragment implements
 		return false;
 	}
 
+	@Override
+	public void handleResult(AsyncResult result) {
+		if (result.errored()) {
+			Toast.makeText(photosView.getContext().getApplicationContext(), "Sorry! Failed to load photos.",
+					Toast.LENGTH_SHORT).show();
+		} else {
+			// Get ImageViews
+			List<ImageView> imageViews = Arrays.asList(((ImageView) photosView.findViewById(R.id.location_img1)),
+					((ImageView) photosView.findViewById(R.id.location_img2)),
+					((ImageView) photosView.findViewById(R.id.location_img3)),
+					((ImageView) photosView.findViewById(R.id.location_img4)));
+			for (ImageView imageView : imageViews) {
+				imageView.setVisibility(View.GONE);
+			}
+
+			// Get Images
+			final Map<Bitmap, Bitmap> imagesBitmapsAndThumbnails = result.getImagesThumbnailsAndBitmaps();
+
+			// Set Images
+			int index = 0;
+			for (final Bitmap thumb : imagesBitmapsAndThumbnails.keySet()) {
+				if (index < imageViews.size()) {
+					ImageView imageView = imageViews.get(index);
+					imageView.setVisibility(View.VISIBLE);
+					++index;
+					imageView.setImageBitmap(thumb);
+					imageView.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							// Set Preview Dialog
+							final Dialog nagDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
+							nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+							nagDialog.setCancelable(true);
+							nagDialog.setContentView(R.layout.preview_image);
+							Button btnClose = (Button) nagDialog.findViewById(R.id.btnIvClose);
+							ImageView ivPreview = (ImageView) nagDialog.findViewById(R.id.iv_preview_image);
+							ivPreview.setBackgroundDrawable(new BitmapDrawable(getResources(), imagesBitmapsAndThumbnails.get(thumb)));
+
+							OnClickListener closeListener = new OnClickListener() {
+								@Override
+								public void onClick(View arg0) {
+
+									nagDialog.dismiss();
+								}
+							};
+							btnClose.setOnClickListener(closeListener);
+							ivPreview.setOnClickListener(closeListener);
+							nagDialog.show();
+						}
+					});
+				} else {
+					break;
+				}
+			}
+
+			// Handle Switcher
+			mPhotosSwitcher.showNext();
+		}
+	}
 }

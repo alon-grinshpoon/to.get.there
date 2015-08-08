@@ -1,5 +1,8 @@
 package il.co.togetthere.db;
 
+/**
+ * Class representation of a review stored in the server.
+ */
 public class Review {
 
 	private String id;

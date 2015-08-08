@@ -80,5 +80,6 @@
     <!-- Edit SP -->
     <string name="title_activity_edit_sp">Edit Location</string>
     <string name="title_activity_edit">EditActivity</string>
+    <string name="title_activity_reviews_list" >ReviewsListActivity</string>
 
 </resources>

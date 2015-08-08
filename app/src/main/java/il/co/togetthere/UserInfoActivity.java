@@ -18,11 +18,15 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import il.co.togetthere.db.User;
+import il.co.togetthere.listeners.SettingListener;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
 import il.co.togetthere.server.Server;
 
+/**
+ * Activity of a user details screen.
+ */
 public class UserInfoActivity extends Activity implements AsyncResponse {
 
 	User mUser;
@@ -49,19 +53,6 @@ public class UserInfoActivity extends Activity implements AsyncResponse {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_info);
-
-		/**
-		 * View Initialization
-		 **/
-
-		// Hide the status bar.
-		//View decorView = getWindow().getDecorView();
-		//int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		//decorView.setSystemUiVisibility(uiOptions);
-		// Remember that you should never show the action bar if the
-		// status bar is hidden, so hide that too if necessary.
-		//android.app.ActionBar actionBar = getActionBar();
-		//actionBar.hide();
 
 		// Profile Picture
 		mUser = LoginActivity.user;
@@ -242,7 +233,7 @@ public class UserInfoActivity extends Activity implements AsyncResponse {
 	public void handleResult(AsyncResult result) {
 		if (result.errored()){
 			// Show message
-			Toast.makeText(getApplicationContext(), "Oops! Unable to update your user.",
+			Toast.makeText(getApplicationContext(), "Oops! Unable to update your profile.",
 					Toast.LENGTH_SHORT).show();
 		} else {
 			// Save user as a shared preference

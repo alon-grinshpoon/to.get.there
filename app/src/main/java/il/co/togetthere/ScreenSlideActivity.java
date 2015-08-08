@@ -2,6 +2,8 @@ package il.co.togetthere;
 import il.co.togetthere.db.ServiceProvider;
 import il.co.togetthere.db.ServiceProviderCategory;
 import il.co.togetthere.db.Task;
+import il.co.togetthere.listeners.RankingListener;
+import il.co.togetthere.listeners.SettingListener;
 import il.co.togetthere.server.AsyncRequest;
 import il.co.togetthere.server.AsyncResponse;
 import il.co.togetthere.server.AsyncResult;
@@ -9,6 +11,8 @@ import il.co.togetthere.server.Server;
 
 import android.annotation.SuppressLint;
 import java.util.List;
+
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -36,9 +40,12 @@ import com.facebook.widget.ProfilePictureView;
  */
 public class ScreenSlideActivity extends FragmentActivity implements
 		AsyncResponse {
+
 	private static int NUM_PAGES = 1;
+
 	// current service provider type
 	private static String serviceProviderCategory;
+
 	public static int currentIndex;
 	public static List<ServiceProvider> serviceProviderList;
 	public static List<Task> taskList;
@@ -97,8 +104,6 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		Intent inIntent = getIntent();
 		setServiceProviderCategory(inIntent.getStringExtra("TYPE_EXTRA"));
 
-
-
 		if (getServiceProviderCategory() != null
 				&& getServiceProviderCategory().equals("help")) {
 			//mThread.execute(DynamoDBManagerType.GET_TASKS.toString());
@@ -118,6 +123,7 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		 * Search bar Initialization
 		 */
 		ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
+		searchBtn.setEnabled(false); // Disable search until loading is finished
 		EditText searchEditText = (EditText) findViewById(R.id.searchText);
 		if (getServiceProviderCategory().equals("search")) {
 			searchEditText.setHint("Search...");
@@ -245,6 +251,11 @@ public class ScreenSlideActivity extends FragmentActivity implements
 
 	@Override
 	public void handleResult(AsyncResult result) {
+
+		// Enable search
+		ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
+		searchBtn.setEnabled(true);
+
 		if (result.errored()){
 			Toast.makeText(getApplicationContext(), "Oops! Failed to load " + serviceProviderCategory + "...",
 					Toast.LENGTH_SHORT).show();
@@ -350,11 +361,14 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View view) {
 			String query = ((EditText) findViewById(R.id.searchText)).getText().toString();
+			query.trim();
 			if (query.equals("")) {
 				Log.i("Pager Search", "No query found, not searching");
 				return;
 			} else {
-				hideKeyboard();
+				ImageView searchBtn = (ImageView) findViewById(R.id.searchButton);
+				searchBtn.setEnabled(false); // Disable search until loading is finished
+				hideKeyboard(ScreenSlideActivity.this);
 				mPager.setVisibility(View.GONE);
 				((ProgressBar) findViewById(R.id.progress)).setVisibility(View.VISIBLE);
 				AsyncRequest asyncRequest = new AsyncRequest(ScreenSlideActivity.this);
@@ -374,12 +388,14 @@ public class ScreenSlideActivity extends FragmentActivity implements
 		}
 	}
 
-	private void hideKeyboard() {
-		// Check if no view has focus:
-		View view = this.getCurrentFocus();
-		if (view != null) {
-			InputMethodManager inputManager = (InputMethodManager) this.getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
-			inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+	public static void hideKeyboard(Activity activity) {
+		InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+		//Find the currently focused view, so we can grab the correct window token from it.
+		View view = activity.getCurrentFocus();
+		//If no view currently has focus, create a new one, just so we can grab a window token from it
+		if(view == null) {
+			view = new View(activity);
 		}
+		inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 	}
 }

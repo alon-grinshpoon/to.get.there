@@ -24,7 +24,11 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import il.co.togetthere.db.ServiceProviderCategory;
+import il.co.togetthere.listeners.SettingListener;
 
+/**
+ * Activity of the main screen choose a category.
+ */
 public class TypeChooserActivity extends Activity {
 	List<String> mServiceProviderCategory = new ArrayList<>();
 	List<Button> mButtonsArr = new ArrayList<>();
@@ -94,6 +98,19 @@ public class TypeChooserActivity extends Activity {
 
 			mButtonsArr.add(i, btn);
 		}
+		// Disable help
+		int btnID = getResources().getIdentifier("id_button_" + ServiceProviderCategory.enumToString(ServiceProviderCategory.help), "id",
+				getPackageName());
+		Button btn = (Button) findViewById(btnID);
+		btn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), "Searching for help is coming soon!",
+						Toast.LENGTH_LONG).show();
+			}
+
+		});
 		
         // Ask To Volunteer
 		if (!LoginActivity.user.wasAskedToVolunteer()) {
@@ -166,7 +183,7 @@ public class TypeChooserActivity extends Activity {
 			Intent mainIntent = new Intent(TypeChooserActivity.this,
 					ScreenSlideActivity.class);
 			String q = ((EditText) findViewById(R.id.searchText)).getText().toString();
-
+			q = q.trim();
 			if (q.equals("")) {
 				Log.i("Type Chooser Search", "No query found, not searching");
 				return;
